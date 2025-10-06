@@ -11,8 +11,8 @@ from .query import QueryBuilder
 from .utils import LogseqUtils
 
 __version__ = "0.1.0"
-__author__ = "Your Name"
-__email__ = "your.email@example.com"
+__author__ = "Julio Ona"
+__email__ = "thinmanj@gmail.com"
 
 __all__ = [
     "LogseqClient",

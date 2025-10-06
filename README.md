@@ -61,4 +61,6 @@ client.create_page("My New Page", "This is the content of my new page.")
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+The MIT License is a permissive license that allows for commercial use, modification, distribution, and private use, with the only requirement being that the license and copyright notice must be included with any substantial portions of the software.
