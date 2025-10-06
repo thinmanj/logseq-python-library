@@ -1,0 +1,9 @@
+# Core dependencies
+python-dateutil>=2.8.0
+pyyaml>=6.0
+regex>=2021.4.4
+markdown>=3.3.0
+
+# Optional dependencies for enhanced functionality
+rich>=13.0.0  # For better CLI output
+click>=8.0.0  # For CLI interface
