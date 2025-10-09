@@ -6,7 +6,12 @@ Provides functionality to read, query, and modify Logseq data.
 """
 
 from .logseq_client import LogseqClient
-from .models import Block, Page, LogseqGraph
+from .models import (
+    Block, Page, LogseqGraph,
+    TaskState, Priority, BlockType,
+    BlockEmbed, ScheduledDate, LogseqQuery,
+    Template, Annotation, WhiteboardElement
+)
 from .query import QueryBuilder
 from .utils import LogseqUtils
 
@@ -20,5 +25,15 @@ __all__ = [
     "Page",
     "LogseqGraph",
     "QueryBuilder",
-    "LogseqUtils"
+    "LogseqUtils",
+    # Advanced models
+    "TaskState",
+    "Priority",
+    "BlockType",
+    "BlockEmbed",
+    "ScheduledDate",
+    "LogseqQuery",
+    "Template",
+    "Annotation",
+    "WhiteboardElement"
 ]

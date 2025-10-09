@@ -8,7 +8,7 @@ to search and filter Logseq data.
 import re
 from datetime import datetime, date
 from typing import List, Dict, Any, Optional, Union, Set, Callable
-from .models import Block, Page, LogseqGraph
+from .models import Block, Page, LogseqGraph, TaskState, Priority, BlockType
 
 
 class QueryBuilder:
@@ -389,6 +389,227 @@ class QueryBuilder:
             True if at least one item matches, False otherwise
         """
         return self.count() > 0
+    
+    # Advanced Logseq-specific query methods
+    
+    def has_task_state(self, state: TaskState) -> 'QueryBuilder':
+        """
+        Filter by task state.
+        
+        Args:
+            state: TaskState to filter by
+        """
+        def filter_func(item):
+            return getattr(item, 'task_state', None) == state
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_task(self) -> 'QueryBuilder':
+        """Filter items that are tasks."""
+        def filter_func(item):
+            return hasattr(item, 'is_task') and item.is_task()
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_completed_task(self) -> 'QueryBuilder':
+        """Filter completed tasks."""
+        def filter_func(item):
+            return hasattr(item, 'is_completed_task') and item.is_completed_task()
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_priority(self, priority: Priority) -> 'QueryBuilder':
+        """
+        Filter by priority level.
+        
+        Args:
+            priority: Priority level to filter by
+        """
+        def filter_func(item):
+            return getattr(item, 'priority', None) == priority
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_scheduled_date(self, date_obj: Optional[date] = None) -> 'QueryBuilder':
+        """
+        Filter items that are scheduled, optionally on a specific date.
+        
+        Args:
+            date_obj: Specific date to filter by (if None, any scheduled item)
+        """
+        def filter_func(item):
+            if not hasattr(item, 'is_scheduled') or not item.is_scheduled():
+                return False
+            if date_obj is None:
+                return True
+            return (hasattr(item, 'scheduled') and item.scheduled and 
+                   item.scheduled.date == date_obj)
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_deadline(self, date_obj: Optional[date] = None) -> 'QueryBuilder':
+        """
+        Filter items that have deadlines, optionally on a specific date.
+        
+        Args:
+            date_obj: Specific date to filter by (if None, any deadline)
+        """
+        def filter_func(item):
+            if not hasattr(item, 'has_deadline') or not item.has_deadline():
+                return False
+            if date_obj is None:
+                return True
+            return (hasattr(item, 'deadline') and item.deadline and 
+                   item.deadline.date == date_obj)
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_block_type(self, block_type: BlockType) -> 'QueryBuilder':
+        """
+        Filter by block type.
+        
+        Args:
+            block_type: BlockType to filter by
+        """
+        def filter_func(item):
+            return getattr(item, 'block_type', None) == block_type
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_heading(self, level: Optional[int] = None) -> 'QueryBuilder':
+        """
+        Filter heading blocks, optionally by level.
+        
+        Args:
+            level: Specific heading level (1-6), None for any heading
+        """
+        def filter_func(item):
+            if getattr(item, 'block_type', None) != BlockType.HEADING:
+                return False
+            if level is None:
+                return True
+            return getattr(item, 'heading_level', None) == level
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_code_block(self, language: Optional[str] = None) -> 'QueryBuilder':
+        """
+        Filter code blocks, optionally by programming language.
+        
+        Args:
+            language: Programming language to filter by
+        """
+        def filter_func(item):
+            if getattr(item, 'block_type', None) != BlockType.CODE:
+                return False
+            if language is None:
+                return True
+            return getattr(item, 'code_language', None) == language
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_math_content(self) -> 'QueryBuilder':
+        """Filter blocks with LaTeX/mathematical content."""
+        def filter_func(item):
+            return getattr(item, 'latex_content', None) is not None
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_query(self) -> 'QueryBuilder':
+        """Filter blocks that contain queries."""
+        def filter_func(item):
+            return getattr(item, 'query', None) is not None
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_block_references(self) -> 'QueryBuilder':
+        """Filter blocks that reference other blocks."""
+        def filter_func(item):
+            refs = getattr(item, 'referenced_blocks', set())
+            return len(refs) > 0
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_embeds(self) -> 'QueryBuilder':
+        """Filter blocks that embed other content."""
+        def filter_func(item):
+            embeds = getattr(item, 'embedded_blocks', [])
+            return len(embeds) > 0
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def in_namespace(self, namespace: str) -> 'QueryBuilder':
+        """
+        Filter pages in a specific namespace.
+        
+        Args:
+            namespace: Namespace to filter by
+        """
+        def filter_func(item):
+            return getattr(item, 'namespace', None) == namespace
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_template(self) -> 'QueryBuilder':
+        """Filter template pages."""
+        def filter_func(item):
+            return getattr(item, 'is_template', False)
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_whiteboard(self) -> 'QueryBuilder':
+        """Filter whiteboard pages."""
+        def filter_func(item):
+            return getattr(item, 'is_whiteboard', False)
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_annotations(self) -> 'QueryBuilder':
+        """Filter items with PDF annotations."""
+        def filter_func(item):
+            annotations = getattr(item, 'annotations', [])
+            return len(annotations) > 0
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def is_collapsed(self) -> 'QueryBuilder':
+        """Filter collapsed blocks."""
+        def filter_func(item):
+            return getattr(item, 'collapsed', False)
+        
+        self._filters.append(filter_func)
+        return self
+    
+    def has_alias(self, alias: str) -> 'QueryBuilder':
+        """
+        Filter pages that have a specific alias.
+        
+        Args:
+            alias: Alias to search for
+        """
+        def filter_func(item):
+            aliases = getattr(item, 'aliases', set())
+            return alias in aliases
+        
+        self._filters.append(filter_func)
+        return self
 
 
 class QueryStats:
