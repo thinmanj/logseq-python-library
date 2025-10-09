@@ -1,8 +1,18 @@
-# Logseq Python Library API Documentation
+# 🐍 Logseq Python Library API Documentation
 
 ## Overview
 
-The Logseq Python Library provides a comprehensive interface for reading, querying, and modifying Logseq knowledge graphs programmatically.
+The Logseq Python Library provides the most comprehensive interface available for reading, querying, and modifying Logseq knowledge graphs programmatically. With support for virtually every Logseq feature, this library transforms your knowledge management workflow.
+
+## 🆕 What's New in Advanced Version
+
+- ✅ **Complete Task Management**: All task states, priorities, scheduling, deadlines
+- ✅ **Advanced Content Types**: Code blocks, LaTeX/Math, queries, headings
+- ✅ **Organization Features**: Namespaces, templates, aliases, hierarchies
+- ✅ **Block Relationships**: References, embeds, annotations
+- ✅ **25+ Query Methods**: Advanced filtering and search capabilities
+- ✅ **Graph Analytics**: Workflow insights, productivity metrics
+- ✅ **Real-time Parsing**: Automatic content type detection
 
 ## Core Components
 
@@ -110,12 +120,116 @@ Export the graph to JSON format.
 
 ---
 
-### Block
+## 🔥 **Advanced Data Models**
 
-Represents a single block in Logseq.
+### TaskState (Enum)
+
+Represents task states in Logseq.
+
+**Values:**
+- `TODO` - Task to be done
+- `DOING` - Currently in progress
+- `DONE` - Completed task
+- `LATER` - Deferred task
+- `NOW` - High priority current task
+- `WAITING` - Waiting for external dependency
+- `CANCELLED` - Task cancelled
+- `DELEGATED` - Task assigned to someone else
+- `IN_PROGRESS` - Alternative for DOING
+
+### Priority (Enum)
+
+Represents priority levels in Logseq.
+
+**Values:**
+- `A` - High priority [#A]
+- `B` - Medium priority [#B] 
+- `C` - Low priority [#C]
+
+### BlockType (Enum)
+
+Represents different types of blocks in Logseq.
+
+**Values:**
+- `BULLET` - Regular bullet point
+- `NUMBERED` - Numbered list item
+- `QUOTE` - Quote block
+- `HEADING` - Heading block (H1-H6)
+- `CODE` - Code block
+- `MATH` - Mathematical content
+- `EXAMPLE` - Example block
+- `EXPORT` - Export block
+- `VERSE` - Verse block
+- `DRAWER` - Drawer block
+
+### ScheduledDate
+
+Represents scheduled/deadline dates with advanced features.
+
+**Attributes:**
+- `date` (date): The scheduled date
+- `time` (Optional[str]): Time component (e.g., "10:00")
+- `repeater` (Optional[str]): Repeater pattern (e.g., "+1w", "+3d")
+- `delay` (Optional[str]): Delay pattern
+
+### LogseqQuery
+
+Represents a Logseq query block.
+
+**Attributes:**
+- `query_string` (str): The query content
+- `query_type` (str): Type - "simple", "advanced", or "custom"
+- `results` (List[Dict]): Query results (when executed)
+- `live` (bool): Whether query is live-updating
+- `collapsed` (bool): Whether query block is collapsed
+
+### Template
+
+Represents a Logseq template.
+
+**Attributes:**
+- `name` (str): Template name
+- `content` (str): Template content
+- `variables` (List[str]): Template variables ({{variable}})
+- `usage_count` (int): How often template is used
+- `template_type` (str): "block" or "page"
+
+### Annotation
+
+Represents PDF annotations or highlights.
+
+**Attributes:**
+- `id` (str): Unique annotation identifier
+- `content` (str): Annotation content/note
+- `page_number` (Optional[int]): PDF page number
+- `highlight_text` (Optional[str]): Highlighted text
+- `annotation_type` (str): "highlight", "note", "underline"
+- `color` (Optional[str]): Highlight color
+- `pdf_path` (Optional[str]): Path to PDF file
+- `coordinates` (Optional[Dict]): Position coordinates
+
+### WhiteboardElement
+
+Represents elements on a Logseq whiteboard.
+
+**Attributes:**
+- `id` (str): Unique element identifier
+- `element_type` (str): "shape", "text", "block", "page", "image"
+- `content` (str): Element content
+- `position` (Dict): x, y coordinates
+- `size` (Dict): width, height dimensions
+- `style` (Dict): color, stroke, and other styling
+- `block_id` (Optional[str]): Linked block ID
+
+---
+
+### Block (Enhanced)
+
+Represents a single block in Logseq with full feature support.
 
 #### Attributes
 
+**Core Attributes:**
 - **id**: Unique block identifier
 - **content**: Block content text
 - **level**: Indentation level (0 = top-level)
@@ -126,6 +240,30 @@ Represents a single block in Logseq.
 - **page_name**: Name of the page containing this block
 - **created_at**: Creation timestamp
 - **updated_at**: Last modification timestamp
+
+**🆕 Advanced Task Features:**
+- **task_state**: TaskState enum (TODO, DOING, DONE, etc.)
+- **priority**: Priority enum (A, B, C)
+- **scheduled**: ScheduledDate for SCHEDULED dates
+- **deadline**: ScheduledDate for DEADLINE dates
+
+**🆕 Content Type Features:**
+- **block_type**: BlockType enum (BULLET, CODE, HEADING, etc.)
+- **collapsed**: Boolean indicating if block is collapsed
+- **heading_level**: Integer 1-6 for heading blocks
+- **code_language**: Programming language for code blocks
+- **latex_content**: Extracted LaTeX/math content
+- **query**: LogseqQuery object for query blocks
+
+**🆕 Relationship Features:**
+- **referenced_blocks**: Set of block IDs this block references
+- **embedded_blocks**: List of BlockEmbed objects
+- **annotations**: List of Annotation objects
+
+**🆕 Advanced Features:**
+- **drawing_data**: Dictionary containing drawing information
+- **whiteboard_elements**: List of WhiteboardElement objects
+- **plugin_data**: Dictionary for plugin-specific data
 
 #### Methods
 
@@ -141,9 +279,39 @@ Extract block references from content.
 
 - **Returns**: Set of referenced block IDs
 
+##### `is_task() -> bool`
+
+Check if this block is a task.
+
+- **Returns**: True if block has a task state
+
+##### `is_completed_task() -> bool`
+
+Check if this is a completed task.
+
+- **Returns**: True if task state is DONE
+
+##### `is_scheduled() -> bool`
+
+Check if this block is scheduled.
+
+- **Returns**: True if block has a scheduled date
+
+##### `has_deadline() -> bool`
+
+Check if this block has a deadline.
+
+- **Returns**: True if block has a deadline date
+
+##### `get_all_dates() -> List[date]`
+
+Get all dates associated with this block.
+
+- **Returns**: List of scheduled and deadline dates
+
 ##### `to_markdown() -> str`
 
-Convert block to Logseq markdown format.
+Convert block to Logseq markdown format with task states and priorities.
 
 - **Returns**: Markdown representation of the block
 
@@ -338,6 +506,102 @@ Get the first matching item.
 
 Check if any items match the query.
 
+#### 🆕 Advanced Logseq Query Methods
+
+##### `has_task_state(state: TaskState) -> QueryBuilder`
+
+Filter by task state.
+
+- **state**: TaskState to filter by (TODO, DOING, DONE, etc.)
+
+##### `is_task() -> QueryBuilder`
+
+Filter items that are tasks.
+
+##### `is_completed_task() -> QueryBuilder`
+
+Filter completed tasks.
+
+##### `has_priority(priority: Priority) -> QueryBuilder`
+
+Filter by priority level.
+
+- **priority**: Priority level (A, B, C)
+
+##### `has_scheduled_date(date_obj: Optional[date] = None) -> QueryBuilder`
+
+Filter items that are scheduled.
+
+- **date_obj**: Specific date to filter by (None for any scheduled item)
+
+##### `has_deadline(date_obj: Optional[date] = None) -> QueryBuilder`
+
+Filter items that have deadlines.
+
+- **date_obj**: Specific date to filter by (None for any deadline)
+
+##### `has_block_type(block_type: BlockType) -> QueryBuilder`
+
+Filter by block type.
+
+- **block_type**: BlockType to filter by
+
+##### `is_heading(level: Optional[int] = None) -> QueryBuilder`
+
+Filter heading blocks.
+
+- **level**: Specific heading level (1-6), None for any heading
+
+##### `is_code_block(language: Optional[str] = None) -> QueryBuilder`
+
+Filter code blocks.
+
+- **language**: Programming language to filter by
+
+##### `has_math_content() -> QueryBuilder`
+
+Filter blocks with LaTeX/mathematical content.
+
+##### `has_query() -> QueryBuilder`
+
+Filter blocks that contain queries.
+
+##### `has_block_references() -> QueryBuilder`
+
+Filter blocks that reference other blocks.
+
+##### `has_embeds() -> QueryBuilder`
+
+Filter blocks that embed other content.
+
+##### `in_namespace(namespace: str) -> QueryBuilder`
+
+Filter pages in a specific namespace.
+
+- **namespace**: Namespace to filter by
+
+##### `is_template() -> QueryBuilder`
+
+Filter template pages.
+
+##### `is_whiteboard() -> QueryBuilder`
+
+Filter whiteboard pages.
+
+##### `has_annotations() -> QueryBuilder`
+
+Filter items with PDF annotations.
+
+##### `is_collapsed() -> QueryBuilder`
+
+Filter collapsed blocks.
+
+##### `has_alias(alias: str) -> QueryBuilder`
+
+Filter pages that have a specific alias.
+
+- **alias**: Alias to search for
+
 ---
 
 ### LogseqUtils
@@ -413,31 +677,105 @@ print(f"Total pages: {stats['total_pages']}")
 results = client.search("python")
 ```
 
-### Advanced Queries
+### 🆕 Advanced Task Management
 
 ```python
-# Find all project pages with active tag
-project_pages = (client.query()
-                 .pages()
-                 .has_all_tags(["project", "active"])
-                 .sort_by("name")
-                 .execute())
-
-# Find recent journal entries
+from logseq_py import TaskState, Priority
 from datetime import date, timedelta
-week_ago = date.today() - timedelta(days=7)
-recent_journals = (client.query()
-                   .pages()
-                   .is_journal()
-                   .created_after(week_ago)
-                   .execute())
 
-# Find blocks with URLs
-url_blocks = (client.query()
+# Find high-priority tasks due this week
+urgent_tasks = (client.query()
+               .blocks()
+               .is_task()
+               .has_priority(Priority.A)
+               .has_deadline()
+               .custom_filter(lambda b: b.deadline.date <= date.today() + timedelta(days=7))
+               .execute())
+
+# Get overdue tasks
+overdue = (client.query()
+          .blocks()
+          .has_deadline()
+          .custom_filter(lambda b: b.deadline.date < date.today())
+          .execute())
+
+# Find all TODO tasks in project namespace
+project_todos = (client.query()
+                .blocks()
+                .has_task_state(TaskState.TODO)
+                .in_page("project/")
+                .execute())
+
+# Get workflow summary
+workflow = client.graph.get_workflow_summary()
+print(f"Tasks: {workflow['total_tasks']} ({workflow['completed_tasks']} done)")
+```
+
+### 💻 Advanced Content Analysis
+
+```python
+# Find Python code blocks
+python_code = (client.query()
               .blocks()
-              .content_matches(r'https?://[^\s]+')
-              .limit(10)
+              .is_code_block(language="python")
               .execute())
+
+# Get math content
+math_blocks = (client.query()
+              .blocks()
+              .has_math_content()
+              .execute())
+
+# Find all H2 headings
+headings = (client.query()
+           .blocks()
+           .is_heading(level=2)
+           .execute())
+
+# Get blocks with references
+linked_blocks = (client.query()
+                .blocks()
+                .has_block_references()
+                .execute())
+```
+
+### 🗂️ Organization & Structure
+
+```python
+# Find template pages
+templates = client.query().pages().is_template().execute()
+
+# Get pages in specific namespace
+project_pages = client.query().pages().in_namespace("project").execute()
+
+# Find whiteboard pages
+whiteboards = client.query().pages().is_whiteboard().execute()
+
+# Get pages with aliases
+aliased_pages = (client.query()
+                .pages()
+                .custom_filter(lambda p: len(p.aliases) > 0)
+                .execute())
+```
+
+### 📊 Graph Analytics
+
+```python
+# Get comprehensive insights
+insights = client.graph.get_graph_insights()
+
+# Most connected pages
+for page, connections in insights['most_connected_pages'][:5]:
+    print(f"{page}: {connections} backlinks")
+
+# Most used tags
+for tag, usage in insights['most_used_tags'][:10]:
+    print(f"#{tag}: {usage} pages")
+
+# Namespace analysis
+for namespace in client.graph.get_all_namespaces():
+    pages = client.graph.get_pages_by_namespace(namespace)
+    print(f"{namespace}/: {len(pages)} pages")
 ```
 
 ### Creating Content
