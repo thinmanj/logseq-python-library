@@ -15,6 +15,21 @@ from .models import (
 from .query import QueryBuilder
 from .utils import LogseqUtils
 
+# Import builders for programmatic content generation
+from .builders import (
+    # Core builders
+    ContentBuilder, BlockBuilder, LogseqBuilder,
+    # Content type builders
+    TextBuilder, HeadingBuilder, ListBuilder, TaskBuilder,
+    CodeBlockBuilder, MathBuilder, QuoteBuilder, TableBuilder,
+    MediaBuilder, DrawingBuilder,
+    # Page builders
+    PageBuilder, PropertyBuilder, TemplateBuilder,
+    # Advanced builders
+    QueryBuilder as BuilderQueryBuilder, JournalBuilder, 
+    WorkflowBuilder, DemoBuilder
+)
+
 __version__ = "0.1.0"
 __author__ = "Julio Ona"
 __email__ = "thinmanj@gmail.com"
@@ -35,5 +50,13 @@ __all__ = [
     "LogseqQuery",
     "Template",
     "Annotation",
-    "WhiteboardElement"
+    "WhiteboardElement",
+    
+    # Content builders
+    "ContentBuilder", "BlockBuilder", "LogseqBuilder",
+    "TextBuilder", "HeadingBuilder", "ListBuilder", "TaskBuilder",
+    "CodeBlockBuilder", "MathBuilder", "QuoteBuilder", "TableBuilder",
+    "MediaBuilder", "DrawingBuilder",
+    "PageBuilder", "PropertyBuilder", "TemplateBuilder",
+    "BuilderQueryBuilder", "JournalBuilder", "WorkflowBuilder", "DemoBuilder"
 ]
