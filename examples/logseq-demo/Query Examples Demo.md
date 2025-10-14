@@ -14,21 +14,23 @@
 - Demo pages:
 - {{query (property type "demo")}}
 - Pages by specific author:
-- {{query (property author "DSL Demo Generator")}}
+- {{query (property author "Demo Generator")}}
 - ## Complex Combined Queries
 - Demo pages created this month:
-- {{query (and (property type "demo") (property author "DSL Demo Generator") (between -30d today))}}
+- {{query (and (property type "demo") (property author "Demo Generator") (between -30d today))}}
 - ## Builder Usage
 - Queries above were created using:
 - ```python
-- # Simple task query
-- todo_query = DSLQueryBuilder().todo()
-- # Complex combined query
-- complex_query = (DSLQueryBuilder()
-	.and_query()
-		.property('type', 'demo')
-			.property('author', 'DSL Demo Generator')
-				.this_month())
-- # Add to page
-- page.text(complex_query.build())
-- ```
+# Simple task query
+todo_query = DSLQueryBuilder().todo()
+
+# Complex combined query
+complex_query = (DSLQueryBuilder()
+                .and_query()
+                .property('type', 'demo')
+                .property('author', 'Demo Generator')
+                .this_month())
+
+# Add to page
+page.text(complex_query.build())
+```

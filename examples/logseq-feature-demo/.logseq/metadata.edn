@@ -1,7 +1,0 @@
-{:created-at 1704717600000
- :last-modified-at 1704717600000
- :version "0.10.9"
- :demo-version "1.0.0"
- :demo-generator "Logseq Python Library"
- :demo-features ["tasks" "blocks" "properties" "linking" "templates" 
-                 "namespaces" "journals" "advanced" "workflows" "plugins"]}

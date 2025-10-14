@@ -3,16 +3,16 @@
 - ## This Page's Properties
 - The properties above were set using:
 - ```python
-- page = (PageBuilder('Page Properties DSL Demo')
-	.author('DSL Demo Generator')
-		.created()
-			.page_type('documentation')
-			.category('demo')
-			.status('complete')
-			.tags('properties', 'metadata', 'configuration')
-			.property('version', '1.0.0')
-			.property('complexity', 'intermediate'))
-- ```
+page = (PageBuilder('Page Properties Demo')
+       .author('Demo Generator')
+       .created()
+       .page_type('documentation')
+       .category('demo')
+       .status('complete')
+       .tags('properties', 'metadata', 'configuration')
+       .property('version', '1.0.0')
+       .property('complexity', 'intermediate'))
+```
 - ## Property Usage Patterns
 - **.author()** - Set page author
 - **.created()** - Set creation date (defaults to now)

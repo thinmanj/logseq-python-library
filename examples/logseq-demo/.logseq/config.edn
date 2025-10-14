@@ -13,7 +13,7 @@
  :ui/show-brackets? false
  :ui/auto-expand-block-refs? true
  
- :favorites ["Welcome to DSL Demo"]
+ :favorites ["Welcome to Demo"]
  
  :quick-capture-templates
  {:text "{{date}} {{time}}: [[quick capture]] $INPUT"

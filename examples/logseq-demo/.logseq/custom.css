@@ -1,4 +1,4 @@
-/* DSL Demo Custom Styles */
+/* Demo Custom Styles */
 
 /* Enhanced page properties */
 .page-properties {
@@ -54,7 +54,7 @@ blockquote {
 }
 
 /* Demo page indicators */
-.page-title[data-ref*="DSL Demo"] {
+.page-title[data-ref*="Demo"] {
     color: #0066cc;
 }
 

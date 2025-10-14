@@ -1,6 +1,6 @@
-# Logseq Feature Showcase Demo
+# Logseq Demo
 
-This directory contains a comprehensive demonstration of all Logseq features, generated programmatically using the Logseq Python Library.
+This directory contains a comprehensive demonstration of all Logseq features, generated programmatically using the **Logseq Builder DSL**.
 
 ## 🎯 What's Included
 
@@ -14,6 +14,13 @@ This directory contains a comprehensive demonstration of all Logseq features, ge
 - **Journal entries**: 7 days of realistic daily notes
 - **Advanced features**: queries, automation, plugin integration
 - **Learning resources**: tutorials, best practices, troubleshooting
+
+### Builder DSL Features
+- **Type-safe content creation** - No string templates, all programmatically built
+- **Fluent interface** - Readable, chainable method calls
+- **Language-aware code blocks** - Smart comment generation for 15+ languages
+- **Multi-line content support** - Proper handling of code blocks, math expressions
+- **Modular building blocks** - TaskBuilder, CodeBlockBuilder, MathBuilder, etc.
 
 ### Real-World Examples
 - **Project management** workflows and templates
@@ -32,26 +39,25 @@ This directory contains a comprehensive demonstration of all Logseq features, ge
 ## 🚀 Getting Started
 
 ### 1. Generated Demo Location
-The demo is automatically generated in the `logseq-feature-demo/` directory:
+The demo is automatically generated in the `logseq-demo/` directory:
 ```
 examples/
-├── generate_logseq_demo.py    # Demo generator script
-├── logseq-feature-demo/       # Generated Logseq graph
+├── generate_logseq_demo.py    # DSL-based demo generator script
+├── logseq-demo/              # Generated Logseq graph
 │   ├── .logseq/              # Configuration files
-│   ├── journals/             # Daily note examples
-│   ├── pages/                # Feature demonstration pages
-│   └── (various demo files)
+│   ├── journals_*.md         # Daily note examples
+│   └── (various demo pages)  # Feature demonstration pages
 └── README.md                 # This file
 ```
 
 ### 2. Opening in Logseq
 1. **Open Logseq** application
 2. Click **"Add graph"** or **"Open existing graph"**
-3. Navigate to and select the `examples/logseq-feature-demo` directory
-4. Start exploring with the **"Welcome to Logseq Demo"** page
+3. Navigate to and select the `examples/logseq-demo` directory
+4. Start exploring with the **"Welcome to Demo"** page
 
 ### 3. Navigation Guide
-- **Start here**: [[Welcome to Logseq Demo]]
+- **Start here**: [[Welcome to Demo]]
 - **Core features**: Task Management, Block Types, Page Properties
 - **Advanced features**: Templates, Namespaces, Advanced Features
 - **Learning**: Learning Resources, Plugin Integration
@@ -106,7 +112,7 @@ Edit `generate_logseq_demo.py` to:
 ## 🎓 Learning Path
 
 ### Beginner (Explore these first)
-1. **Welcome to Logseq Demo** - Overview and navigation
+1. **Welcome to Demo** - Overview and navigation
 2. **Block Types Showcase** - Basic content creation
 3. **Task Management Demo** - Essential productivity features
 4. **Linking and Tagging System** - Knowledge connections

@@ -4,7 +4,7 @@
 - Plain text created with .text() method
 - Bullet point created with .bullet_list()
 - **Bold text** and *italic text* via TextBuilder
-- Link to [[Welcome to DSL Demo][welcome page]] using .link()
+- Link to [[Welcome to Demo][welcome page]] using .link()
 - ## Numbered Lists
 - First numbered item via .numbered_list()
 - Second numbered item with programmatic creation

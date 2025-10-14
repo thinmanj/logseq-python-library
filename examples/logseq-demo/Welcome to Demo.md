@@ -1,5 +1,5 @@
-- # Welcome to the Logseq DSL Demo! 🎉
-- This demo was generated on 2025-10-13 at 23:52:13 using the new **Logseq Builder DSL**.
+- # Welcome to the Logseq Demo! 🎉
+- This demo was generated on 2025-10-13 at 23:57:06 using the **Logseq Builder DSL**.
 - ## What's New in This Demo
 - 🏗️ **Type-safe content creation** - No more string templates!
 - 🎯 **Fluent interface** - Readable and intuitive code
@@ -8,20 +8,20 @@
 - ⚡ **Zero hardcoded strings** - Everything built programmatically
 - ## Demo Pages
 - Explore these demonstration pages:
-- [[Task Management DSL Demo]] - Programmatic task creation
-- [[Block Types DSL Showcase]] - All content types via builders
-- [[Code Examples DSL Demo]] - Language-aware code blocks
-- [[Math Examples DSL Demo]] - LaTeX math expressions
-- [[Tables and Media DSL Demo]] - Structured content
-- [[Query Examples DSL Demo]] - Dynamic content queries
-- [[Workflow DSL Demo]] - Process documentation
+- [[Task Management Demo]] - Programmatic task creation
+- [[Block Types Showcase]] - All content types via builders
+- [[Code Examples Demo]] - Language-aware code blocks
+- [[Math Examples Demo]] - LaTeX math expressions
+- [[Tables and Media Demo]] - Structured content
+- [[Query Examples Demo]] - Dynamic content queries
+- [[Workflow Demo]] - Process documentation
 - ## Builder Usage Example
 - Here's how this page was created:
 - ```python
-welcome = (PageBuilder('Welcome to DSL Demo')
-          .author('DSL Demo Generator')
+welcome = (PageBuilder('Welcome to Demo')
+          .author('Demo Generator')
           .created()
-          .heading(1, 'Welcome to the Logseq DSL Demo! 🎉')
+          .heading(1, 'Welcome to the Logseq Demo! 🎉')
           .paragraph('This demo was generated...')
           .bullet_list(
               '🏗️ Type-safe content creation',
