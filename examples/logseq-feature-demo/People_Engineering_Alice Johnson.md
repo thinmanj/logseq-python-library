@@ -1,0 +1,17 @@
+- # Alice Johnson
+- ## Role & Responsibilities
+- Senior Frontend Developer specializing in React and modern web technologies.
+- ## Current Projects
+- **Lead**: [[Projects/Website Redesign/Frontend]]
+- **Contributor**: [[Projects/Mobile App/Frontend]]
+- **Mentor**: [[People/Engineering/Frontend Team/Junior Developer]]
+- ## Skills
+- React, TypeScript, Next.js
+- Modern CSS, Tailwind
+- Testing (Jest, Cypress)
+- Performance optimization
+- ## Recent Work
+- Led migration to TypeScript
+- Implemented new design system
+- Mentored junior developers
+- #person #frontend #engineering #senior

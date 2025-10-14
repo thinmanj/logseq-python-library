@@ -1,0 +1,112 @@
+- # Linking and Tagging System
+- Logseq's powerful linking and tagging system creates a connected knowledge graph.
+- ## Page Linking
+- ### Basic Page Links
+- Link to pages using double brackets: [[Welcome to Logseq Demo]]
+- ### Link with Custom Display Text
+- [Custom Link Text]([[Task Management Demo]])
+- ### Block References
+- Link to specific blocks: ((block-id-would-go-here))
+- ### Namespaced Page Links
+- [[Namespace/Sub Page]]
+- [[Projects/Website Redesign]]
+- [[People/Team Members/Alice Johnson]]
+- ## Tagging System
+- ### Basic Tags
+- Use hashtags anywhere: #productivity #workflow #automation
+- ### Nested/Hierarchical Tags
+- #project/website-redesign
+- #meeting/standup/weekly
+- #learning/programming/javascript
+- #status/active/high-priority
+- ### Tag Combinations
+- Content can have multiple tags: #urgent #project #deadline #Q1-2025
+- ### Context Tags (GTD Style)
+- #context/home
+- #context/office
+- #context/computer
+- #context/phone
+- #context/errands
+- ## Advanced Linking Techniques
+- ### Bidirectional Links
+- When you link to a page, it automatically creates a backlink:
+- Main page: [[Project: E-commerce Platform]]
+- Backlinks show where this page is referenced
+- ### Link Aliases and Synonyms
+- ### Embedded Blocks
+- Embed content from other pages:
+- {{embed [[Task Management Demo]]}}
+- ### Page Embeds
+- {{embed [[Welcome to Logseq Demo]]}}
+- ## Link Types and Relationships
+- ### Project Relationships
+- **Project**: [[Project: E-commerce Platform]]
+- **Sub-projects**: [[Database Design]], [[Frontend Development]], [[API Integration]]
+- **Dependencies**: [[Authentication System]] → [[User Management]] → [[Payment Processing]]
+- ### People Relationships
+- **Team Lead**: [[Alice Johnson]]
+- **Reports to**: [[Engineering Manager]]
+- **Collaborates with**: [[Bob Smith]], [[Charlie Brown]], [[Diana Prince]]
+- ### Concept Relationships
+- **Related Concepts**: [[Knowledge Management]] ↔ [[Personal Productivity]] ↔ [[Note Taking]]
+- **Prerequisites**: [[Basic Logseq]] → [[Advanced Features]] → [[Workflow Automation]]
+- ## Tag-Based Organization
+- ### Project Tags
+- #project/active #project/planning #project/completed #project/cancelled
+- ### Priority Tags
+- #priority/low #priority/medium #priority/high #priority/critical
+- ### Status Tags
+- #status/draft #status/review #status/approved #status/published
+- ### Department Tags
+- #dept/engineering #dept/product #dept/design #dept/marketing
+- ### Temporal Tags
+- #Q1-2025 #january #week-2 #daily #monthly #quarterly
+- ## Query-Based Navigation
+- ### Find Related Content
+- {{query (and [[Project]] #active)}}
+- ### Tag-Based Queries
+- {{query #urgent}}
+- ### Combined Filters
+- {{query (and [[Meeting]] #weekly (between -7d today))}}
+- ### Complex Relationships
+- {{query (and (property type project) [[Alice Johnson]] #high-priority)}}
+- ## Link Maintenance and Hygiene
+- ### Orphaned Pages
+- Pages with no incoming or outgoing links - these might need better integration
+- ### Broken Links
+- Links to pages that don't exist - opportunities to create content
+- ### Over-linked Content
+- Pages with too many links might be too broad in scope
+- ### Under-linked Content
+- Valuable content that isn't well-connected to the graph
+- ## Best Practices
+- ### 1. Consistent Naming Conventions
+- Use clear, descriptive page names
+- Follow consistent capitalization
+- Avoid special characters that break links
+- ### 2. Strategic Tag Hierarchies
+- Design tag taxonomies before heavy usage
+- Use consistent hierarchical structures
+- Balance specificity with findability
+- ### 3. Link Intentionally
+- Link to add value, not just for the sake of linking
+- Consider the user's journey through your knowledge graph
+- Create hub pages that connect related concepts
+- ### 4. Regular Maintenance
+- Review and clean up broken links
+- Consolidate similar tags
+- Refactor page names for clarity
+- ## Graph Analysis
+- ### High-Value Hub Pages
+- Pages with many incoming links - these are central to your knowledge graph:
+- [[Welcome to Logseq Demo]] (15 incoming links)
+- [[Task Management Demo]] (12 incoming links)
+- [[Alice Johnson]] (8 incoming links)
+- ### Emerging Clusters
+- Groups of highly interconnected pages:
+- **Project Management Cluster**: Projects, Tasks, People, Meetings
+- **Technical Documentation Cluster**: Code, APIs, Architecture
+- **Learning Resources Cluster**: Courses, Books, Tutorials
+- ---
+- *Master linking and tagging to create a powerful, navigable knowledge graph!*
+- #linking #tagging #knowledge-graph #organization #demo

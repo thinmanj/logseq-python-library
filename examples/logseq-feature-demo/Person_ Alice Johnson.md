@@ -1,0 +1,41 @@
+- # Alice Johnson - Senior Frontend Developer
+- ## Contact Information
+- **Email**: alice.johnson@company.com
+- **Phone**: +1-555-0123
+- **Location**: San Francisco, CA
+- **Office**: Building A, Floor 3, Desk 42
+- ## Role & Responsibilities
+- Lead frontend development initiatives
+- Mentor junior developers
+- Architect user interface solutions
+- Collaborate with design and product teams
+- Code review and quality assurance
+- ## Skills & Expertise
+- ### Technical Skills
+- **Frontend**: React, Vue.js, TypeScript, JavaScript
+- **Styling**: CSS3, Sass, Tailwind CSS, Styled Components
+- **Tools**: Webpack, Vite, Jest, Cypress
+- **Design**: Figma, Adobe XD, Sketch
+- ### Soft Skills
+- Team leadership and mentoring
+- Cross-functional collaboration
+- Problem-solving and debugging
+- Technical communication
+- ## Current Projects
+- [[Project: E-commerce Platform]] - Technical Lead
+- [[Project: Design System]] - Architecture Advisor
+- [[Initiative: Developer Experience]] - Contributor
+- ## Recent Achievements
+- ✅ Led successful migration to TypeScript
+- ✅ Reduced bundle size by 40% through optimization
+- ✅ Mentored 2 junior developers to promotion
+- ✅ Established frontend testing standards
+- ## Professional Development
+- **Current Learning**: Advanced React patterns, Web performance
+- **Certifications**: AWS Solutions Architect Associate (2024)
+- **Conferences**: React Summit 2024, JSConf 2024
+- ## Meeting Notes
+- [[Meeting: Weekly Standup]]
+- [[Meeting: Architecture Review]]
+- [[Meeting: Performance Optimization]]
+- #person #team #frontend #developer

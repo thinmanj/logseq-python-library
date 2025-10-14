@@ -5,9 +5,11 @@ This module provides the primary interface for interacting with Logseq graphs.
 """
 
 import os
+import shutil
+import tempfile
 from datetime import datetime, date
 from pathlib import Path
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any, Optional, Union, Set
 
 from .models import Block, Page, LogseqGraph
 from .utils import LogseqUtils
@@ -15,23 +17,193 @@ from .query import QueryBuilder
 
 
 class LogseqClient:
-    """Main client for interacting with Logseq graphs."""
+    """Main client for interacting with Logseq graphs.
     
-    def __init__(self, graph_path: Union[str, Path]):
+    Supports context manager usage for automatic session management:
+    
+    with LogseqClient('/path/to/graph') as client:
+        # Make changes
+        client.add_journal_entry('Today I used context managers!')
+        # Changes are automatically saved on exit
+    """
+    
+    def __init__(self, graph_path: Union[str, Path], auto_save: bool = True, backup_on_enter: bool = False):
         """
         Initialize the Logseq client.
         
         Args:
             graph_path: Path to the Logseq graph directory
+            auto_save: Whether to automatically save changes on context exit
+            backup_on_enter: Whether to create a backup when entering context
         """
         self.graph_path = Path(graph_path).resolve()
         self.graph: Optional[LogseqGraph] = None
+        self.auto_save = auto_save
+        self.backup_on_enter = backup_on_enter
+        
+        # Context manager state
+        self._in_context = False
+        self._modified_pages: Set[str] = set()
+        self._backup_dir: Optional[Path] = None
+        self._session_start_time: Optional[datetime] = None
         
         if not self.graph_path.exists():
             raise FileNotFoundError(f"Graph directory not found: {self.graph_path}")
         
         if not self.graph_path.is_dir():
             raise ValueError(f"Path is not a directory: {self.graph_path}")
+    
+    def __enter__(self) -> 'LogseqClient':
+        """Enter context manager."""
+        self._in_context = True
+        self._session_start_time = datetime.now()
+        self._modified_pages.clear()
+        
+        # Load the graph if not already loaded
+        if not self.graph:
+            self.load_graph()
+        
+        # Create backup if requested
+        if self.backup_on_enter:
+            self._create_backup()
+        
+        print(f"🔄 Started Logseq session at {self._session_start_time.strftime('%H:%M:%S')}")
+        if self._backup_dir:
+            print(f"💾 Backup created at: {self._backup_dir}")
+        
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+        """Exit context manager."""
+        session_end = datetime.now()
+        duration = session_end - self._session_start_time if self._session_start_time else None
+        
+        if exc_type is not None:
+            # Exception occurred - handle rollback or cleanup
+            print(f"❌ Exception occurred in Logseq session: {exc_type.__name__}: {exc_val}")
+            
+            if self._backup_dir:
+                print(f"🔄 Rollback available from backup: {self._backup_dir}")
+                rollback = input("Would you like to rollback to backup? (y/N): ").lower().strip() == 'y'
+                if rollback:
+                    self._rollback_from_backup()
+                    print("✅ Rolled back to backup successfully")
+                else:
+                    self._cleanup_backup()
+            
+            self._in_context = False
+            return False  # Don't suppress the exception
+        
+        # Normal exit - save if auto_save is enabled
+        if self.auto_save and self._modified_pages:
+            print(f"💾 Auto-saving {len(self._modified_pages)} modified pages...")
+            self._save_all_modified_pages()
+            print("✅ All changes saved successfully")
+        elif self._modified_pages:
+            print(f"⚠️  {len(self._modified_pages)} pages were modified but auto_save is disabled")
+            print("   Call save_all() or save individual pages manually if needed")
+        
+        # Cleanup backup if everything went well
+        if self._backup_dir:
+            self._cleanup_backup()
+        
+        # Session summary
+        duration_str = f" (duration: {duration.total_seconds():.1f}s)" if duration else ""
+        print(f"🏁 Logseq session completed at {session_end.strftime('%H:%M:%S')}{duration_str}")
+        
+        self._in_context = False
+        return False
+    
+    def _create_backup(self):
+        """Create a backup of the current graph state."""
+        self._backup_dir = Path(tempfile.mkdtemp(prefix="logseq_backup_"))
+        
+        # Copy all markdown files
+        for md_file in self.graph_path.glob("**/*.md"):
+            if '.logseq' not in md_file.parts:  # Skip .logseq directory
+                relative_path = md_file.relative_to(self.graph_path)
+                backup_file = self._backup_dir / relative_path
+                backup_file.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(md_file, backup_file)
+    
+    def _rollback_from_backup(self):
+        """Rollback changes from backup."""
+        if not self._backup_dir or not self._backup_dir.exists():
+            raise ValueError("No backup available for rollback")
+        
+        # Remove current files that exist in backup
+        for backup_file in self._backup_dir.glob("**/*.md"):
+            relative_path = backup_file.relative_to(self._backup_dir)
+            current_file = self.graph_path / relative_path
+            if current_file.exists():
+                current_file.unlink()
+        
+        # Copy backup files back
+        for backup_file in self._backup_dir.glob("**/*.md"):
+            relative_path = backup_file.relative_to(self._backup_dir)
+            current_file = self.graph_path / relative_path
+            current_file.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(backup_file, current_file)
+    
+    def _cleanup_backup(self):
+        """Clean up temporary backup directory."""
+        if self._backup_dir and self._backup_dir.exists():
+            shutil.rmtree(self._backup_dir)
+            self._backup_dir = None
+    
+    def _save_all_modified_pages(self):
+        """Save all pages that were modified during the context session."""
+        if not self.graph:
+            return
+        
+        saved_count = 0
+        for page_name in self._modified_pages:
+            page = self.graph.get_page(page_name)
+            if page:
+                self._save_page(page)
+                saved_count += 1
+        
+        return saved_count
+    
+    def _track_page_modification(self, page_name: str):
+        """Track that a page has been modified during context session."""
+        if self._in_context:
+            self._modified_pages.add(page_name)
+    
+    def save_all(self) -> int:
+        """Manually save all modified pages. Returns number of pages saved."""
+        if not self._in_context:
+            # Save all pages if not in context
+            if not self.graph:
+                return 0
+            
+            saved_count = 0
+            for page in self.graph.pages.values():
+                if page.file_path:
+                    self._save_page(page)
+                    saved_count += 1
+            return saved_count
+        else:
+            # Save only modified pages if in context
+            return self._save_all_modified_pages()
+    
+    def get_session_info(self) -> Dict[str, Any]:
+        """Get information about the current context session."""
+        if not self._in_context:
+            return {"in_context": False}
+        
+        duration = datetime.now() - self._session_start_time if self._session_start_time else None
+        
+        return {
+            "in_context": True,
+            "session_start": self._session_start_time,
+            "duration_seconds": duration.total_seconds() if duration else None,
+            "modified_pages": len(self._modified_pages),
+            "modified_page_names": list(self._modified_pages),
+            "auto_save_enabled": self.auto_save,
+            "backup_created": self._backup_dir is not None,
+            "backup_path": str(self._backup_dir) if self._backup_dir else None
+        }
     
     def load_graph(self, force_reload: bool = False) -> LogseqGraph:
         """
@@ -356,6 +528,9 @@ class LogseqClient:
         """Save a page to disk."""
         if not page.file_path:
             return
+        
+        # Track modification if in context
+        self._track_page_modification(page.name)
         
         # Ensure parent directory exists
         page.file_path.parent.mkdir(parents=True, exist_ok=True)

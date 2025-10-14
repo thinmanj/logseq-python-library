@@ -1,0 +1,20 @@
+- # Website Redesign Project
+- ## Overview
+- Complete redesign and modernization of the company website, including:
+- Modern responsive design
+- Improved user experience
+- Enhanced performance
+- Better SEO optimization
+- Content management system upgrade
+- ## Sub-Projects
+- [[Projects/Website Redesign/Frontend]] - UI/UX implementation
+- [[Projects/Website Redesign/Backend]] - Server-side development
+- [[Projects/Website Redesign/Database]] - Data architecture
+- [[Projects/Website Redesign/Testing]] - QA and testing strategy
+- [[Projects/Website Redesign/Deployment]] - Launch planning
+- ## Team
+- **Project Lead**: [[People/Product/Charlie Brown]]
+- **Frontend**: [[People/Engineering/Alice Johnson]]
+- **Backend**: [[People/Engineering/Bob Smith]]
+- **Design**: [[People/Design/Diana Prince]]
+- #project #website #active

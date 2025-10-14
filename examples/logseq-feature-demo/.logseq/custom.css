@@ -1,0 +1,91 @@
+/* Logseq Demo Custom Styles */
+
+/* Enhanced task styling */
+.block-content .task-status {
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.task-status.TODO {
+  background: #ff6b6b;
+  color: white;
+}
+
+.task-status.DOING {
+  background: #4ecdc4;
+  color: white;
+}
+
+.task-status.DONE {
+  background: #45b7d1;
+  color: white;
+}
+
+/* Enhanced tag styling */
+.tag {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 500;
+}
+
+/* Block reference styling */
+.block-ref {
+  background: rgba(73, 125, 190, 0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+  border-left: 3px solid #497dbe;
+}
+
+/* Priority styling */
+.priority-a { color: #ff6b6b; font-weight: bold; }
+.priority-b { color: #ffa726; font-weight: bold; }  
+.priority-c { color: #66bb6a; font-weight: bold; }
+
+/* Enhanced code block styling */
+.extensions__code .code-editor {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+/* Query result styling */
+.dsl-query .results .block-content {
+  background: rgba(116, 75, 162, 0.05);
+  border-left: 4px solid #764ba2;
+  padding-left: 12px;
+}
+
+/* Page property styling */
+.block-properties {
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+/* Demo-specific highlighting */
+.demo-highlight {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 5px solid #e17055;
+}
+
+/* Namespace page styling */
+.page-title[data-namespace="Projects"] {
+  color: #6c5ce7;
+}
+
+.page-title[data-namespace="People"] {
+  color: #a29bfe;
+}
+
+.page-title[data-namespace="Learning"] {
+  color: #fd79a8;
+}

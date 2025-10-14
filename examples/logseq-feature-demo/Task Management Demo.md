@@ -1,0 +1,94 @@
+- # Task Management in Logseq
+- This page demonstrates all task management features available in Logseq.
+- ## Basic Task States
+- TODO Basic task without any additional metadata
+- DOING Task currently in progress
+- DONE Completed task ✓
+- LATER Task postponed for later
+- NOW High priority task for immediate attention
+- WAITING Task waiting for external dependency
+- CANCELLED Task that was cancelled
+- DELEGATED Task assigned to someone else
+- ## Tasks with Priorities
+- [#A] TODO High priority task - most important
+- [#B] TODO Medium priority task - normal importance
+- [#C] TODO Low priority task - when time permits
+- [#A] DOING Critical task in progress right now
+- [#A] DONE Completed high priority task ✓
+- ## Scheduled and Deadline Tasks
+- TODO Review quarterly reports
+- SCHEDULED: <2025-01-15 Wed 09:00>
+- TODO Submit project proposal
+- DEADLINE: <2025-01-20 Mon>
+- TODO Weekly team meeting
+- SCHEDULED: <2025-01-08 Wed 14:00 +1w>
+- :PROPERTIES:
+- :REPEAT: Weekly
+- :END:
+- ## Task Properties and Metadata
+- TODO Implement new feature
+- :PROPERTIES:
+- :EFFORT: 4h
+- :ASSIGNED: John Doe
+- :PROJECT: WebApp Redesign
+- :CONTEXT: @computer @internet
+- :END:
+- DOING Code review for PR #123
+- :PROPERTIES:
+- :EFFORT: 1h
+- :URGENCY: High
+- :COMPLEXITY: Medium
+- :END:
+- ## Project-Based Task Organization
+- ### 🏗️ Project: Website Redesign
+- [#A] TODO Create wireframes and mockups
+- DEADLINE: <2025-01-12 Sun>
+- [#A] DOING Implement responsive navigation
+- SCHEDULED: <2025-01-10 Fri>
+- [#B] TODO Optimize images and assets
+- [#B] TODO Test across different browsers
+- [#C] TODO Update documentation
+- ### 📱 Project: Mobile App
+- [#A] TODO Define app requirements
+- [#A] TODO Create user personas
+- [#B] DOING Design app interface
+- [#B] TODO Develop core functionality
+- [#C] TODO App store submission
+- ## GTD-Style Context Tags
+- TODO Call client about project requirements @phone @office
+- TODO Buy groceries after work @errands @car
+- TODO Read research papers @home @evening @lowenergy
+- TODO Review code changes @computer @focused
+- TODO Schedule team meeting @email @administrative
+- ## Task Dependencies and Relationships
+- TODO Complete database design
+- TODO Implement user authentication
+- TODO Deploy to staging environment
+- ## Habit Tracking and Recurring Tasks
+- TODO Morning exercise routine
+- SCHEDULED: <2025-01-08 Wed 07:00 +1d>
+- :PROPERTIES:
+- :HABIT: true
+- :STREAK: 5
+- :END:
+- TODO Weekly planning session
+- SCHEDULED: <2025-01-12 Sun 19:00 +1w>
+- :PROPERTIES:
+- :TEMPLATE: Weekly Review
+- :END:
+- ## Task Analytics and Reporting
+- ### Completed This Week
+- [#A] DONE Launch new marketing campaign ✓
+- [#B] DONE Fix login authentication bug ✓
+- [#B] DONE Update user documentation ✓
+- [#C] DONE Organize team building event ✓
+- ### In Progress (DOING)
+- [#A] DOING Quarterly financial review
+- [#B] DOING Customer feedback analysis
+- [#C] DOING Office space reorganization
+- ### Overdue Tasks
+- [#A] TODO Submit tax documents (overdue by 3 days)
+- [#B] TODO Complete performance reviews (overdue by 1 day)
+- ---
+- *Use this page as a reference for implementing robust task management in your Logseq workflow!*
+- #tasks #gtd #productivity #project-management #demo

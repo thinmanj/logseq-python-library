@@ -1,0 +1,34 @@
+- # Weekly Standup Meeting
+- ## Attendees
+- [[Alice Johnson]] - Frontend Developer
+- [[Bob Smith]] - Backend Developer
+- [[Charlie Brown]] - Product Manager
+- ## Agenda
+- Progress updates from last week
+- Blockers and challenges
+- Goals for upcoming week
+- ## Updates
+- ### Alice's Update
+- ✅ Completed user authentication UI
+- ✅ Fixed responsive design issues
+- 🚧 Working on dashboard components
+- 🚨 Blocked on API specifications
+- ### Bob's Update
+- ✅ Implemented user registration endpoint
+- ✅ Set up database migrations
+- 🚧 Working on authentication middleware
+- 💭 Need to discuss rate limiting strategy
+- ### Charlie's Update
+- ✅ Finalized user stories for next sprint
+- ✅ Conducted stakeholder interviews
+- 🚧 Preparing product requirements document
+- 📋 Planning user testing sessions
+- ## Action Items
+- [ ] [[Alice Johnson]] - Get API specs from backend team
+- [ ] [[Bob Smith]] - Research rate limiting solutions
+- [ ] [[Charlie Brown]] - Schedule user testing sessions
+- [ ] All - Review and comment on PRD draft
+- ## Next Meeting
+- **Date**: [[2025-01-15]]
+- **Focus**: Sprint planning and user testing results
+- #meeting #standup #team #weekly
