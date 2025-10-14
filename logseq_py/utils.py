@@ -78,25 +78,100 @@ class LogseqUtils:
     
     @staticmethod
     def parse_blocks_from_content(content: str, page_name: str) -> List[Block]:
-        """Parse blocks from markdown content."""
+        """Parse blocks from markdown content, handling multi-line constructs."""
         lines = content.split('\n')
         blocks = []
         block_stack = []  # Stack to keep track of parent blocks
+        i = 0
         
-        for line_num, line in enumerate(lines):
+        while i < len(lines):
+            line = lines[i]
             stripped_line = line.strip()
             
             # Skip empty lines and page properties
             if not stripped_line or '::' in stripped_line:
+                i += 1
                 continue
             
-            # Detect block level based on indentation
+            # Handle code blocks (multi-line)
+            if stripped_line.startswith('```'):
+                code_lines = [line]
+                i += 1
+                # Continue reading until closing ```
+                while i < len(lines):
+                    code_lines.append(lines[i])
+                    if lines[i].strip() == '```':
+                        break
+                    i += 1
+                
+                # Create single block with all code content
+                level = LogseqUtils.get_block_level(line)
+                block_content = '\n'.join(code_lines)
+                
+                block = Block(
+                    content=block_content,
+                    level=level,
+                    page_name=page_name
+                )
+                
+                # Handle parent-child relationships
+                if level == 0:
+                    block_stack = [block]
+                else:
+                    while len(block_stack) > level:
+                        block_stack.pop()
+                    if block_stack:
+                        parent = block_stack[-1]
+                        parent.add_child(block)
+                    block_stack.append(block)
+                
+                blocks.append(block)
+                i += 1
+                continue
+            
+            # Handle math blocks ($$...$$)
+            if stripped_line.startswith('$$'):
+                math_lines = [line]
+                i += 1
+                # Continue reading until closing $$
+                while i < len(lines):
+                    math_lines.append(lines[i])
+                    if lines[i].strip() == '$$':
+                        break
+                    i += 1
+                
+                level = LogseqUtils.get_block_level(line)
+                block_content = '\n'.join(math_lines)
+                
+                block = Block(
+                    content=block_content,
+                    level=level,
+                    page_name=page_name
+                )
+                
+                # Handle parent-child relationships
+                if level == 0:
+                    block_stack = [block]
+                else:
+                    while len(block_stack) > level:
+                        block_stack.pop()
+                    if block_stack:
+                        parent = block_stack[-1]
+                        parent.add_child(block)
+                    block_stack.append(block)
+                
+                blocks.append(block)
+                i += 1
+                continue
+            
+            # Regular single-line block processing
             level = LogseqUtils.get_block_level(line)
             
             # Remove markdown list markers
             block_content = LogseqUtils.clean_block_content(stripped_line)
             
             if not block_content:
+                i += 1
                 continue
             
             # Create new block
@@ -121,6 +196,7 @@ class LogseqUtils:
                 block_stack.append(block)
             
             blocks.append(block)
+            i += 1
         
         return blocks
     

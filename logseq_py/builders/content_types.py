@@ -310,9 +310,11 @@ class CodeBlockBuilder(ContentBuilder):
         return self
     
     def build(self) -> str:
+        # For Logseq, code blocks should be a single block with embedded newlines
         lines = [f"```{self._language}"]
         lines.extend(self._code_lines)
         lines.append("```")
+        # Join with \n but return as single string to be treated as one block
         return "\n".join(lines)
 
 
