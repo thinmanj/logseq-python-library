@@ -114,13 +114,13 @@ class LogseqDSLDemoGenerator:
                   .heading(2, "Demo Pages")
                   .text("Explore these demonstration pages:")
                   .bullet_list(
-                      f"{client.link('Task Management DSL Demo')} - Programmatic task creation",
-                      f"{client.link('Block Types DSL Showcase')} - All content types via builders",
-                      f"{client.link('Code Examples DSL Demo')} - Language-aware code blocks",
-                      f"{client.link('Math Examples DSL Demo')} - LaTeX math expressions",
-                      f"{client.link('Tables and Media DSL Demo')} - Structured content",
-                      f"{client.link('Query Examples DSL Demo')} - Dynamic content queries",
-                      f"{client.link('Workflow DSL Demo')} - Process documentation"
+                      "[[Task Management DSL Demo]] - Programmatic task creation",
+                      "[[Block Types DSL Showcase]] - All content types via builders",
+                      "[[Code Examples DSL Demo]] - Language-aware code blocks",
+                      "[[Math Examples DSL Demo]] - LaTeX math expressions",
+                      "[[Tables and Media DSL Demo]] - Structured content",
+                      "[[Query Examples DSL Demo]] - Dynamic content queries",
+                      "[[Workflow DSL Demo]] - Process documentation"
                   )
                   
                   .heading(2, "Builder Usage Example")
@@ -262,7 +262,7 @@ class LogseqDSLDemoGenerator:
                .bullet_list(
                    "Bullet point created with .bullet_list()",
                    "**Bold text** and *italic text* via TextBuilder",
-                   f"Link to {client.link('Welcome to DSL Demo', 'welcome page')} using .link()"
+                   "Link to [[Welcome to DSL Demo][welcome page]] using .link()"
                )
                
                .empty_line()
@@ -440,7 +440,8 @@ class LogseqDSLDemoGenerator:
                
                .heading(2, "Inline Math"))
         
-        page.text(f"The quadratic formula is {page.math(inline=True).expression('x = \\\\frac{-b \\\\pm \\\\sqrt{b^2 - 4ac}}{2a}').build()}")
+        quadratic_formula = page.math(inline=True).expression('x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}').build()
+        page.text(f"The quadratic formula is {quadratic_formula}")
         
         page.empty_line().heading(2, "Block Math Expressions")
         
@@ -450,17 +451,17 @@ class LogseqDSLDemoGenerator:
         
         page.empty_line()
         gaussian_integral = (page.math()
-                            .integral("e^{-x^2}", "-\\\\infty", "\\\\infty")
-                            .expression(" = \\\\sqrt{\\\\pi}"))
+                            .integral("e^{-x^2}", "-\\infty", "\\infty")
+                            .expression(" = \\sqrt{\\pi}"))
         
         page.empty_line().heading(2, "Maxwell's Equations")
         maxwell = (page.math()
-                  .expression("\\\\begin{align}")
-                  .expression("\\\\nabla \\\\cdot \\\\mathbf{E} &= \\\\frac{\\\\rho}{\\\\epsilon_0} \\\\\\\\")
-                  .expression("\\\\nabla \\\\times \\\\mathbf{E} &= -\\\\frac{\\\\partial \\\\mathbf{B}}{\\\\partial t} \\\\\\\\")
-                  .expression("\\\\nabla \\\\cdot \\\\mathbf{B} &= 0 \\\\\\\\")
-                  .expression("\\\\nabla \\\\times \\\\mathbf{B} &= \\\\mu_0\\\\mathbf{J} + \\\\mu_0\\\\epsilon_0\\\\frac{\\\\partial \\\\mathbf{E}}{\\\\partial t}")
-                  .expression("\\\\end{align}"))
+                  .expression("\\begin{align}")
+                  .expression("\\nabla \\cdot \\mathbf{E} &= \\frac{\\rho}{\\epsilon_0} \\\\")
+                  .expression("\\nabla \\times \\mathbf{E} &= -\\frac{\\partial \\mathbf{B}}{\\partial t} \\\\")
+                  .expression("\\nabla \\cdot \\mathbf{B} &= 0 \\\\")
+                  .expression("\\nabla \\times \\mathbf{B} &= \\mu_0\\mathbf{J} + \\mu_0\\epsilon_0\\frac{\\partial \\mathbf{E}}{\\partial t}")
+                  .expression("\\end{align}"))
         
         page.empty_line().heading(2, "Builder Usage")
         page.text("Mathematical expressions were created using:")

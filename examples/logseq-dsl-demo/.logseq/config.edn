@@ -1,0 +1,21 @@
+{:meta/version 1
+ :feature/enable-timetracking? true
+ :feature/enable-journals? true
+ :property-pages/enabled? true
+ :property-pages/excludelist #{"template" "Public"}
+ 
+ :graph/settings {:journal/page-title-format "journals_yyyy_MM_dd"
+                 :preferred-format :markdown
+                 :hidden [".logseq"]
+                 :default-templates {:journals "journals"}}
+ 
+ :editor/logical-outdenting? true
+ :ui/show-brackets? false
+ :ui/auto-expand-block-refs? true
+ 
+ :favorites ["Welcome to DSL Demo"]
+ 
+ :quick-capture-templates
+ {:text "{{date}} {{time}}: [[quick capture]] $INPUT"
+  :media "{{date}} {{time}}: [[media]] "}
+}

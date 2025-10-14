@@ -1,0 +1,20 @@
+- # Logseq Block Types via DSL
+- This page demonstrates every block type created programmatically.
+- ## Text Formatting
+- Plain text created with .text() method
+- Bullet point created with .bullet_list()
+- **Bold text** and *italic text* via TextBuilder
+- Link to [[Welcome to DSL Demo][welcome page]] using .link()
+- ## Numbered Lists
+- First numbered item via .numbered_list()
+- Second numbered item with programmatic creation
+- Third item showing consistent formatting
+- ## Quote Blocks
+- > This is a blockquote demonstrating the QuoteBuilder.
+- > Blockquotes can span multiple lines and are great for:
+- > - Highlighting key insights
+- > - Citing external sources
+- > - Creating visual emphasis
+- > — QuoteBuilder DSL
+- ---
+- *All content on this page was generated using type-safe builders!*

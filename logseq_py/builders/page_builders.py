@@ -156,6 +156,16 @@ class PageBuilder(LogseqBuilder):
         self._properties.tags(*tags)
         return self
     
+    def team(self, *members: str) -> 'PageBuilder':
+        """Set team members."""
+        self._properties.team(*members)
+        return self
+    
+    def progress(self, percentage: Union[str, int]) -> 'PageBuilder':
+        """Set progress percentage."""
+        self._properties.progress(percentage)
+        return self
+    
     def heading(self, level: int, content: str) -> 'PageBuilder':
         """Add a heading."""
         from .content_types import HeadingBuilder
