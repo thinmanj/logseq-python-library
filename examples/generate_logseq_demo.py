@@ -115,16 +115,29 @@ class LogseqDemoGenerator:
                   )
                   
                   .heading(2, "Demo Pages")
-                  .text("Explore these demonstration pages:")
-                  .bullet_list(
-                      "[[Task Management Demo]] - Programmatic task creation",
-                      "[[Block Types Showcase]] - All content types via builders",
-                      "[[Code Examples Demo]] - Language-aware code blocks",
-                      "[[Math Examples Demo]] - LaTeX math expressions",
-                      "[[Tables and Media Demo]] - Structured content",
-                      "[[Query Examples Demo]] - Dynamic content queries",
-                      "[[Workflow Demo]] - Process documentation"
-                  )
+                  .text("Explore these demonstration pages:"))
+        
+        # Create nested demo pages structure
+        from logseq_py.builders.content_types import ListBuilder
+        demo_pages = ListBuilder("bullet")
+        demo_pages.item("**Core Features**")
+        demo_pages.item("[[Task Management Demo]] - Programmatic task creation", 1)
+        demo_pages.item("[[Block Types Showcase]] - All content types via builders", 1)
+        demo_pages.item("[[Page Properties Demo]] - Metadata and properties", 1)
+        demo_pages.item("**Content Types**")
+        demo_pages.item("[[Code Examples Demo]] - Language-aware code blocks", 1)
+        demo_pages.item("[[Math Examples Demo]] - LaTeX math expressions", 1)
+        demo_pages.item("[[Tables and Media Demo]] - Structured content", 1)
+        demo_pages.item("**Advanced Features**")
+        demo_pages.item("[[Query Examples Demo]] - Dynamic content queries", 1)
+        demo_pages.item("[[Workflow Demo]] - Process documentation", 1)
+        demo_pages.item("**Project Examples**")
+        demo_pages.item("[[Project: E-commerce Platform]] - Full project showcase", 1)
+        demo_pages.item("[[Project: Task Management Mobile App]] - Mobile development", 1)
+        
+        welcome.add(demo_pages)
+        
+        welcome = (welcome
                   
                   .heading(2, "Builder Usage Example")
                   .text("Here's how this page was created:")
@@ -226,6 +239,35 @@ class LogseqDemoGenerator:
                  .property("COMPLEXITY", "Medium")
                  .context("computer"))
         
+        page.empty_line().heading(2, "Hierarchical Task Organization")
+        page.text("Example of nested task structure using custom blocks:")
+        
+        # Create nested task structure using blocks
+        from logseq_py.builders.core import BlockBuilder
+        project_block = BlockBuilder("📋 **Project: Website Redesign**")
+        
+        frontend_block = BlockBuilder("🎨 Frontend Development")
+        frontend_block.child(BlockBuilder("TODO Design new homepage layout [#A]"))
+        frontend_block.child(BlockBuilder("DOING Implement responsive navigation [#B]"))
+        frontend_block.child(BlockBuilder("TODO Add dark mode support [#C]"))
+        
+        backend_block = BlockBuilder("⚙️ Backend Development")
+        backend_block.child(BlockBuilder("TODO Upgrade database schema [#A]"))
+        backend_block.child(BlockBuilder("TODO Implement new API endpoints [#B]"))
+        backend_block.child(BlockBuilder("DONE Set up automated testing [#A] ✓"))
+        
+        project_block.child(frontend_block)
+        project_block.child(backend_block)
+        
+        testing_block = BlockBuilder("🧪 Testing & QA")
+        testing_block.child(BlockBuilder("TODO Write unit tests for new features [#B]"))
+        testing_block.child(BlockBuilder("TODO Perform cross-browser testing [#C]"))
+        testing_block.child(BlockBuilder("TODO Load testing with realistic data [#A]"))
+        
+        project_block.child(testing_block)
+        
+        page.add(project_block)
+        
         page.empty_line().heading(2, "Builder Code Example")
         page.text("The tasks above were created using code like this:")
         
@@ -269,8 +311,27 @@ class LogseqDemoGenerator:
                )
                
                .empty_line()
-               .heading(2, "Numbered Lists"))
+               .heading(2, "Nested Block Structure"))
         
+        # Create a nested list structure using ListBuilder
+        from logseq_py.builders.content_types import ListBuilder
+        nested_list = ListBuilder("bullet")
+        nested_list.item("Main topic: Content Management")
+        nested_list.item("Creating content", 1)
+        nested_list.item("Text blocks with formatting", 2)
+        nested_list.item("Code blocks with syntax highlighting", 2)
+        nested_list.item("Math expressions with LaTeX", 2)
+        nested_list.item("Organizing content", 1)
+        nested_list.item("Tags and properties", 2)
+        nested_list.item("Page relationships", 2)
+        nested_list.item("Hierarchical structure", 2)
+        nested_list.item("Advanced features", 1)
+        nested_list.item("Queries and filters", 2)
+        nested_list.item("Workflows and templates", 2)
+        
+        page.add(nested_list)
+        
+        page.empty_line().heading(2, "Numbered Lists")
         page.numbered_list(
             "First numbered item via .numbered_list()", 
             "Second numbered item with programmatic creation",
@@ -706,6 +767,10 @@ class LogseqDemoGenerator:
         """Create journal entries using JournalBuilder."""
         print("📔 Creating journal entries demo...")
         
+        # Create journals directory
+        journals_dir = self.demo_path / "journals"
+        journals_dir.mkdir(exist_ok=True)
+        
         # Create a week of journal entries
         start_date = date.today() - timedelta(days=6)
         
@@ -743,7 +808,12 @@ class LogseqDemoGenerator:
                           "Gang of Four Design Patterns"
                       ))
             
-            client.create_page(journal._title, journal.build())
+            # Create journal file with standard Logseq naming
+            journal_filename = current_date.strftime("%Y_%m_%d.md")
+            journal_path = journals_dir / journal_filename
+            
+            with open(journal_path, 'w', encoding='utf-8') as f:
+                f.write(journal.build())
     
     def _create_project_pages_demo(self, client):
         """Create project pages using convenience functions."""
@@ -846,7 +916,7 @@ class LogseqDemoGenerator:
  :property-pages/enabled? true
  :property-pages/excludelist #{"template" "Public"}
  
- :graph/settings {:journal/page-title-format "journals_yyyy_MM_dd"
+ :graph/settings {:journal/page-title-format "yyyy_MM_dd"
                  :preferred-format :markdown
                  :hidden [".logseq"]
                  :default-templates {:journals "journals"}}

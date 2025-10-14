@@ -5,6 +5,19 @@
 - Bullet point created with .bullet_list()
 - **Bold text** and *italic text* via TextBuilder
 - Link to [[Welcome to Demo][welcome page]] using .link()
+- ## Nested Block Structure
+- Main topic: Content Management
+  - Creating content
+    - Text blocks with formatting
+    - Code blocks with syntax highlighting
+    - Math expressions with LaTeX
+  - Organizing content
+    - Tags and properties
+    - Page relationships
+    - Hierarchical structure
+  - Advanced features
+    - Queries and filters
+    - Workflows and templates
 - ## Numbered Lists
 - First numbered item via .numbered_list()
 - Second numbered item with programmatic creation

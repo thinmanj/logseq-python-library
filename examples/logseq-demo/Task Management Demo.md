@@ -53,6 +53,9 @@
 - :URGENCY: High
 - :COMPLEXITY: Medium
 - :END:
+- ## Hierarchical Task Organization
+- Example of nested task structure using custom blocks:
+- [#A] 📋 **Project: Website Redesign**\n  - 🎨 Frontend Development\n    - TODO Design new homepage layout \n    - DOING Implement responsive navigation \n    - TODO Add dark mode support \n  - ⚙️ Backend Development\n    - TODO Upgrade database schema \n    - TODO Implement new API endpoints \n    - DONE Set up automated testing  ✓\n  - 🧪 Testing & QA\n    - TODO Write unit tests for new features \n    - TODO Perform cross-browser testing \n    - TODO Load testing with realistic data
 - ## Builder Code Example
 - The tasks above were created using code like this:
 - ```python

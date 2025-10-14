@@ -4,7 +4,7 @@
  :property-pages/enabled? true
  :property-pages/excludelist #{"template" "Public"}
  
- :graph/settings {:journal/page-title-format "journals_yyyy_MM_dd"
+ :graph/settings {:journal/page-title-format "yyyy_MM_dd"
                  :preferred-format :markdown
                  :hidden [".logseq"]
                  :default-templates {:journals "journals"}}

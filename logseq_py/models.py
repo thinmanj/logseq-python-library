@@ -375,8 +375,8 @@ class Block:
     
     def to_markdown(self) -> str:
         """Convert block to Logseq markdown format."""
-        indent = "\t" * self.level if self.level > 0 else ""
-        prefix = "- " if self.level == 0 else ""
+        indent = "  " * self.level
+        prefix = "- "
         
         # Add task state if present
         content = self.content
