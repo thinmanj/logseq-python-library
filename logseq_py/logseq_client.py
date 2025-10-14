@@ -292,6 +292,87 @@ class LogseqClient:
         
         return self.graph.get_block(block_id)
     
+    def get_page_as_builder(self, page_name: str) -> Optional['PageBuilder']:
+        """
+        Get a page as a PageBuilder object for easy modification.
+        
+        Args:
+            page_name: Name of the page to retrieve
+            
+        Returns:
+            PageBuilder object or None if not found
+        """
+        from .builders.parser import BuilderParser
+        
+        page = self.get_page(page_name)
+        if not page:
+            return None
+        
+        return BuilderParser.parse_page_to_builder(page)
+    
+    def get_block_as_builder(self, block_id: str) -> Optional['ContentBuilder']:
+        """
+        Get a block as a ContentBuilder object for easy modification.
+        
+        Args:
+            block_id: ID of the block to retrieve
+            
+        Returns:
+            Appropriate ContentBuilder subclass or None if not found
+        """
+        from .builders.parser import BuilderParser
+        
+        block = self.get_block(block_id)
+        if not block:
+            return None
+        
+        return BuilderParser.parse_block_to_builder(block)
+    
+    def modify_page_with_builder(self, page_name: str, modifier_func) -> bool:
+        """
+        Load a page as a builder, modify it, and save it back.
+        
+        Args:
+            page_name: Name of the page to modify
+            modifier_func: Function that takes a PageBuilder and modifies it
+            
+        Returns:
+            True if successful, False if page not found
+        """
+        page_builder = self.get_page_as_builder(page_name)
+        if not page_builder:
+            return False
+        
+        # Apply modifications
+        modifier_func(page_builder)
+        
+        # Update the page content
+        modified_content = page_builder.build()
+        page = self.get_page(page_name)
+        if page:
+            # Clear existing blocks and parse new ones
+            page.blocks.clear()
+            new_blocks = LogseqUtils.parse_blocks_from_content(modified_content, page_name)
+            for block in new_blocks:
+                page.add_block(block)
+            
+            # Save the updated page
+            self._save_page(page)
+            
+            return True
+        
+        return False
+    
+    def load_builder_based_loader(self) -> 'BuilderBasedLoader':
+        """
+        Get a BuilderBasedLoader for this graph.
+        
+        Returns:
+            BuilderBasedLoader instance
+        """
+        from .builders.parser import BuilderBasedLoader
+        return BuilderBasedLoader(self.graph_path)
+    
     def create_page(self, name: str, content: str = "", properties: Dict[str, Any] = None) -> Page:
         """
         Create a new page.

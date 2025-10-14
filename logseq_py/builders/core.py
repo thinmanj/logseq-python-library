@@ -72,6 +72,21 @@ class BlockBuilder(ContentBuilder):
         self._children: List['BlockBuilder'] = []
         self._indent_level = 0
     
+    @classmethod
+    def from_block(cls, block: 'Block') -> 'BlockBuilder':
+        """Create a BlockBuilder from a Block object."""
+        from .parser import BuilderParser
+        builder = BuilderParser.parse_block_to_builder(block)
+        if isinstance(builder, cls):
+            return builder
+        # Fallback to basic block builder
+        return cls(block.content)
+    
+    @classmethod
+    def from_content(cls, content: str) -> 'BlockBuilder':
+        """Create a BlockBuilder from content string."""
+        return cls(content)
+    
     def content(self, text: str) -> 'BlockBuilder':
         """Set the main content of the block."""
         self._block_content = text
@@ -133,6 +148,26 @@ class LogseqBuilder(ContentBuilder):
     def __init__(self):
         super().__init__()
         self._blocks: List[Union[BlockBuilder, ContentBuilder]] = []
+    
+    @classmethod
+    def from_content(cls, content: str) -> 'LogseqBuilder':
+        """Create a LogseqBuilder from content string."""
+        builder = cls()
+        builder.raw(content)
+        return builder
+    
+    @classmethod
+    def from_blocks(cls, blocks: List['Block']) -> 'LogseqBuilder':
+        """Create a LogseqBuilder from a list of Block objects."""
+        from .parser import BuilderParser
+        builder = cls()
+        
+        for block in blocks:
+            block_builder = BuilderParser.parse_block_to_builder(block)
+            if block_builder:
+                builder.add(block_builder)
+        
+        return builder
     
     def add(self, builder: Union[BlockBuilder, ContentBuilder, str]) -> 'LogseqBuilder':
         """Add a builder or raw content."""

@@ -109,6 +109,19 @@ class PageBuilder(LogseqBuilder):
         self._properties = PropertyBuilder()
         self._content_blocks: List[Union[ContentBuilder, str]] = []
     
+    @classmethod
+    def from_page(cls, page: 'Page') -> 'PageBuilder':
+        """Create a PageBuilder from a Page object."""
+        from .parser import BuilderParser
+        return BuilderParser.parse_page_to_builder(page)
+    
+    @classmethod
+    def from_content(cls, title: str, content: str) -> 'PageBuilder':
+        """Create a PageBuilder from content string."""
+        builder = cls(title)
+        builder.add(content)
+        return builder
+    
     def title(self, title: str) -> 'PageBuilder':
         """Set page title."""
         self._title = title
