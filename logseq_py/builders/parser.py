@@ -14,9 +14,9 @@ from datetime import datetime, date
 from .core import BlockBuilder, LogseqBuilder, ContentBuilder
 from .content_types import (
     TaskBuilder, CodeBlockBuilder, MathBuilder, HeadingBuilder,
-    QuoteBuilder, TableBuilder, QueryBuilder
+    QuoteBuilder, TableBuilder
 )
-from .page_builders import PageBuilder, JournalBuilder
+from .page_builders import PageBuilder
 from ..models import Block, Page, TaskState, Priority, BlockType
 
 
@@ -35,10 +35,8 @@ class BuilderParser:
             PageBuilder with equivalent content
         """
         # Determine builder type
-        if page.is_journal:
-            builder = JournalBuilder(page.journal_date.date() if page.journal_date else None)
-        else:
-            builder = PageBuilder(page.name)
+        # Note: JournalBuilder not yet implemented, using PageBuilder for now
+        builder = PageBuilder(page.name)
         
         # Add page properties
         if page.properties:
@@ -89,9 +87,9 @@ class BuilderParser:
         if cls._is_table_content(content):
             return cls._create_table_builder(block)
         
-        # Queries
-        if cls._is_query_content(content):
-            return cls._create_query_builder(block)
+        # Queries (placeholder for future implementation)
+        # if cls._is_query_content(content):
+        #     return cls._create_query_builder(block)
         
         # Default block
         return cls._create_basic_block_builder(block)
