@@ -16,6 +16,8 @@ from pathlib import Path
 
 from ..models import Block, Page
 from ..builders.parser import BuilderParser
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+from multiprocessing import cpu_count
 
 
 class ProcessingStatus(Enum):
@@ -354,7 +356,123 @@ class PipelineBuilder:
         return self.pipeline
 
 
+class ParallelPipelineStep(PipelineStep):
+    """Base class for steps that support parallel processing."""
+    
+    def __init__(self, name: str, description: str = None, max_workers: int = None):
+        super().__init__(name, description)
+        self.max_workers = max_workers or min(cpu_count(), 8)
+    
+    def process_batch_parallel(self, items: List[Any], process_func: Callable) -> List[Any]:
+        """Process items in parallel batches."""
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            results = list(executor.map(process_func, items))
+        return results
+    
+    def process_batch_chunked(self, items: List[Any], process_func: Callable, chunk_size: int = 100) -> List[Any]:
+        """Process items in chunks to manage memory usage."""
+        results = []
+        for i in range(0, len(items), chunk_size):
+            chunk = items[i:i + chunk_size]
+            chunk_results = [process_func(item) for item in chunk]
+            results.extend(chunk_results)
+            # Optional: garbage collection for large datasets
+            if i % (chunk_size * 10) == 0:
+                import gc
+                gc.collect()
+        return results
+
+
+class CachedPipelineStep(PipelineStep):
+    """Base class for steps that support result caching."""
+    
+    def __init__(self, name: str, description: str = None, cache_enabled: bool = True):
+        super().__init__(name, description)
+        self.cache_enabled = cache_enabled
+        self.cache = {}
+    
+    def get_cache_key(self, input_data: Any) -> str:
+        """Generate cache key for input data."""
+        import hashlib
+        content = str(input_data) if input_data else ""
+        return hashlib.md5(content.encode()).hexdigest()
+    
+    def get_cached_result(self, cache_key: str) -> Optional[Any]:
+        """Get cached result if available."""
+        if not self.cache_enabled:
+            return None
+        return self.cache.get(cache_key)
+    
+    def cache_result(self, cache_key: str, result: Any):
+        """Cache a result."""
+        if self.cache_enabled:
+            self.cache[cache_key] = result
+    
+    def clear_cache(self):
+        """Clear the cache."""
+        self.cache.clear()
+
+
+class OptimizedPipeline(Pipeline):
+    """Pipeline with performance optimizations."""
+    
+    def __init__(self, name: str, description: str = None):
+        super().__init__(name, description)
+        self.memory_management = True
+        self.parallel_execution = False
+        self.batch_size = 1000
+    
+    def configure_performance(self, 
+                             memory_management: bool = True,
+                             parallel_execution: bool = False,
+                             batch_size: int = 1000) -> 'OptimizedPipeline':
+        """Configure performance settings."""
+        self.memory_management = memory_management
+        self.parallel_execution = parallel_execution
+        self.batch_size = batch_size
+        return self
+    
+    def execute(self, context: ProcessingContext, **kwargs) -> ProcessingContext:
+        """Execute pipeline with optimizations."""
+        if self.memory_management:
+            # Enable garbage collection between steps
+            import gc
+            original_threshold = gc.get_threshold()
+            gc.set_threshold(100, 10, 10)  # More aggressive GC
+        
+        try:
+            result = super().execute(context, **kwargs)
+        finally:
+            if self.memory_management:
+                import gc
+                gc.set_threshold(*original_threshold)
+                gc.collect()
+        
+        return result
+
+
 # Convenience function for creating pipelines
 def create_pipeline(name: str, description: str = None) -> PipelineBuilder:
     """Create a new pipeline builder."""
     return PipelineBuilder(name, description)
+
+
+def create_optimized_pipeline(name: str, description: str = None) -> 'OptimizedPipelineBuilder':
+    """Create an optimized pipeline builder."""
+    return OptimizedPipelineBuilder(name, description)
+
+
+class OptimizedPipelineBuilder(PipelineBuilder):
+    """Builder for optimized pipelines."""
+    
+    def __init__(self, name: str, description: str = None):
+        self.pipeline = OptimizedPipeline(name, description)
+    
+    def configure_performance(self, **kwargs) -> 'OptimizedPipelineBuilder':
+        """Configure performance optimizations."""
+        self.pipeline.configure_performance(**kwargs)
+        return self
+    
+    def build(self) -> OptimizedPipeline:
+        """Build the optimized pipeline."""
+        return self.pipeline

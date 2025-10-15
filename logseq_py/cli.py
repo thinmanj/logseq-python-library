@@ -286,6 +286,84 @@ def run(graph_path: str, filter: Optional[str], extractors: List[str],
 
 
 @pipeline.command()
+@click.option('--template', type=click.Choice(['basic', 'analysis', 'research', 'task-focused']), 
+              default='basic', help='Pipeline template to use')
+@click.option('--config', '-c', type=click.Path(exists=True), help='Configuration file')
+@click.option('--save-config', type=click.Path(), help='Save pipeline config to file')
+@click.option('--list-templates', is_flag=True, help='List available pipeline templates')
+def templates(template: str, config: Optional[str], save_config: Optional[str], list_templates: bool):
+    """Manage pipeline templates and configurations."""
+    
+    templates_info = {
+        'basic': {
+            'description': 'Basic content processing pipeline',
+            'extractors': ['url', 'youtube', 'github'],
+            'analyzers': ['sentiment', 'topics', 'summary'],
+            'generators': ['summary_page', 'insights_blocks']
+        },
+        'analysis': {
+            'description': 'Deep content analysis focused pipeline',
+            'extractors': ['url', 'youtube', 'twitter', 'rss', 'academic'],
+            'analyzers': ['sentiment', 'topics', 'summary', 'structure'],
+            'generators': ['summary_page', 'insights_blocks', 'task_analysis']
+        },
+        'research': {
+            'description': 'Research and academic content processing',
+            'extractors': ['url', 'academic', 'pdf'],
+            'analyzers': ['topics', 'summary', 'structure'],
+            'generators': ['summary_page', 'insights_blocks']
+        },
+        'task-focused': {
+            'description': 'Task and project management focused',
+            'extractors': ['github', 'url'],
+            'analyzers': ['sentiment', 'structure'],
+            'generators': ['task_analysis', 'summary_page']
+        }
+    }
+    
+    if list_templates:
+        table = Table(title="Available Pipeline Templates")
+        table.add_column("Template", style="cyan")
+        table.add_column("Description", style="green")
+        table.add_column("Components", style="yellow")
+        
+        for name, info in templates_info.items():
+            components = f"E:{len(info['extractors'])} A:{len(info['analyzers'])} G:{len(info['generators'])}"
+            table.add_row(name, info['description'], components)
+        
+        console.print(table)
+        return
+    
+    if config:
+        # Load configuration from file
+        config_data = json.loads(Path(config).read_text())
+        console.print(f"[green]Loaded configuration from {config}[/green]")
+        console.print(json.dumps(config_data, indent=2))
+        return
+    
+    # Get template configuration
+    template_config = templates_info.get(template)
+    if not template_config:
+        console.print(f"[red]Unknown template: {template}[/red]")
+        return
+    
+    # Display template info
+    console.print(Panel(
+        f"[bold]{template.title()} Pipeline Template[/bold]\n\n"
+        f"{template_config['description']}\n\n"
+        f"[cyan]Extractors:[/cyan] {', '.join(template_config['extractors'])}\n"
+        f"[cyan]Analyzers:[/cyan] {', '.join(template_config['analyzers'])}\n"
+        f"[cyan]Generators:[/cyan] {', '.join(template_config['generators'])}",
+        title="Pipeline Configuration"
+    ))
+    
+    # Save configuration if requested
+    if save_config:
+        Path(save_config).write_text(json.dumps(template_config, indent=2))
+        console.print(f"[green]Template configuration saved to {save_config}[/green]")
+
+
+@pipeline.command()
 @click.argument('graph_path', type=click.Path(exists=True))
 @click.option('--output', '-o', type=click.Path(), help='Output file for report')
 def info(graph_path: str, output: Optional[str]):
@@ -350,6 +428,163 @@ def info(graph_path: str, output: Optional[str]):
             
     except Exception as e:
         console.print(f"[red]Error getting graph info: {e}[/red]")
+        sys.exit(1)
+
+
+@cli.group()
+def examples():
+    """Run example workflows and demonstrations."""
+    pass
+
+
+@examples.command()
+@click.argument('graph_path', type=click.Path(exists=True))
+@click.option('--output', '-o', type=click.Path(), help='Output directory')
+def research_pipeline(graph_path: str, output: Optional[str]):
+    """Run research paper processing example."""
+    console.print("[bold blue]Research Pipeline Example[/bold blue]")
+    console.print("Processing research papers and academic content...\n")
+    
+    try:
+        # Create specialized research context
+        context = ProcessingContext(graph_path=graph_path)
+        
+        from .pipeline.steps import (
+            LoadContentStep, FilterBlocksStep, ExtractContentStep,
+            AnalyzeContentStep, GenerateContentStep, ReportProgressStep
+        )
+        
+        # Build research-focused pipeline
+        pipeline_builder = create_pipeline("research_example", "Research content processing example")
+        
+        # Filter for content that might contain academic references
+        def research_filter(block):
+            content = block.content.lower() if block.content else ''
+            return any(term in content for term in ['doi:', 'arxiv', 'research', 'study', 'paper', 'journal'])
+        
+        pipeline_builder.step(LoadContentStep(graph_path))
+        pipeline_builder.step(FilterBlocksStep(research_filter, "filter_research_content"))
+        pipeline_builder.step(ExtractContentStep(['url', 'academic', 'pdf']))
+        pipeline_builder.step(AnalyzeContentStep(['topics', 'summary', 'structure']))
+        pipeline_builder.step(GenerateContentStep(['summary_page', 'insights_blocks']))
+        pipeline_builder.step(ReportProgressStep())
+        
+        pipeline_obj = pipeline_builder.build()
+        
+        # Execute with progress
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}")) as progress:
+            task = progress.add_task("Processing research content...", total=len(pipeline_obj.steps))
+            result_context = pipeline_obj.execute(context)
+            progress.advance(task, len(pipeline_obj.steps))
+        
+        console.print("[green]Research pipeline completed![/green]")
+        _display_pipeline_results(result_context)
+        
+        if output:
+            _save_example_results(result_context, output, "research")
+    
+    except Exception as e:
+        console.print(f"[red]Research pipeline failed: {e}[/red]")
+        sys.exit(1)
+
+
+@examples.command()
+@click.argument('graph_path', type=click.Path(exists=True))
+@click.option('--output', '-o', type=click.Path(), help='Output directory')
+def social_curation(graph_path: str, output: Optional[str]):
+    """Run social media content curation example."""
+    console.print("[bold blue]Social Media Curation Example[/bold blue]")
+    console.print("Curating and analyzing social media content...\n")
+    
+    try:
+        context = ProcessingContext(graph_path=graph_path)
+        
+        from .pipeline.steps import (
+            LoadContentStep, FilterBlocksStep, ExtractContentStep,
+            AnalyzeContentStep, GenerateContentStep, ReportProgressStep
+        )
+        
+        # Build social media curation pipeline
+        pipeline_builder = create_pipeline("social_curation", "Social media content curation")
+        
+        # Filter for social media content
+        def social_filter(block):
+            content = block.content.lower() if block.content else ''
+            return any(term in content for term in ['twitter.com', 'youtube.com', 'linkedin.com', '@', '#'])
+        
+        pipeline_builder.step(LoadContentStep(graph_path))
+        pipeline_builder.step(FilterBlocksStep(social_filter, "filter_social_content"))
+        pipeline_builder.step(ExtractContentStep(['youtube', 'twitter', 'url']))
+        pipeline_builder.step(AnalyzeContentStep(['sentiment', 'topics']))
+        pipeline_builder.step(GenerateContentStep(['insights_blocks', 'summary_page']))
+        pipeline_builder.step(ReportProgressStep())
+        
+        pipeline_obj = pipeline_builder.build()
+        
+        # Execute with progress
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}")) as progress:
+            task = progress.add_task("Curating social content...", total=len(pipeline_obj.steps))
+            result_context = pipeline_obj.execute(context)
+            progress.advance(task, len(pipeline_obj.steps))
+        
+        console.print("[green]Social curation completed![/green]")
+        _display_pipeline_results(result_context)
+        
+        if output:
+            _save_example_results(result_context, output, "social")
+    
+    except Exception as e:
+        console.print(f"[red]Social curation failed: {e}[/red]")
+        sys.exit(1)
+
+
+@examples.command()
+@click.argument('graph_path', type=click.Path(exists=True))
+@click.option('--output', '-o', type=click.Path(), help='Output directory')
+def news_summarization(graph_path: str, output: Optional[str]):
+    """Run news article summarization example."""
+    console.print("[bold blue]News Summarization Example[/bold blue]")
+    console.print("Processing and summarizing news articles...\n")
+    
+    try:
+        context = ProcessingContext(graph_path=graph_path)
+        
+        from .pipeline.steps import (
+            LoadContentStep, FilterBlocksStep, ExtractContentStep,
+            AnalyzeContentStep, GenerateContentStep, ReportProgressStep
+        )
+        
+        # Build news summarization pipeline
+        pipeline_builder = create_pipeline("news_summarization", "News article summarization")
+        
+        # Filter for news-like content
+        def news_filter(block):
+            content = block.content.lower() if block.content else ''
+            return any(term in content for term in ['news', 'article', 'breaking', 'http', 'www.'])
+        
+        pipeline_builder.step(LoadContentStep(graph_path))
+        pipeline_builder.step(FilterBlocksStep(news_filter, "filter_news_content"))
+        pipeline_builder.step(ExtractContentStep(['url', 'rss']))
+        pipeline_builder.step(AnalyzeContentStep(['summary', 'sentiment', 'topics']))
+        pipeline_builder.step(GenerateContentStep(['summary_page', 'insights_blocks']))
+        pipeline_builder.step(ReportProgressStep())
+        
+        pipeline_obj = pipeline_builder.build()
+        
+        # Execute with progress
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}")) as progress:
+            task = progress.add_task("Processing news content...", total=len(pipeline_obj.steps))
+            result_context = pipeline_obj.execute(context)
+            progress.advance(task, len(pipeline_obj.steps))
+        
+        console.print("[green]News summarization completed![/green]")
+        _display_pipeline_results(result_context)
+        
+        if output:
+            _save_example_results(result_context, output, "news")
+    
+    except Exception as e:
+        console.print(f"[red]News summarization failed: {e}[/red]")
         sys.exit(1)
 
 
@@ -521,6 +756,56 @@ def _display_extraction_results(results: Dict[str, Any]):
                     console.print(f"  Title: {item.get('title', 'N/A')}")
             else:
                 console.print(f"  {result}")
+
+
+def _save_example_results(context, output_path: str, example_type: str):
+    """Save example pipeline results to files."""
+    output_dir = Path(output_path)
+    output_dir.mkdir(exist_ok=True)
+    
+    # Save pipeline summary
+    summary = context.get_status_summary()
+    summary_file = output_dir / f"{example_type}_pipeline_summary.json"
+    summary_file.write_text(json.dumps(summary, indent=2, default=str))
+    
+    # Save analysis results
+    if context.analysis_results:
+        analysis_file = output_dir / f"{example_type}_analysis_results.json"
+        analysis_file.write_text(json.dumps(context.analysis_results, indent=2, default=str))
+    
+    # Save generated content
+    if context.generated_content:
+        content_file = output_dir / f"{example_type}_generated_content.json"
+        content_file.write_text(json.dumps(context.generated_content, indent=2, default=str))
+    
+    # Create markdown report
+    report_content = f"# {example_type.title()} Pipeline Results\n\n"
+    report_content += f"**Pipeline ID**: {context.pipeline_id}\n"
+    report_content += f"**Execution Time**: {summary['elapsed_time']:.1f}s\n"
+    report_content += f"**Items Processed**: {summary['processed_items']}/{summary['total_items']}\n"
+    report_content += f"**Success Rate**: {summary['progress']:.1f}%\n\n"
+    
+    if context.extracted_content:
+        extracted_count = context.extracted_content.get('count', 0)
+        report_content += f"**Content Extracted**: {extracted_count} items\n"
+    
+    if context.analysis_results:
+        analysis_count = sum(
+            result.get('count', 0) for result in context.analysis_results.values()
+            if isinstance(result, dict)
+        )
+        report_content += f"**Analyses Completed**: {analysis_count}\n"
+    
+    if context.generated_content:
+        generated_count = len(context.generated_content)
+        report_content += f"**Content Generated**: {generated_count} items\n"
+    
+    report_content += f"\n---\n*Generated by logseq-python CLI at {datetime.now().isoformat()}*"
+    
+    report_file = output_dir / f"{example_type}_report.md"
+    report_file.write_text(report_content)
+    
+    console.print(f"[green]Example results saved to {output_dir}[/green]")
 
 
 def main():
