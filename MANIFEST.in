@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include requirements.txt
+include CHANGELOG.md
+include PIPELINE_GUIDE.md
+include LOGSEQ_DOCUMENTATION.md
+recursive-include logseq_py *.py
+recursive-include tests *.py
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

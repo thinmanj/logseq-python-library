@@ -4,16 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "logseq-python"
-version = "0.3.0"
+version = "1.0.0a1"
 description = "A comprehensive Python library for working with Logseq knowledge graphs"
 readme = "README.md"
 authors = [
-    {name = "Julio", email = "julio@example.com"}
+    {name = "Julio Ona", email = "thinmanj@gmail.com"}
 ]
 license = {text = "MIT"}
 requires-python = ">=3.8"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -34,6 +34,8 @@ dependencies = [
     "lxml>=4.6.0",
     "python-dateutil>=2.8.0",
     "pyyaml>=6.0",
+    "regex>=2021.4.4",
+    "markdown>=3.3.0",
 ]
 
 [project.optional-dependencies]
@@ -58,6 +60,12 @@ cli = [
     "rich>=13.0.0",
     "typer>=0.9.0",
 ]
+pipeline = [
+    "click>=8.0.0",
+    "rich>=13.0.0",
+    "regex>=2021.4.4",
+    "markdown>=3.3.0",
+]
 ml = [
     "scikit-learn>=1.2.0",
     "numpy>=1.21.0",
@@ -65,10 +73,10 @@ ml = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/julio/logseq-python"
-Documentation = "https://logseq-python.readthedocs.io/"
-Repository = "https://github.com/julio/logseq-python"
-"Bug Tracker" = "https://github.com/julio/logseq-python/issues"
+Homepage = "https://github.com/thinmanj/logseq-python-library"
+Documentation = "https://github.com/thinmanj/logseq-python-library#readme"
+Repository = "https://github.com/thinmanj/logseq-python-library"
+"Bug Tracker" = "https://github.com/thinmanj/logseq-python-library/issues"
 
 [project.scripts]
 logseq = "logseq_py.cli:main"
