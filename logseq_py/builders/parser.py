@@ -17,6 +17,7 @@ from .content_types import (
     QuoteBuilder, TableBuilder
 )
 from .page_builders import PageBuilder
+from .advanced_builders import QueryBuilder
 from ..models import Block, Page, TaskState, Priority, BlockType
 
 
