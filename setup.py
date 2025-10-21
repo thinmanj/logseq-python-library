@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="logseq-py",
-    version="0.1.0",
+    version="0.1.1",
     author="Julio Ona",
     author_email="thinmanj@gmail.com",
     description="A Python library for interacting with Logseq knowledge graphs",
