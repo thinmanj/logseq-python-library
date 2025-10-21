@@ -325,3 +325,111 @@ class LogseqUtils:
             return datetime.fromtimestamp(timestamp)
         except (OSError, ValueError):
             return None
+    
+    @staticmethod
+    def get_video_title(url: str, youtube_api_key: Optional[str] = None) -> Optional[str]:
+        """Get video title from a URL.
+        
+        Args:
+            url: Video URL (YouTube, Vimeo, TikTok, Twitch, Dailymotion)
+            youtube_api_key: Optional YouTube Data API key for enhanced YouTube data
+            
+        Returns:
+            Video title if found, None otherwise
+        """
+        video_info = LogseqUtils.get_video_info(url, youtube_api_key)
+        return video_info.get('title') if video_info else None
+    
+    @staticmethod
+    def get_video_info(url: str, youtube_api_key: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """Get comprehensive video information from a URL.
+        
+        Args:
+            url: Video URL (YouTube, Vimeo, TikTok, Twitch, Dailymotion)
+            youtube_api_key: Optional YouTube Data API key for enhanced YouTube data
+            
+        Returns:
+            Dictionary with video information including title, author, duration, etc.
+            Returns None if extraction fails or URL is not supported
+        """
+        from .pipeline.extractors import YouTubeExtractor, VideoPlatformExtractor
+        from .models import Block
+        
+        # Create a temporary block with the URL
+        temp_block = Block(content=url, level=0, page_name="temp")
+        
+        # Try YouTube extractor first (most comprehensive)
+        youtube_extractor = YouTubeExtractor(api_key=youtube_api_key)
+        if youtube_extractor.can_extract(temp_block):
+            result = youtube_extractor.extract(temp_block)
+            if result and result.get('videos'):
+                return result['videos'][0]  # Return first video info
+        
+        # Try video platform extractor for other platforms
+        platform_extractor = VideoPlatformExtractor()
+        if platform_extractor.can_extract(temp_block):
+            result = platform_extractor.extract(temp_block)
+            if result and result.get('videos'):
+                return result['videos'][0]  # Return first video info
+        
+        return None
+    
+    @staticmethod
+    def extract_video_urls(text: str) -> List[str]:
+        """Extract video URLs from text.
+        
+        Args:
+            text: Text containing potential video URLs
+            
+        Returns:
+            List of video URLs found in the text
+        """
+        video_patterns = [
+            # YouTube patterns
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/|youtube\.com/shorts/)([a-zA-Z0-9_-]{11})',
+            # Vimeo patterns
+            r'vimeo\.com/(\d+)',
+            r'vimeo\.com/channels/[^/]+/(\d+)',
+            r'vimeo\.com/groups/[^/]+/videos/(\d+)',
+            # TikTok patterns
+            r'tiktok\.com/@[^/]+/video/(\d+)',
+            r'vm\.tiktok\.com/([^/\s]+)',
+            # Twitch patterns
+            r'twitch\.tv/videos/(\d+)',
+            r'twitch\.tv/[^/]+/clip/([^/?\s]+)',
+            r'clips\.twitch\.tv/([^/?\s]+)',
+            # Dailymotion patterns
+            r'dailymotion\.com/video/([^/?\s]+)',
+            r'dai\.ly/([^/?\s]+)'
+        ]
+        
+        found_urls = []
+        
+        # General URL pattern to capture full URLs
+        url_pattern = r'https?://(?:[-\w.])+(?:[:\d]+)?(?:/(?:[\w/_.])*(?:\?(?:[\w&=%.])*)?(?:#(?:[\w.])*)?)?'
+        urls = re.findall(url_pattern, text, re.IGNORECASE)
+        
+        for url in urls:
+            # Check if it matches any video platform pattern
+            for pattern in video_patterns:
+                if re.search(pattern, url, re.IGNORECASE):
+                    found_urls.append(url)
+                    break
+        
+        return found_urls
+    
+    @staticmethod
+    def get_multiple_video_titles(urls: List[str], youtube_api_key: Optional[str] = None) -> Dict[str, Optional[str]]:
+        """Get video titles for multiple URLs.
+        
+        Args:
+            urls: List of video URLs
+            youtube_api_key: Optional YouTube Data API key for enhanced YouTube data
+            
+        Returns:
+            Dictionary mapping URLs to their titles (None if extraction failed)
+        """
+        results = {}
+        for url in urls:
+            results[url] = LogseqUtils.get_video_title(url, youtube_api_key)
+        return results

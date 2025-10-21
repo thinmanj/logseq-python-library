@@ -12,7 +12,7 @@ from .core import PipelineStep, ProcessingContext, ProcessingStatus
 from .filters import BlockFilter, PageFilter, create_property_filter
 from ..models import Block, Page
 from ..builders.parser import BuilderBasedLoader, BuilderParser
-from ..client import LogseqClient
+from ..logseq_client import LogseqClient
 
 
 class LoadContentStep(PipelineStep):
