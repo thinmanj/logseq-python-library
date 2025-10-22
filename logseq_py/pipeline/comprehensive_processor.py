@@ -14,10 +14,57 @@ from collections import defaultdict
 
 from ..utils import LogseqUtils
 from ..models import Block, Page
-from ..builders import PageBuilder, BlockBuilder
+from ..builders import PageBuilder, BlockBuilder, MediaBuilder
 from .core import PipelineStep, ProcessingContext
 from .subtitle_extractor import YouTubeSubtitleExtractor, VideoContentAnalyzer
 from .enhanced_extractors import XTwitterExtractor, PDFExtractor, ContentAnalyzer
+
+
+class LogseqBlockBuilder:
+    """Custom block builder that uses Logseq's inline property format (key:: value)."""
+    
+    def __init__(self, content: str = ""):
+        self._content = content
+        self._properties = {}
+        self._children = []
+        self._indent_level = 0
+    
+    def content(self, text: str) -> 'LogseqBlockBuilder':
+        """Set block content."""
+        self._content = text
+        return self
+    
+    def property(self, key: str, value: str) -> 'LogseqBlockBuilder':
+        """Add inline property (key:: value format)."""
+        self._properties[key] = value
+        return self
+    
+    def child(self, child: 'LogseqBlockBuilder') -> 'LogseqBlockBuilder':
+        """Add child block."""
+        self._children.append(child)
+        return self
+    
+    def build(self, indent_level: int = 0) -> str:
+        """Build the block with Logseq inline properties."""
+        lines = []
+        indent = "  " * indent_level
+        
+        # Main block
+        if self._content:
+            lines.append(f"{indent}- {self._content}")
+        
+        # Add properties as indented children
+        if self._properties:
+            property_indent = "  " * (indent_level + 1)
+            for key, value in self._properties.items():
+                lines.append(f"{property_indent}{key}:: {value}")
+        
+        # Add child blocks
+        for child in self._children:
+            child_content = child.build(indent_level + 1)
+            lines.append(child_content)
+        
+        return "\n".join(lines)
 
 
 class ComprehensiveContentProcessor:
@@ -440,63 +487,74 @@ class ComprehensiveContentProcessor:
                 self.logger.info(f"URL {url} already has custom wrapper, skipping")
                 continue
             
-            # Create enhanced content block with proper hierarchy
-            # Main block contains the URL wrapper, sub-blocks contain metadata
+            # Create enhanced content block using LogseqBlockBuilder
+            # Build the block with proper hierarchy using custom builder
+            block_builder = LogseqBlockBuilder()
+            
             if content_type == 'video':
-                wrapper = f"{{{{video {url}}}}}"  # Main block
-                details = []
+                # Add video embed using MediaBuilder
+                media = MediaBuilder().youtube(url)
+                block_builder.content(media.build())
+                
+                # Add metadata as child blocks
                 if title:
-                    details.append(f"  **{title}**")
+                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
                 if item.get('author'):
-                    details.append(f"  By: {item['author']}")
+                    block_builder.child(LogseqBlockBuilder(f"By: {item['author']}"))
                 if item.get('duration'):
-                    details.append(f"  Duration: {item['duration']}")
-                enhanced_block = wrapper
-                if details:
-                    enhanced_block += "\n" + "\n".join(details)
+                    block_builder.child(LogseqBlockBuilder(f"Duration: {item['duration']}"))
+                    
                 self.stats['videos_enhanced'] += 1
                 
             elif content_type == 'twitter':
-                wrapper = f"{{{{tweet {url}}}}}"  # Main block
-                details = []
+                # Add tweet embed using MediaBuilder
+                media = MediaBuilder().twitter(url)
+                block_builder.content(media.build())
+                
+                # Add metadata as child blocks
                 if title:
-                    details.append(f"  **{title}**")
+                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
                 if item.get('username'):
-                    details.append(f"  By: {item['username']}")
+                    block_builder.child(LogseqBlockBuilder(f"By: {item['username']}"))
                 if item.get('content'):
                     # Truncate long content
                     content_preview = item['content'][:200] + "..." if len(item['content']) > 200 else item['content']
-                    details.append(f"  {content_preview}")
-                enhanced_block = wrapper
-                if details:
-                    enhanced_block += "\n" + "\n".join(details)
+                    block_builder.child(LogseqBlockBuilder(content_preview))
+                    
                 self.stats['tweets_enhanced'] += 1
                 
             elif content_type == 'pdf':
-                wrapper = f"{{{{pdf {url}}}}}"  # Main block
-                details = []
+                # Add PDF embed using MediaBuilder
+                media = MediaBuilder().pdf(url)
+                block_builder.content(media.build())
+                
+                # Add metadata as child blocks
                 if title:
-                    details.append(f"  **{title}**")
+                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
                 if item.get('author'):
-                    details.append(f"  Author: {item['author']}")
+                    block_builder.child(LogseqBlockBuilder(f"Author: {item['author']}"))
                 if item.get('pages'):
-                    details.append(f"  Pages: {item['pages']}")
+                    block_builder.child(LogseqBlockBuilder(f"Pages: {item['pages']}"))
                 if item.get('size_mb'):
-                    details.append(f"  Size: {item['size_mb']} MB")
-                enhanced_block = wrapper
-                if details:
-                    enhanced_block += "\n" + "\n".join(details)
+                    block_builder.child(LogseqBlockBuilder(f"Size: {item['size_mb']} MB"))
+                    
                 self.stats['pdfs_enhanced'] += 1
+            
+            # Add topic properties to the block
+            if item.get('topics'):
+                for i, topic in enumerate(item['topics']):
+                    prop_key = f"{self.property_prefix}-{i+1}"
+                    block_builder.property(prop_key, topic)
+            
+            # Build the enhanced block
+            enhanced_block = block_builder.build()
             
             # Replace the URL with the enhanced block (only plain URL, not already wrapped)
             enhanced_content = enhanced_content.replace(url, enhanced_block)
             
-            # Add topic properties (instead of tags)
+            # Track properties added
             if item.get('topics'):
-                for i, topic in enumerate(item['topics']):
-                    prop_key = f"{self.property_prefix}-{i+1}"
-                    block.properties[prop_key] = topic
-                    self.stats['properties_added'] += 1
+                self.stats['properties_added'] += len(item['topics'])
         
         # Update the block content
         block.content = enhanced_content
