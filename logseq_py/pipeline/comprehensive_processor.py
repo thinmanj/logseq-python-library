@@ -14,61 +14,28 @@ from collections import defaultdict
 
 from ..utils import LogseqUtils
 from ..models import Block, Page
-from ..builders import PageBuilder, BlockBuilder, MediaBuilder
+from ..builders import PageBuilder, BlockBuilder, MediaBuilder, TextBuilder
 from .core import PipelineStep, ProcessingContext
 from .subtitle_extractor import YouTubeSubtitleExtractor, VideoContentAnalyzer
 from .enhanced_extractors import XTwitterExtractor, PDFExtractor, ContentAnalyzer
 
 
-class LogseqBlockBuilder:
-    """Custom block builder that uses Logseq's inline property format (key:: value)."""
-    
-    def __init__(self, content: str = ""):
-        self._content = content
-        self._properties = {}
-        self._children = []
-        self._indent_level = 0
-    
-    def content(self, text: str) -> 'LogseqBlockBuilder':
-        """Set block content."""
-        self._content = text
-        return self
-    
-    def property(self, key: str, value: str) -> 'LogseqBlockBuilder':
-        """Add inline property (key:: value format)."""
-        self._properties[key] = value
-        return self
-    
-    def child(self, child: 'LogseqBlockBuilder') -> 'LogseqBlockBuilder':
-        """Add child block."""
-        self._children.append(child)
-        return self
-    
-    def build(self, indent_level: int = 0) -> str:
-        """Build the block with Logseq inline properties."""
-        lines = []
-        indent = "  " * indent_level
-        
-        # Main block
-        if self._content:
-            lines.append(f"{indent}- {self._content}")
-        
-        # Add properties as indented children
-        if self._properties:
-            property_indent = "  " * (indent_level + 1)
-            for key, value in self._properties.items():
-                lines.append(f"{property_indent}{key}:: {value}")
-        
-        # Add child blocks
-        for child in self._children:
-            child_content = child.build(indent_level + 1)
-            lines.append(child_content)
-        
-        return "\n".join(lines)
-
-
 class ComprehensiveContentProcessor:
-    """Main pipeline for processing video, X/Twitter, and PDF content in Logseq graphs."""
+    """Main pipeline for processing video, X/Twitter, and PDF content in Logseq graphs.
+    
+    This processor uses the builder pattern from logseq_py.builders to generate
+    properly structured Logseq content with hierarchical blocks, inline properties,
+    and rich media embeds. It provides:
+    
+    - Video content processing with subtitle extraction and topic analysis
+    - X/Twitter post processing with content extraction
+    - PDF document processing with metadata extraction
+    - Automatic topic extraction and classification
+    - Topic-based page generation for content organization
+    
+    The processor uses BlockBuilder and MediaBuilder to ensure clean, maintainable
+    code and properly formatted Logseq markdown output.
+    """
     
     def __init__(self, graph_path: str, config: Dict[str, Any] = None):
         """Initialize the comprehensive content processor.
@@ -487,9 +454,9 @@ class ComprehensiveContentProcessor:
                 self.logger.info(f"URL {url} already has custom wrapper, skipping")
                 continue
             
-            # Create enhanced content block using LogseqBlockBuilder
-            # Build the block with proper hierarchy using custom builder
-            block_builder = LogseqBlockBuilder()
+            # Create enhanced content block using BlockBuilder
+            # Build the block with proper hierarchy
+            block_builder = BlockBuilder()
             
             if content_type == 'video':
                 # Add video embed using MediaBuilder
@@ -498,11 +465,11 @@ class ComprehensiveContentProcessor:
                 
                 # Add metadata as child blocks
                 if title:
-                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
+                    block_builder.child(BlockBuilder(f"**{title}**"))
                 if item.get('author'):
-                    block_builder.child(LogseqBlockBuilder(f"By: {item['author']}"))
+                    block_builder.child(BlockBuilder(f"By: {item['author']}"))
                 if item.get('duration'):
-                    block_builder.child(LogseqBlockBuilder(f"Duration: {item['duration']}"))
+                    block_builder.child(BlockBuilder(f"Duration: {item['duration']}"))
                     
                 self.stats['videos_enhanced'] += 1
                 
@@ -513,13 +480,13 @@ class ComprehensiveContentProcessor:
                 
                 # Add metadata as child blocks
                 if title:
-                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
+                    block_builder.child(BlockBuilder(f"**{title}**"))
                 if item.get('username'):
-                    block_builder.child(LogseqBlockBuilder(f"By: {item['username']}"))
+                    block_builder.child(BlockBuilder(f"By: {item['username']}"))
                 if item.get('content'):
                     # Truncate long content
                     content_preview = item['content'][:200] + "..." if len(item['content']) > 200 else item['content']
-                    block_builder.child(LogseqBlockBuilder(content_preview))
+                    block_builder.child(BlockBuilder(content_preview))
                     
                 self.stats['tweets_enhanced'] += 1
                 
@@ -530,21 +497,25 @@ class ComprehensiveContentProcessor:
                 
                 # Add metadata as child blocks
                 if title:
-                    block_builder.child(LogseqBlockBuilder(f"**{title}**"))
+                    block_builder.child(BlockBuilder(f"**{title}**"))
                 if item.get('author'):
-                    block_builder.child(LogseqBlockBuilder(f"Author: {item['author']}"))
+                    block_builder.child(BlockBuilder(f"Author: {item['author']}"))
                 if item.get('pages'):
-                    block_builder.child(LogseqBlockBuilder(f"Pages: {item['pages']}"))
+                    block_builder.child(BlockBuilder(f"Pages: {item['pages']}"))
                 if item.get('size_mb'):
-                    block_builder.child(LogseqBlockBuilder(f"Size: {item['size_mb']} MB"))
+                    block_builder.child(BlockBuilder(f"Size: {item['size_mb']} MB"))
                     
                 self.stats['pdfs_enhanced'] += 1
             
-            # Add topic properties to the block
+            # Add topic properties to the block using Logseq inline format (key:: value)
+            topic_properties_block = None
             if item.get('topics'):
+                # Create a child block to hold topic properties
                 for i, topic in enumerate(item['topics']):
                     prop_key = f"{self.property_prefix}-{i+1}"
-                    block_builder.property(prop_key, topic)
+                    # Add inline property format
+                    prop_block = BlockBuilder(f"{prop_key}:: [[{topic}]]")
+                    block_builder.child(prop_block)
             
             # Build the enhanced block
             enhanced_block = block_builder.build()
