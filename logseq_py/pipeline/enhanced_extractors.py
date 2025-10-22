@@ -196,6 +196,12 @@ class XTwitterExtractor:
         html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
         html = re.sub(r'<style[^>]*>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
         
+        # Remove all URLs before extracting text (they're not part of tweet content)
+        html = re.sub(r'https?://[^\s<>"]+', '', html)
+        
+        # Remove common HTML attributes that might leak as text
+        html = re.sub(r'(href|src|class|id|style)=["\'][^"\']*["\']', '', html)
+        
         # Extract text from <p> tags (main tweet content)
         p_content = re.findall(r'<p[^>]*>(.*?)</p>', html, re.DOTALL)
         if p_content:
@@ -475,6 +481,47 @@ class ContentAnalyzer:
             'here', 'there', 'then', 'also', 'just', 'like', 'get', 'go', 'know', 'see',
             'come', 'think', 'take', 'want', 'use', 'make', 'way', 'time', 'people'
         }
+        
+        # URL and HTML-related terms to filter out
+        self.url_stopwords = {
+            'http', 'https', 'href', 'www', 'com', 'org', 'net', 'html', 'htm',
+            'link', 'url', 'src', 'img', 'div', 'span', 'class', 'style', 'script',
+            'onclick', 'onload', 'javascript', 'ajax', 'json', 'xml', 'css',
+            'blockquote', 'twitter', 'tweet', 'status', 'embed', 'oembed'
+        }
+    
+    def _clean_content_for_analysis(self, content: str) -> str:
+        """Clean content before topic analysis.
+        
+        Args:
+            content: Raw content text
+            
+        Returns:
+            Cleaned content with URLs removed and truncation artifacts handled
+        """
+        if not content:
+            return ""
+        
+        # Remove URLs completely
+        content = re.sub(r'https?://[^\s<>"]+', '', content)
+        content = re.sub(r'www\.[^\s<>"]+', '', content)
+        
+        # Remove HTML tags if any leaked through
+        content = re.sub(r'<[^>]+>', '', content)
+        
+        # Handle truncation artifacts - remove partial words before/after ellipsis
+        # Remove word fragments before ellipsis: "some tex..." -> "some ..."
+        content = re.sub(r'\b\w{1,3}\.{2,}', '...', content)
+        # Remove word fragments after ellipsis: "...xt more" -> "... more"
+        content = re.sub(r'\.{2,}\w{1,3}\b', '...', content)
+        
+        # Remove standalone ellipsis and extra spaces
+        content = re.sub(r'\.{3,}', ' ', content)
+        
+        # Clean up multiple spaces
+        content = ' '.join(content.split())
+        
+        return content.strip()
     
     def extract_topics(self, content: str, title: str = None, platform: str = 'unknown') -> List[str]:
         """Extract relevant topics from content using advanced NLP techniques.
@@ -490,8 +537,11 @@ class ContentAnalyzer:
         if not content:
             return []
         
+        # Clean content first - remove URLs and truncation artifacts
+        cleaned_content = self._clean_content_for_analysis(content)
+        
         # Combine title and content, giving more weight to title
-        full_text = f"{title or ''} {title or ''} {content}".lower()
+        full_text = f"{title or ''} {title or ''} {cleaned_content}".lower()
         
         # Extract topics using multiple methods
         topics = set()
@@ -544,7 +594,10 @@ class ContentAnalyzer:
         
         word_freq = {}
         for word in words:
-            if word not in self.stop_words and len(word) >= 4:
+            # Filter out stop words AND URL/HTML terms
+            if (word not in self.stop_words and 
+                word not in self.url_stopwords and 
+                len(word) >= 4):
                 word_freq[word] = word_freq.get(word, 0) + 1
         
         # Get words that appear multiple times
@@ -582,7 +635,8 @@ class ContentAnalyzer:
         # Extract bigrams (two-word combinations)
         for i in range(len(words) - 1):
             word1, word2 = words[i], words[i+1]
-            if word1 not in self.stop_words and word2 not in self.stop_words:
+            if (word1 not in self.stop_words and word2 not in self.stop_words and
+                word1 not in self.url_stopwords and word2 not in self.url_stopwords):
                 bigram = f"{word1}-{word2}"
                 # Only keep if appears multiple times or contains domain keywords
                 if text.count(f"{word1} {word2}") >= 2 or self._is_domain_term(word1, word2):
@@ -593,7 +647,10 @@ class ContentAnalyzer:
             word1, word2, word3 = words[i], words[i+1], words[i+2]
             if (word1 not in self.stop_words and 
                 word2 not in self.stop_words and 
-                word3 not in self.stop_words):
+                word3 not in self.stop_words and
+                word1 not in self.url_stopwords and
+                word2 not in self.url_stopwords and
+                word3 not in self.url_stopwords):
                 trigram = f"{word1}-{word2}-{word3}"
                 if text.count(f"{word1} {word2} {word3}") >= 2:
                     phrases.add(trigram)
@@ -622,12 +679,16 @@ class ContentAnalyzer:
         capitalized = re.findall(r'\b[A-Z][a-z]{2,}\b', title)
         for word in capitalized:
             word_lower = word.lower()
-            if word_lower not in self.stop_words and len(word_lower) >= 3:
+            if (word_lower not in self.stop_words and 
+                word_lower not in self.url_stopwords and 
+                len(word_lower) >= 3):
                 topics.add(word_lower)
         
         # Extract words in special formatting (quotes, brackets, etc.)
         special_words = re.findall(r'["\']([^"\'\ ]{4,})["\']', title)
-        topics.update([w.lower() for w in special_words if w.lower() not in self.stop_words])
+        topics.update([w.lower() for w in special_words 
+                      if w.lower() not in self.stop_words and 
+                      w.lower() not in self.url_stopwords])
         
         return topics
     
@@ -643,7 +704,8 @@ class ContentAnalyzer:
         total_words = len(words)
         
         for word in words:
-            if word not in self.stop_words:
+            # Filter out stop words AND URL/HTML terms
+            if word not in self.stop_words and word not in self.url_stopwords:
                 word_freq[word] = word_freq.get(word, 0) + 1
         
         # Calculate TF score (normalized frequency)
@@ -709,9 +771,13 @@ class ContentAnalyzer:
             if freq > len(text_lower.split()) * 0.05:  # More than 5% of words
                 score -= 3
             
-            # 7. Bonus for words with numbers or special technical terms
-            if re.search(r'\d|api|sql|http|tech|data', topic_clean):
+            # 7. Bonus for words with numbers or special technical terms (but not URL fragments)
+            if re.search(r'\d|api|sql|tech|data', topic_clean) and topic_clean not in self.url_stopwords:
                 score += 2
+            
+            # 8. Penalize URL and HTML terms heavily
+            if any(url_term in topic_clean for url_term in self.url_stopwords):
+                score -= 20
             
             topic_scores[topic] = max(score, 0)
         
