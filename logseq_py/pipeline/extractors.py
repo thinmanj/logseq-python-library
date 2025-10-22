@@ -422,60 +422,81 @@ class YouTubeExtractor(ContentExtractor):
         }
     
     def _extract_video_info(self, video_id: str) -> Optional[Dict[str, Any]]:
-        """Extract information for a single YouTube video."""
+        """Extract information for a single YouTube video with multiple fallback methods."""
         base_info = {
             'video_id': video_id,
             'url': f"https://www.youtube.com/watch?v={video_id}",
             'short_url': f"https://youtu.be/{video_id}",
-            'extracted_at': datetime.now().isoformat()
+            'extracted_at': datetime.now().isoformat(),
+            'platform': 'youtube'
         }
         
-        # Try YouTube Data API first if available
+        errors = []
+        
+        # Method 1: Try YouTube Data API first if available
         if self.api_key:
             try:
                 api_info = self._get_video_from_api(video_id)
-                if api_info:
+                if api_info and api_info.get('title'):
                     base_info.update(api_info)
                     base_info['data_source'] = 'youtube_api'
+                    base_info['status'] = 'success'
+                    self.logger.debug(f"Successfully extracted via YouTube API: {video_id}")
                     return base_info
             except Exception as e:
-                self.logger.warning(f"YouTube API failed for {video_id}: {e}")
+                error_msg = f"YouTube API: {str(e)}"
+                errors.append(error_msg)
+                self.logger.debug(error_msg)
         
-        # Fallback to oEmbed API
+        # Method 2: Try oEmbed API
         try:
             oembed_url = f"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={video_id}&format=json"
             response = self.session.get(oembed_url, timeout=10)
             
             if response.status_code == 200:
                 data = response.json()
-                base_info.update({
-                    'title': data.get('title'),
-                    'author_name': data.get('author_name'),
-                    'author_url': data.get('author_url'),
-                    'thumbnail_url': data.get('thumbnail_url'),
-                    'width': data.get('width'),
-                    'height': data.get('height'),
-                    'data_source': 'oembed',
-                    'status': 'success'
-                })
+                if data.get('title'):
+                    base_info.update({
+                        'title': data.get('title'),
+                        'author_name': data.get('author_name'),
+                        'author_url': data.get('author_url'),
+                        'thumbnail_url': data.get('thumbnail_url'),
+                        'width': data.get('width'),
+                        'height': data.get('height'),
+                        'data_source': 'oembed',
+                        'status': 'success'
+                    })
+                    self.logger.debug(f"Successfully extracted via oEmbed: {video_id}")
+                    return base_info
+            else:
+                errors.append(f"oEmbed: HTTP {response.status_code}")
+        except Exception as e:
+            errors.append(f"oEmbed: {str(e)}")
+        
+        # Method 3: Try HTML scraping as last resort
+        try:
+            html_info = self._extract_from_html(video_id)
+            if html_info and html_info.get('title'):
+                base_info.update(html_info)
+                base_info['data_source'] = 'html_scraping'
+                base_info['status'] = 'success'
+                self.logger.debug(f"Successfully extracted via HTML scraping: {video_id}")
                 return base_info
             else:
-                base_info.update({
-                    'title': None,
-                    'status': 'failed',
-                    'error': f'oEmbed API returned {response.status_code}',
-                    'data_source': 'oembed'
-                })
-                return base_info
-                
+                errors.append("HTML scraping: No title found")
         except Exception as e:
-            base_info.update({
-                'title': None,
-                'status': 'error',
-                'error': str(e),
-                'data_source': 'oembed'
-            })
-            return base_info
+            errors.append(f"HTML scraping: {str(e)}")
+        
+        # All methods failed
+        self.logger.warning(f"All extraction methods failed for {video_id}: {'; '.join(errors)}")
+        base_info.update({
+            'title': f"YouTube Video {video_id}",
+            'status': 'failed',
+            'error': 'All extraction methods failed: ' + '; '.join(errors),
+            'data_source': 'none',
+            'author_name': None
+        })
+        return base_info
     
     def _get_video_from_api(self, video_id: str) -> Optional[Dict[str, Any]]:
         """Get video information from YouTube Data API."""
@@ -554,6 +575,66 @@ class YouTubeExtractor(ContentExtractor):
             if quality in thumbnails:
                 return thumbnails[quality].get('url')
         return None
+    
+    def _extract_from_html(self, video_id: str) -> Optional[Dict[str, Any]]:
+        """Extract video information from YouTube HTML page as fallback method."""
+        try:
+            url = f"https://www.youtube.com/watch?v={video_id}"
+            response = self.session.get(url, timeout=15)
+            response.raise_for_status()
+            
+            html = response.text
+            
+            # Try to extract title from various HTML locations
+            title = None
+            
+            # Method 1: <title> tag
+            title_match = re.search(r'<title>([^<]+)</title>', html)
+            if title_match:
+                title = title_match.group(1).replace(' - YouTube', '').strip()
+            
+            # Method 2: og:title meta tag
+            if not title:
+                og_title_match = re.search(r'<meta\s+property=["\']og:title["\']\s+content=["\']([^"\'>]+)["\']', html, re.IGNORECASE)
+                if og_title_match:
+                    title = og_title_match.group(1).strip()
+            
+            # Method 3: JSON-LD structured data
+            if not title:
+                json_ld_match = re.search(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>([^<]+)</script>', html)
+                if json_ld_match:
+                    try:
+                        import json
+                        data = json.loads(json_ld_match.group(1))
+                        if isinstance(data, dict):
+                            title = data.get('name') or data.get('headline')
+                    except:
+                        pass
+            
+            if not title:
+                return None
+            
+            # Extract author/channel name
+            author = None
+            author_match = re.search(r'<link\s+itemprop=["\']name["\']\s+content=["\']([^"\'>]+)["\']', html, re.IGNORECASE)
+            if author_match:
+                author = author_match.group(1).strip()
+            
+            # Extract thumbnail
+            thumbnail = None
+            thumbnail_match = re.search(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\'>]+)["\']', html, re.IGNORECASE)
+            if thumbnail_match:
+                thumbnail = thumbnail_match.group(1).strip()
+            
+            return {
+                'title': title,
+                'author_name': author,
+                'thumbnail_url': thumbnail
+            }
+            
+        except Exception as e:
+            self.logger.debug(f"HTML extraction failed for {video_id}: {e}")
+            return None
 
 
 class TwitterExtractor(ContentExtractor):
