@@ -81,23 +81,45 @@ class YouTubeSubtitleExtractor:
         try:
             # Try to import and use youtube-transcript-api
             from youtube_transcript_api import YouTubeTranscriptApi
+            from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
             
-            # Get transcript
-            transcript = YouTubeTranscriptApi.get_transcript(video_id)
+            try:
+                # Try to get English transcript first
+                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
+            except NoTranscriptFound:
+                # If English not available, try to get any available transcript
+                try:
+                    transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+                except:
+                    # Last resort: get list of available transcripts and pick first one
+                    transcript_list_obj = YouTubeTranscriptApi.list_transcripts(video_id)
+                    for transcript in transcript_list_obj:
+                        if transcript.language_code.startswith('en'):
+                            transcript_list = transcript.fetch()
+                            break
+                    else:
+                        # No English, get first available
+                        first_transcript = next(iter(transcript_list_obj))
+                        transcript_list = first_transcript.fetch()
+            
+            if not transcript_list:
+                self.logger.debug(f"No transcript found for video {video_id}")
+                return None
             
             # Combine all text entries
-            subtitle_text = ' '.join([entry['text'] for entry in transcript])
+            subtitle_text = ' '.join([entry['text'] for entry in transcript_list])
             
             # Clean up the text
             subtitle_text = self._clean_subtitle_text(subtitle_text)
             
+            self.logger.info(f"Successfully extracted {len(subtitle_text)} chars from transcript API")
             return subtitle_text
             
         except ImportError:
             self.logger.debug("youtube-transcript-api not available")
             return None
         except Exception as e:
-            self.logger.debug(f"Transcript API extraction failed: {e}")
+            self.logger.debug(f"Transcript API extraction failed for {video_id}: {type(e).__name__}: {e}")
             return None
     
     def _extract_with_captions_api(self, video_id: str) -> Optional[str]:

@@ -1,12 +1,7 @@
 """
-Video Processing Pipeline for Logseq Enhancement
+Comprehensive Content Processing Pipeline for Logseq
 
-This module provides a comprehensive pipeline for processing video content in Logseq:
-1. Scans all blocks for video URLs
-2. Enhances blocks with {{video}} syntax
-3. Extracts video metadata and subtitles  
-4. Analyzes content for tagging
-5. Creates tagged pages with source information
+Processes videos, X/Twitter posts, and PDFs with property-based topic organization.
 """
 
 import os
@@ -25,11 +20,11 @@ from .subtitle_extractor import YouTubeSubtitleExtractor, VideoContentAnalyzer
 from .enhanced_extractors import XTwitterExtractor, PDFExtractor, ContentAnalyzer
 
 
-class VideoProcessingPipeline:
+class ComprehensiveContentProcessor:
     """Main pipeline for processing video, X/Twitter, and PDF content in Logseq graphs."""
     
     def __init__(self, graph_path: str, config: Dict[str, Any] = None):
-        """Initialize the video processing pipeline.
+        """Initialize the comprehensive content processor.
         
         Args:
             graph_path: Path to the Logseq graph directory
@@ -43,9 +38,9 @@ class VideoProcessingPipeline:
         self.dry_run = self.config.get('dry_run', False)
         self.youtube_api_key = self.config.get('youtube_api_key')
         self.twitter_bearer_token = self.config.get('twitter_bearer_token')
-        self.property_prefix = self.config.get('property_prefix', 'content-topic')
+        self.property_prefix = self.config.get('property_prefix', 'topic')
         self.min_subtitle_length = self.config.get('min_subtitle_length', 100)
-        self.max_topics_per_item = self.config.get('max_topics_per_item', 5)
+        self.max_topics_per_item = self.config.get('max_topics_per_item', 3)
         self.backup_enabled = self.config.get('backup_enabled', True)
         self.process_videos = self.config.get('process_videos', True)
         self.process_twitter = self.config.get('process_twitter', True)
@@ -78,17 +73,17 @@ class VideoProcessingPipeline:
             'pdfs_enhanced': 0,
             'subtitles_extracted': 0,
             'properties_added': 0,
-            'pages_created': 0,
+            'topic_pages_created': 0,
             'errors': 0
         }
     
     def run(self) -> Dict[str, Any]:
-        """Run the complete video processing pipeline.
+        """Run the complete content processing pipeline.
         
         Returns:
             Dictionary with processing results and statistics
         """
-        self.logger.info(f"Starting video processing pipeline for {self.graph_path}")
+        self.logger.info(f"Starting comprehensive content processing for {self.graph_path}")
         
         try:
             # Validate graph path
@@ -190,7 +185,7 @@ class VideoProcessingPipeline:
         urls = {'video': [], 'twitter': [], 'pdf': []}
         
         if not content:
-            return urls
+            return {}
         
         # Extract video URLs
         if self.process_videos:
@@ -208,7 +203,7 @@ class VideoProcessingPipeline:
             urls['pdf'] = pdf_urls
         
         # Return only if any URLs were found
-        return urls if any(urls.values()) else {}
+        return {k: v for k, v in urls.items() if v}
     
     def _extract_twitter_urls(self, content: str) -> List[str]:
         """Extract Twitter/X URLs from content."""
@@ -234,7 +229,8 @@ class VideoProcessingPipeline:
         for url in urls:
             if (url.lower().endswith('.pdf') or 
                 '/pdf/' in url.lower() or 
-                'pdf' in url.lower()):
+                'filetype:pdf' in url.lower() or
+                '.pdf?' in url.lower()):
                 pdf_urls.append(url)
         
         return pdf_urls
@@ -290,50 +286,126 @@ class VideoProcessingPipeline:
         
         return None
     
-    def _process_single_video(self, url: str, block: Block, page: Page) -> Optional[Dict[str, Any]]:
-        """Process a single video URL to extract metadata and content."""
+    def _process_video_url(self, url: str, block: Block, page: Page) -> Optional[Dict[str, Any]]:
+        """Process a single video URL."""
         self.logger.info(f"Processing video: {url}")
         
-        # Get basic video information
+        # Get video information
         video_info = LogseqUtils.get_video_info(url, self.youtube_api_key)
         if not video_info:
             self.logger.warning(f"Could not extract video info for: {url}")
             return None
         
-        video_data = {
+        content_data = {
+            'type': 'video',
             'url': url,
             'title': video_info.get('title'),
             'author': video_info.get('author_name'),
             'duration': video_info.get('duration'),
             'platform': video_info.get('platform', 'unknown'),
             'extracted_at': datetime.now().isoformat(),
-            'subtitles': None,
-            'tags': [],
-            'source_page': page.name,
-            'source_block_content': block.content[:200] + "..." if len(block.content) > 200 else block.content
+            'topics': [],
+            'source_page': page.name
         }
         
-        # Extract subtitles if available (YouTube only for now)
+        # Extract subtitles if available (YouTube only)
+        subtitle_content = None
         if 'youtube' in url.lower():
             try:
                 subtitles = self.subtitle_extractor.extract_subtitles(url)
                 if subtitles and len(subtitles) > self.min_subtitle_length:
-                    video_data['subtitles'] = subtitles
-                    
-                    # Analyze subtitles for tags
-                    tags = self.text_analyzer.extract_tags(subtitles, video_data['title'])
-                    video_data['tags'] = tags
-                    
+                    subtitle_content = subtitles
                     self.stats['subtitles_extracted'] += 1
-                    self.logger.info(f"Extracted {len(subtitles)} chars of subtitles and {len(tags)} tags")
-            
+                    self.logger.info(f"Extracted {len(subtitles)} chars of subtitles")
             except Exception as e:
                 self.logger.warning(f"Failed to extract subtitles for {url}: {e}")
         
-        return video_data
+        # Analyze content for topics
+        analysis_text = subtitle_content or video_info.get('title', '')
+        if analysis_text:
+            topics = self.content_analyzer.extract_topics(
+                analysis_text, 
+                video_info.get('title'),
+                'video'
+            )
+            content_data['topics'] = topics
+        
+        return content_data
     
-    def _enhance_block_content(self, block_info: Dict[str, Any], processed_data: Dict[str, Any]):
-        """Enhance the block content with {{video}} syntax and metadata."""
+    def _process_twitter_url(self, url: str, block: Block, page: Page) -> Optional[Dict[str, Any]]:
+        """Process a single Twitter/X URL."""
+        self.logger.info(f"Processing X/Twitter: {url}")
+        
+        # Get tweet information
+        tweet_info = self.twitter_extractor.extract_tweet_info(url)
+        if not tweet_info:
+            self.logger.warning(f"Could not extract tweet info for: {url}")
+            return None
+        
+        content_data = {
+            'type': 'twitter',
+            'url': url,
+            'title': tweet_info.get('title'),
+            'author': tweet_info.get('author'),
+            'username': tweet_info.get('username'),
+            'content': tweet_info.get('content'),
+            'platform': 'x-twitter',
+            'extracted_at': datetime.now().isoformat(),
+            'topics': [],
+            'source_page': page.name
+        }
+        
+        # Analyze content for topics
+        analysis_text = tweet_info.get('content') or tweet_info.get('title', '')
+        if analysis_text:
+            topics = self.content_analyzer.extract_topics(
+                analysis_text,
+                tweet_info.get('title'),
+                'x-twitter'
+            )
+            content_data['topics'] = topics
+        
+        return content_data
+    
+    def _process_pdf_url(self, url: str, block: Block, page: Page) -> Optional[Dict[str, Any]]:
+        """Process a single PDF URL."""
+        self.logger.info(f"Processing PDF: {url}")
+        
+        # Get PDF information
+        pdf_info = self.pdf_extractor.extract_pdf_info(url)
+        if not pdf_info:
+            self.logger.warning(f"Could not extract PDF info for: {url}")
+            return None
+        
+        content_data = {
+            'type': 'pdf',
+            'url': url,
+            'title': pdf_info.get('title'),
+            'author': pdf_info.get('author'),
+            'pages': pdf_info.get('num_pages'),
+            'size_mb': pdf_info.get('size_mb'),
+            'platform': 'pdf',
+            'extracted_at': datetime.now().isoformat(),
+            'topics': [],
+            'source_page': page.name
+        }
+        
+        # Analyze content for topics
+        analysis_text = (pdf_info.get('content_preview') or 
+                        pdf_info.get('subject') or 
+                        pdf_info.get('title', ''))
+        if analysis_text:
+            topics = self.content_analyzer.extract_topics(
+                analysis_text,
+                pdf_info.get('title'),
+                'pdf'
+            )
+            content_data['topics'] = topics
+        
+        return content_data
+    
+    def _enhance_content_block(self, block_info: Dict[str, Any], processed_data: Dict[str, Any]):
+        """Enhance the block content with structured syntax and properties."""
         if self.dry_run:
             self.logger.info("DRY RUN: Would enhance block content")
             return
@@ -342,23 +414,89 @@ class VideoProcessingPipeline:
         original_content = block.content
         enhanced_content = original_content
         
-        # Replace each video URL with enhanced syntax
-        for video_data in processed_data['videos']:
-            url = video_data['url']
-            title = video_data.get('title', 'Unknown Video')
+        # Initialize block properties if needed
+        if not hasattr(block, 'properties') or block.properties is None:
+            block.properties = {}
+        
+        # Check if this block has already been processed (has topic properties)
+        existing_topics = [k for k in block.properties.keys() if k.startswith(self.property_prefix)]
+        if existing_topics:
+            self.logger.info("Block already processed, skipping")
+            return
+        
+        # Process each content item
+        for item in processed_data['content_items']:
+            url = item['url']
+            title = item.get('title', 'Unknown')
+            content_type = item['type']
             
-            # Create enhanced video block
-            video_block = f"{{{{video {url}}}}}\n**{title}**"
+            # Check if URL is already wrapped (skip if already has {{...}} around it)
+            if f"{{{{{content_type} {url}}}}}" in original_content:
+                self.logger.info(f"URL {url} already wrapped, skipping")
+                continue
             
-            if video_data.get('author'):
-                video_block += f"\nBy: {video_data['author']}"
+            # Check if URL is wrapped with any other syntax
+            if re.search(r'\{\{[^}]*' + re.escape(url) + r'[^}]*\}\}', original_content):
+                self.logger.info(f"URL {url} already has custom wrapper, skipping")
+                continue
             
-            if video_data.get('tags'):
-                tags_str = ' '.join([f"#{self.tag_prefix}-{tag}" for tag in video_data['tags']])
-                video_block += f"\nTags: {tags_str}"
+            # Create enhanced content block with proper hierarchy
+            # Main block contains the URL wrapper, sub-blocks contain metadata
+            if content_type == 'video':
+                wrapper = f"{{{{video {url}}}}}"  # Main block
+                details = []
+                if title:
+                    details.append(f"  **{title}**")
+                if item.get('author'):
+                    details.append(f"  By: {item['author']}")
+                if item.get('duration'):
+                    details.append(f"  Duration: {item['duration']}")
+                enhanced_block = wrapper
+                if details:
+                    enhanced_block += "\n" + "\n".join(details)
+                self.stats['videos_enhanced'] += 1
+                
+            elif content_type == 'twitter':
+                wrapper = f"{{{{tweet {url}}}}}"  # Main block
+                details = []
+                if title:
+                    details.append(f"  **{title}**")
+                if item.get('username'):
+                    details.append(f"  By: {item['username']}")
+                if item.get('content'):
+                    # Truncate long content
+                    content_preview = item['content'][:200] + "..." if len(item['content']) > 200 else item['content']
+                    details.append(f"  {content_preview}")
+                enhanced_block = wrapper
+                if details:
+                    enhanced_block += "\n" + "\n".join(details)
+                self.stats['tweets_enhanced'] += 1
+                
+            elif content_type == 'pdf':
+                wrapper = f"{{{{pdf {url}}}}}"  # Main block
+                details = []
+                if title:
+                    details.append(f"  **{title}**")
+                if item.get('author'):
+                    details.append(f"  Author: {item['author']}")
+                if item.get('pages'):
+                    details.append(f"  Pages: {item['pages']}")
+                if item.get('size_mb'):
+                    details.append(f"  Size: {item['size_mb']} MB")
+                enhanced_block = wrapper
+                if details:
+                    enhanced_block += "\n" + "\n".join(details)
+                self.stats['pdfs_enhanced'] += 1
             
-            # Replace the URL with the enhanced block
-            enhanced_content = enhanced_content.replace(url, video_block)
+            # Replace the URL with the enhanced block (only plain URL, not already wrapped)
+            enhanced_content = enhanced_content.replace(url, enhanced_block)
+            
+            # Add topic properties (instead of tags)
+            if item.get('topics'):
+                for i, topic in enumerate(item['topics']):
+                    prop_key = f"{self.property_prefix}-{i+1}"
+                    block.properties[prop_key] = topic
+                    self.stats['properties_added'] += 1
         
         # Update the block content
         block.content = enhanced_content
@@ -366,33 +504,32 @@ class VideoProcessingPipeline:
         # Write back to file
         self._update_page_file(block_info['file_path'], block_info['page'])
         
-        self.stats['videos_enhanced'] += len(processed_data['videos'])
-        self.logger.info(f"Enhanced block with {len(processed_data['videos'])} videos")
+        self.logger.info(f"Enhanced block with {len(processed_data['content_items'])} items")
     
-    def _create_tagged_pages(self, processed_videos: List[Dict[str, Any]]):
-        """Create pages for each tag with source information."""
-        # Collect all tags and their sources
-        tag_sources = defaultdict(list)
+    def _create_topic_pages(self, processed_content: List[Dict[str, Any]]):
+        """Create pages for each topic with source information."""
+        # Collect all topics and their sources
+        topic_sources = defaultdict(list)
         
-        for video_group in processed_videos:
-            for video_data in video_group['videos']:
-                for tag in video_data.get('tags', []):
-                    tag_sources[tag].append({
-                        'video_title': video_data.get('title'),
-                        'video_url': video_data['url'],
-                        'source_page': video_data['source_page'],
-                        'timestamp': video_data['extracted_at'],
-                        'subtitles_preview': (video_data.get('subtitles', '')[:200] + "...") 
-                                           if video_data.get('subtitles') else None
+        for content_group in processed_content:
+            for item in content_group['content_items']:
+                for topic in item.get('topics', []):
+                    topic_sources[topic].append({
+                        'title': item.get('title'),
+                        'url': item['url'],
+                        'type': item['type'],
+                        'source_page': item['source_page'],
+                        'timestamp': item['extracted_at'],
+                        'author': item.get('author') or item.get('username')
                     })
         
-        # Create a page for each tag
-        for tag, sources in tag_sources.items():
-            self._create_tag_page(tag, sources)
+        # Create a page for each topic
+        for topic, sources in topic_sources.items():
+            self._create_topic_page(topic, sources)
     
-    def _create_tag_page(self, tag: str, sources: List[Dict[str, Any]]):
-        """Create a page for a specific tag with all its video sources."""
-        page_name = f"{self.tag_prefix}-{tag}"
+    def _create_topic_page(self, topic: str, sources: List[Dict[str, Any]]):
+        """Create a page for a specific topic with all its content sources."""
+        page_name = f"{self.property_prefix}-{topic}"
         page_path = self.graph_path / f"{page_name}.md"
         
         if self.dry_run:
@@ -401,39 +538,51 @@ class VideoProcessingPipeline:
         
         # Build page content
         builder = PageBuilder(page_name)
-        builder.property("type", "video-topic")
-        builder.property("tag", tag)
+        builder.property("type", "content-topic")
+        builder.property("topic", topic)
         builder.property("created", datetime.now().strftime("%Y-%m-%d"))
-        builder.property("video-count", len(sources))
+        builder.property("item-count", len(sources))
+        
+        # Count by content type
+        type_counts = defaultdict(int)
+        for source in sources:
+            type_counts[source['type']] += 1
+        
+        for content_type, count in type_counts.items():
+            builder.property(f"{content_type}-count", count)
         
         # Add heading
-        builder.heading(1, f"Videos tagged with: {tag}")
+        builder.heading(1, f"Content tagged with: {topic}")
         
         # Add description
-        builder.text(f"This page contains all videos related to the topic: **{tag}**")
-        builder.text(f"Found in {len(sources)} video(s) from your Logseq graph.")
+        builder.text(f"This page contains all content related to the topic: **{topic}**")
+        builder.text(f"Found in {len(sources)} item(s) from your Logseq graph.")
         
-        # Add each video source
-        for i, source in enumerate(sources, 1):
-            builder.heading(2, f"{i}. {source['video_title'] or 'Unknown Video'}")
-            builder.text(f"**Source Page:** [[{source['source_page']}]]")
-            builder.text(f"**Video URL:** {source['video_url']}")
-            builder.text(f"**Processed:** {source['timestamp'][:10]}")  # Just the date
+        # Group sources by type
+        sources_by_type = defaultdict(list)
+        for source in sources:
+            sources_by_type[source['type']].append(source)
+        
+        # Add each content type section
+        for content_type, type_sources in sources_by_type.items():
+            builder.heading(2, f"{content_type.title()} Content ({len(type_sources)} items)")
             
-            if source['subtitles_preview']:
-                builder.heading(3, "Content Preview")
-                builder.quote(source['subtitles_preview'])
-            
-            builder.text("")  # Add space between entries
+            for i, source in enumerate(type_sources, 1):
+                builder.heading(3, f"{i}. {source['title'] or 'Unknown'}")
+                builder.text(f"**Source Page:** [[{source['source_page']}]]")
+                builder.text(f"**URL:** {source['url']}")
+                if source.get('author'):
+                    builder.text(f"**Author:** {source['author']}")
+                builder.text(f"**Processed:** {source['timestamp'][:10]}")
+                builder.text("")  # Add space between entries
         
         # Write the page
         try:
             with open(page_path, 'w', encoding='utf-8') as f:
                 f.write(builder.build())
             
-            self.stats['pages_created'] += 1
-            self.stats['tags_created'] += 1
-            self.logger.info(f"Created tag page: {page_name}")
+            self.stats['topic_pages_created'] += 1
+            self.logger.info(f"Created topic page: {page_name}")
         
         except Exception as e:
             self.logger.error(f"Failed to create page {page_name}: {e}")
@@ -451,8 +600,13 @@ class VideoProcessingPipeline:
                     content_lines.append(f"{key}:: {value}")
                 content_lines.append("")  # Empty line after properties
             
-            # Add blocks
+            # Add blocks with their properties
             for block in page.blocks:
+                # Add block properties if any
+                if hasattr(block, 'properties') and block.properties:
+                    for prop_key, prop_value in block.properties.items():
+                        content_lines.append(f"{prop_key}:: {prop_value}")
+                
                 # Add proper indentation based on block level
                 indent = "  " * block.level if block.level > 0 else ""
                 content_lines.append(f"{indent}- {block.content}")
