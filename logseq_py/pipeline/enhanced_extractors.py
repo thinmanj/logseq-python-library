@@ -158,18 +158,71 @@ class XTwitterExtractor:
         
         data = response.json()
         
-        # Extract author from HTML
+        # Extract info from HTML
         html = data.get('html', '')
         author_match = re.search(r'(@\w+)', html)
         
-        return {
+        # Extract tweet text from HTML
+        # The HTML contains the tweet text in <p> tags
+        tweet_text = self._extract_text_from_html(html)
+        
+        # Extract any URLs from the tweet
+        tweet_urls = re.findall(r'https?://[^\s<>"]+', html)
+        
+        result = {
             'title': f"Tweet {data.get('author_name', 'Unknown')}",
             'author': data.get('author_name'),
             'username': author_match.group(1) if author_match else None,
+            'content': tweet_text,  # Add extracted tweet text
             'html_content': html,
             'status': 'success',
             'data_source': 'oembed'
         }
+        
+        # If we found URLs in the tweet, add them
+        if tweet_urls:
+            result['embedded_urls'] = tweet_urls
+            self.logger.debug(f"Found {len(tweet_urls)} URLs in tweet")
+        
+        return result
+    
+    def _extract_text_from_html(self, html: str) -> str:
+        """Extract tweet text from oEmbed HTML."""
+        if not html:
+            return ""
+        
+        # Remove HTML tags but keep text content
+        # First remove script and style tags
+        html = re.sub(r'<script[^>]*>.*?</script>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        html = re.sub(r'<style[^>]*>.*?</style>', '', html, flags=re.DOTALL | re.IGNORECASE)
+        
+        # Extract text from <p> tags (main tweet content)
+        p_content = re.findall(r'<p[^>]*>(.*?)</p>', html, re.DOTALL)
+        if p_content:
+            text = ' '.join(p_content)
+        else:
+            # Fallback: remove all tags
+            text = re.sub(r'<[^>]+>', '', html)
+        
+        # Clean up HTML entities (common ones)
+        html_entities = {
+            '&lt;': '<', '&gt;': '>', '&amp;': '&', '&quot;': '"',
+            '&#39;': "'", '&apos;': "'", '&nbsp;': ' ',
+            '<br>': ' ', '<br/>': ' ', '<br />': ' ',
+            '&mdash;': '—', '&ndash;': '–', '&hellip;': '...',
+        }
+        for entity, char in html_entities.items():
+            text = text.replace(entity, char)
+        
+        # Handle remaining numeric HTML entities (&#NNNN;)
+        text = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), text)
+        # Handle remaining hex HTML entities (&#xHHHH;)
+        text = re.sub(r'&#x([0-9a-fA-F]+);', lambda m: chr(int(m.group(1), 16)), text)
+        
+        # Remove extra whitespace
+        text = ' '.join(text.split())
+        
+        return text.strip()
     
     def _extract_from_page(self, tweet_id: str, url: str) -> Optional[Dict[str, Any]]:
         """Extract by parsing the Twitter page HTML."""
