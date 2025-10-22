@@ -602,14 +602,15 @@ class ComprehensiveContentProcessor:
             
             # Add blocks with their properties
             for block in page.blocks:
-                # Add block properties if any
-                if hasattr(block, 'properties') and block.properties:
-                    for prop_key, prop_value in block.properties.items():
-                        content_lines.append(f"{prop_key}:: {prop_value}")
-                
                 # Add proper indentation based on block level
                 indent = "  " * block.level if block.level > 0 else ""
                 content_lines.append(f"{indent}- {block.content}")
+                
+                # Add block properties as indented children (under the block)
+                if hasattr(block, 'properties') and block.properties:
+                    property_indent = indent + "  "  # One level deeper than block
+                    for prop_key, prop_value in block.properties.items():
+                        content_lines.append(f"{property_indent}{prop_key}:: {prop_value}")
             
             # Write back to file
             with open(file_path, 'w', encoding='utf-8') as f:
