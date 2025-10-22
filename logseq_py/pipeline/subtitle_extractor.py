@@ -81,39 +81,59 @@ class YouTubeSubtitleExtractor:
         try:
             # Try to import and use youtube-transcript-api
             from youtube_transcript_api import YouTubeTranscriptApi
-            from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
+            
+            # Create API instance
+            api = YouTubeTranscriptApi()
             
             try:
-                # Try to get English transcript first
-                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
-            except NoTranscriptFound:
-                # If English not available, try to get any available transcript
+                # List available transcripts
+                transcript_list = api.list(video_id)
+                
+                # Try to find English transcript (manual first, then auto-generated)
+                english_transcript = None
                 try:
-                    transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+                    english_transcript = transcript_list.find_transcript(['en'])
                 except:
-                    # Last resort: get list of available transcripts and pick first one
-                    transcript_list_obj = YouTubeTranscriptApi.list_transcripts(video_id)
-                    for transcript in transcript_list_obj:
+                    # If specific English not found, try any English variant
+                    for transcript in transcript_list:
                         if transcript.language_code.startswith('en'):
-                            transcript_list = transcript.fetch()
+                            english_transcript = transcript
                             break
-                    else:
-                        # No English, get first available
-                        first_transcript = next(iter(transcript_list_obj))
-                        transcript_list = first_transcript.fetch()
+                
+                # If no English, take the first available
+                if not english_transcript:
+                    for transcript in transcript_list:
+                        english_transcript = transcript
+                        break
+                
+                if not english_transcript:
+                    self.logger.debug(f"No transcripts available for video {video_id}")
+                    return None
+                
+                # Fetch the transcript data
+                self.logger.debug(f"Fetching transcript in {english_transcript.language_code}")
+                transcript_data = english_transcript.fetch()
+                    
+            except Exception as e:
+                self.logger.debug(f"Could not get transcripts: {e}")
+                return None
             
-            if not transcript_list:
-                self.logger.debug(f"No transcript found for video {video_id}")
+            if not transcript_data:
+                self.logger.debug(f"No transcript data for video {video_id}")
                 return None
             
             # Combine all text entries
-            subtitle_text = ' '.join([entry['text'] for entry in transcript_list])
+            # transcript_data is a list of FetchedTranscriptSnippet objects with 'text' attribute
+            subtitle_text = ' '.join([entry.text for entry in transcript_data if hasattr(entry, 'text')])
             
             # Clean up the text
             subtitle_text = self._clean_subtitle_text(subtitle_text)
             
-            self.logger.info(f"Successfully extracted {len(subtitle_text)} chars from transcript API")
-            return subtitle_text
+            if subtitle_text and len(subtitle_text) > 50:
+                self.logger.info(f"Successfully extracted {len(subtitle_text)} chars from transcript API")
+                return subtitle_text
+            else:
+                return None
             
         except ImportError:
             self.logger.debug("youtube-transcript-api not available")
