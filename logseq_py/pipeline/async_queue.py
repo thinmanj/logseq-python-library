@@ -239,6 +239,7 @@ class AsyncRateLimitedQueue:
             worker_id: Unique identifier for this worker
         """
         self.logger.debug(f"Worker {worker_id} started")
+        tasks_processed = 0
         
         while self.is_running:
             task = await self._get_next_task()
@@ -250,6 +251,17 @@ class AsyncRateLimitedQueue:
             
             try:
                 await self._process_task(task, worker_id)
+                tasks_processed += 1
+                
+                # Log progress every 10 tasks
+                if tasks_processed % 10 == 0:
+                    completed = self.stats['completed']
+                    total = self.stats['total_tasks']
+                    percent = (completed / total * 100) if total > 0 else 0
+                    self.logger.info(
+                        f"Progress: {completed}/{total} ({percent:.1f}%) - "
+                        f"Worker {worker_id} processed {tasks_processed} tasks"
+                    )
             except Exception as e:
                 self.logger.error(f"Worker {worker_id} error processing task {task.task_id}: {e}")
                 task.status = TaskStatus.FAILED
@@ -259,7 +271,7 @@ class AsyncRateLimitedQueue:
                 # Mark task as done for the queue
                 self.queues[task.priority].task_done()
         
-        self.logger.debug(f"Worker {worker_id} stopped")
+        self.logger.debug(f"Worker {worker_id} stopped after processing {tasks_processed} tasks")
     
     async def _get_next_task(self) -> Optional[QueuedTask]:
         """Get the next task from queues, respecting priority and rate limits.

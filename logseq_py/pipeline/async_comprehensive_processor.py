@@ -94,10 +94,13 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
             await self._queue_content_tasks(content_blocks)
             
             # Step 3: Start workers and process
+            self.logger.info(f"Starting {self.max_concurrent} workers...")
             await self.queue.start_workers()
             
             # Step 4: Wait for all tasks to complete
+            self.logger.info("Waiting for all tasks to complete...")
             results = await self.queue.wait_completion()
+            self.logger.info("All tasks completed")
             
             # Step 5: Process results and update files
             await self._process_results(results)
@@ -120,7 +123,16 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
         Args:
             content_blocks: List of content blocks to process
         """
-        for block_info in content_blocks:
+        video_count = 0
+        twitter_count = 0
+        pdf_count = 0
+        
+        self.logger.info(f"Queuing tasks from {len(content_blocks)} content blocks...")
+        
+        for i, block_info in enumerate(content_blocks, 1):
+            if i % 100 == 0:
+                self.logger.info(f"Processed {i}/{len(content_blocks)} blocks for queuing")
+            
             urls = block_info['urls']
             
             # Queue video processing (high priority if has subtitles)
@@ -135,6 +147,7 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
                     page=block_info['page'],
                     priority=TaskPriority.HIGH
                 )
+                video_count += 1
             
             # Queue Twitter processing (normal priority)
             for url in urls.get('twitter', []):
@@ -148,6 +161,7 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
                     page=block_info['page'],
                     priority=TaskPriority.NORMAL
                 )
+                twitter_count += 1
             
             # Queue PDF processing (low priority)
             for url in urls.get('pdf', []):
@@ -161,6 +175,12 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
                     page=block_info['page'],
                     priority=TaskPriority.LOW
                 )
+                pdf_count += 1
+        
+        self.logger.info(
+            f"Queued {video_count} video, {twitter_count} Twitter, {pdf_count} PDF tasks "
+            f"(total: {video_count + twitter_count + pdf_count})"
+        )
     
     async def _async_process_video(
         self,
