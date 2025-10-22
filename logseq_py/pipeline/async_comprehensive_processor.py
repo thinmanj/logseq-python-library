@@ -43,6 +43,12 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
         self.max_queue_size = self.config.get('max_queue_size', 1000)
         self.enable_async = self.config.get('enable_async', True)
         
+        # Batch processing config
+        self.batch_size = self.config.get('batch_size', None)  # None = process all
+        self.batch_offset = self.config.get('batch_offset', 0)  # Start from block N
+        self.max_blocks = self.config.get('max_blocks', None)  # Limit total blocks
+        self.streaming_mode = self.config.get('streaming_mode', True)  # Start processing while queuing
+        
         # Queue system
         self.queue: Optional[AsyncRateLimitedQueue] = None
         
@@ -87,17 +93,35 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
             )
             
             # Step 1: Scan for content blocks
-            content_blocks = self._scan_for_content_blocks()
-            self.logger.info(f"Found {len(content_blocks)} blocks with content")
+            all_content_blocks = self._scan_for_content_blocks()
+            self.logger.info(f"Found {len(all_content_blocks)} total blocks with content")
             
-            # Step 2: Queue all content processing tasks
-            await self._queue_content_tasks(content_blocks)
+            # Apply pagination/batching if configured
+            content_blocks = self._apply_batching(all_content_blocks)
             
-            # Step 3: Start workers and process
-            self.logger.info(f"Starting {self.max_concurrent} workers...")
-            await self.queue.start_workers()
+            if len(content_blocks) < len(all_content_blocks):
+                self.logger.info(
+                    f"Processing batch: {len(content_blocks)} blocks "
+                    f"(offset: {self.batch_offset}, total: {len(all_content_blocks)})"
+                )
             
-            # Step 4: Wait for all tasks to complete
+            # Step 2: Start workers first (streaming mode) or queue all first
+            if self.streaming_mode:
+                # Streaming mode: start workers, then queue tasks (they process as queued)
+                self.logger.info(f"Starting {self.max_concurrent} workers in streaming mode...")
+                await self.queue.start_workers()
+                
+                # Queue tasks while workers are already processing
+                await self._queue_content_tasks(content_blocks)
+            else:
+                # Batch mode: queue all tasks first, then start workers
+                self.logger.info("Queuing all tasks before starting workers...")
+                await self._queue_content_tasks(content_blocks)
+                
+                self.logger.info(f"Starting {self.max_concurrent} workers...")
+                await self.queue.start_workers()
+            
+            # Step 3: Wait for all tasks to complete
             self.logger.info("Waiting for all tasks to complete...")
             results = await self.queue.wait_completion()
             self.logger.info("All tasks completed")
@@ -116,6 +140,34 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
             self.logger.error(f"Async pipeline failed: {e}")
             self.stats['errors'] += 1
             return {'success': False, 'error': str(e), 'stats': self.stats}
+    
+    def _apply_batching(self, content_blocks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Apply batching/pagination to content blocks.
+        
+        Args:
+            content_blocks: All content blocks
+            
+        Returns:
+            Subset of blocks based on batch configuration
+        """
+        total = len(content_blocks)
+        
+        # Apply offset
+        if self.batch_offset > 0:
+            if self.batch_offset >= total:
+                self.logger.warning(
+                    f"Batch offset {self.batch_offset} >= total blocks {total}, "
+                    f"no blocks to process"
+                )
+                return []
+            content_blocks = content_blocks[self.batch_offset:]
+        
+        # Apply batch size or max blocks limit
+        limit = self.batch_size or self.max_blocks
+        if limit and limit > 0:
+            content_blocks = content_blocks[:limit]
+        
+        return content_blocks
     
     async def _queue_content_tasks(self, content_blocks: List[Dict[str, Any]]):
         """Queue all content processing tasks by type and priority.
