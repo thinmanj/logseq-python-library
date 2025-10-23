@@ -133,7 +133,10 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
             if self.pending_updates:
                 self._create_topic_pages_from_updates()
             
-            # Step 7: Generate report
+            # Step 7: Create topic index page
+            self._create_topic_index_page()
+            
+            # Step 8: Generate report
             return self._generate_async_report(results)
             
         except Exception as e:
@@ -366,6 +369,106 @@ class AsyncComprehensiveContentProcessor(ComprehensiveContentProcessor):
         
         # Use parent class method
         self._create_topic_pages(processed_content)
+    
+    def _create_topic_index_page(self):
+        """Create an index page listing all topic pages.
+        
+        This provides easy access to all topics discovered during processing.
+        """
+        from ..builders import PageBuilder
+        from collections import defaultdict
+        
+        # Find all topic pages
+        topic_pages = list(self.graph_path.glob(f"{self.property_prefix}-*.md"))
+        
+        if not topic_pages:
+            self.logger.info("No topic pages found to index")
+            return
+        
+        if self.dry_run:
+            self.logger.info(f"DRY RUN: Would create topic index with {len(topic_pages)} topics")
+            return
+        
+        # Extract topic names and metadata
+        topics = []
+        for topic_page in sorted(topic_pages):
+            topic_name = topic_page.stem.replace(f"{self.property_prefix}-", "")
+            
+            # Try to get item count from the file
+            item_count = 0
+            try:
+                with open(topic_page, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    # Look for item-count property
+                    import re
+                    match = re.search(r'item-count::\s*(\d+)', content)
+                    if match:
+                        item_count = int(match.group(1))
+            except Exception as e:
+                self.logger.debug(f"Could not read item count from {topic_page}: {e}")
+            
+            topics.append({
+                'name': topic_name,
+                'page_name': topic_page.stem,
+                'count': item_count
+            })
+        
+        # Build index page
+        index_name = f"{self.property_prefix}-index"
+        index_path = self.graph_path / f"{index_name}.md"
+        
+        builder = PageBuilder(index_name)
+        builder.property("type", "topic-index")
+        builder.property("created", datetime.now().strftime("%Y-%m-%d"))
+        builder.property("topic-count", len(topics))
+        builder.property("total-items", sum(t['count'] for t in topics))
+        
+        # Add header
+        builder.heading(1, "📚 Content Topics Index")
+        builder.text(f"This page provides an index of all {len(topics)} topics discovered in your content.")
+        builder.text(f"Total items: {sum(t['count'] for t in topics)}")
+        builder.text("")
+        
+        # Sort topics by count (descending)
+        topics_by_count = sorted(topics, key=lambda x: x['count'], reverse=True)
+        
+        # Add top topics section
+        top_count = min(10, len(topics_by_count))
+        builder.heading(2, f"🔥 Top {top_count} Topics")
+        for i, topic in enumerate(topics_by_count[:top_count], 1):
+            builder.text(f"{i}. [[{topic['page_name']}|{topic['name']}]] ({topic['count']} items)")
+        builder.text("")
+        
+        # Add alphabetical listing
+        builder.heading(2, "📖 All Topics (Alphabetical)")
+        topics_by_name = sorted(topics, key=lambda x: x['name'].lower())
+        
+        # Group by first letter
+        topics_by_letter = defaultdict(list)
+        for topic in topics_by_name:
+            first_letter = topic['name'][0].upper() if topic['name'] else '#'
+            if not first_letter.isalpha():
+                first_letter = '#'
+            topics_by_letter[first_letter].append(topic)
+        
+        # Add each letter section
+        for letter in sorted(topics_by_letter.keys()):
+            builder.heading(3, letter)
+            for topic in topics_by_letter[letter]:
+                builder.text(f"- [[{topic['page_name']}|{topic['name']}]] ({topic['count']} items)")
+            builder.text("")
+        
+        # Write index page
+        try:
+            with open(index_path, 'w', encoding='utf-8') as f:
+                f.write(builder.build())
+            
+            self.logger.info(f"Created topic index page: {index_name} with {len(topics)} topics")
+            self.stats['topic_pages_created'] += 1  # Count the index as a page
+            
+        except Exception as e:
+            self.logger.error(f"Failed to create topic index: {e}")
+            self.stats['errors'] += 1
     
     def _generate_async_report(self, queue_results: Dict[str, Any]) -> Dict[str, Any]:
         """Generate comprehensive report including async stats.
