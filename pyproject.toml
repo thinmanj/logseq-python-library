@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "logseq-python"
-version = "0.2.0"
+version = "0.2.1"
 description = "A comprehensive Python library for working with Logseq knowledge graphs"
 readme = "README.md"
 authors = [
