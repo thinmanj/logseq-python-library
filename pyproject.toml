@@ -60,6 +60,11 @@ cli = [
     "rich>=13.0.0",
     "typer>=0.9.0",
 ]
+tui = [
+    "textual>=0.41.0",
+    "click>=8.0.0",
+    "rich>=13.0.0",
+]
 pipeline = [
     "click>=8.0.0",
     "rich>=13.0.0",

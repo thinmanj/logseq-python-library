@@ -29,7 +29,7 @@ from .pipeline import (
     analyze_content, extract_from_block, generate_content
 )
 from .models import Block, Page
-from .client import LogseqClient
+from .logseq_client import LogseqClient
 
 
 console = Console()
@@ -806,6 +806,49 @@ def _save_example_results(context, output_path: str, example_type: str):
     report_file.write_text(report_content)
     
     console.print(f"[green]Example results saved to {output_dir}[/green]")
+
+
+@cli.command()
+@click.argument('graph_path', type=click.Path(exists=True))
+def tui(graph_path: str):
+    """Launch the Terminal User Interface for Logseq.
+    
+    Provides an interactive TUI for viewing and editing pages, journals, and templates.
+    
+    Features:
+    - Browse and edit journal entries with date navigation
+    - View and modify pages with markdown support
+    - Create and manage templates with variable substitution
+    - Search across all pages and blocks
+    - Keyboard shortcuts for efficient navigation
+    
+    Keyboard Shortcuts:
+    - Ctrl+J: Switch to Journals view
+    - Ctrl+P: Switch to Pages view
+    - Ctrl+T: Switch to Templates view
+    - Ctrl+F: Switch to Search view
+    - Ctrl+S: Save current page
+    - Ctrl+N: Create new page
+    - q: Quit application
+    - j/k: Navigate lists (vim-style)
+    """
+    try:
+        from .tui import launch_tui
+    except ImportError:
+        console.print(
+            "[red]TUI dependencies not installed.[/red]\n"
+            "Install with: [cyan]pip install textual[/cyan]"
+        )
+        sys.exit(1)
+    
+    console.print(f"[blue]Launching Logseq TUI for graph: {graph_path}[/blue]")
+    console.print("[dim]Press 'q' to quit, Ctrl+H for help[/dim]\n")
+    
+    try:
+        launch_tui(graph_path)
+    except Exception as e:
+        console.print(f"[red]TUI error: {e}[/red]")
+        sys.exit(1)
 
 
 def main():
