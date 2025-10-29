@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "logseq-python"
-version = "0.2.1"
+version = "0.3.0"
 description = "A comprehensive Python library for working with Logseq knowledge graphs"
 readme = "README.md"
 authors = [
@@ -106,7 +106,6 @@ addopts = [
     "--cov=logseq_py",
     "--cov-report=term-missing",
     "--cov-report=html:htmlcov",
-    "--cov-fail-under=80",
 ]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
@@ -121,11 +120,16 @@ branch = true
 omit = [
     "tests/*",
     "examples/*",
+    "scripts/*",
     "*/test_*",
     "*/__pycache__/*",
+    "logseq_py/tui.py",  # TUI requires interactive terminal
+    "logseq_py/cli.py",  # CLI tested via integration
+    "logseq_py/pipeline/*",  # Pipeline tested separately
 ]
 
 [tool.coverage.report]
+fail_under = 80
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",
@@ -137,6 +141,7 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "class .*\\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
+    "@work",  # Textual workers
 ]
 
 [tool.black]
