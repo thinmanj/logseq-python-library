@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2025-11-01
+
+### 🐛 Bug Fixes
+- **Fixed BlockBuilder newline rendering** - Blocks and sub-blocks now properly render on separate lines with correct indentation
+  - Changed `"\\n".join()` to `"\n".join()` in `BlockBuilder.build()` and `LogseqBuilder.build()`
+  - Sub-blocks now correctly nest under parent blocks instead of appearing on the same line
+  - This fix affects all content generated using the builder pattern (comprehensive processor, media embeds, etc.)
+
 ## [0.3.0] - 2025-10-29
 
 ### ✨ Added
