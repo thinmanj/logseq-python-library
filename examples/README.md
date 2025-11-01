@@ -1,6 +1,35 @@
-# Logseq Demo
+# Logseq Python Library - Examples
 
-This directory contains a comprehensive demonstration of all Logseq features, generated programmatically using the **Logseq Builder DSL**.
+This directory contains comprehensive examples and demonstrations of the Logseq Python library features.
+
+## ⭐ **NEW: Comprehensive Features Demo** (v0.3.1-v0.4.0)
+
+```bash
+python3 examples/comprehensive_features_demo.py
+```
+
+**Latest features showcase:**
+- ✅ Hierarchical blocks and sub-blocks (v0.3.1 fix)
+- ✅ Code blocks with proper indentation (v0.3.2 fix)
+- ✅ Comprehensive test coverage (v0.3.3)
+- ✅ **NEW** Diagram support - Mermaid, Graphviz, PlantUML (v0.4.0)
+- ✅ 7 interactive demos with validation
+- ✅ Real-world usage scenarios
+
+**What's included:**
+- Demo 1: Nested blocks with proper hierarchy
+- Demo 2: Code blocks as child blocks
+- Demo 3: Mermaid diagrams (flowchart, sequence, gantt)
+- Demo 4: Graphviz and PlantUML diagrams
+- Demo 5: Complete documentation page
+- Demo 6: Diagrams in nested blocks
+- Demo 7: Meeting notes and technical docs
+
+---
+
+## 📚 Original Logseq Demo
+
+This directory also contains a comprehensive demonstration of all Logseq features, generated programmatically using the **Logseq Builder DSL**.
 
 ## 🎯 What's Included
 
