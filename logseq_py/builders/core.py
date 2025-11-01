@@ -139,7 +139,7 @@ class BlockBuilder(ContentBuilder):
             child._indent_level = self._indent_level + 1
             lines.append(child.build())
         
-        return "\\n".join(lines)
+        return "\n".join(lines)
 
 
 class LogseqBuilder(ContentBuilder):
@@ -230,7 +230,7 @@ class LogseqBuilder(ContentBuilder):
             else:
                 result.append(str(builder))
         
-        return "\\n".join(result)
+        return "\n".join(result)
 
 
 def create_id() -> str:
