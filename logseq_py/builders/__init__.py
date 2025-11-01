@@ -48,6 +48,7 @@ from .content_types import (
     QuoteBuilder,
     TableBuilder,
     MediaBuilder,
+    DiagramBuilder,
     DrawingBuilder
 )
 
@@ -86,6 +87,7 @@ __all__ = [
     'QuoteBuilder',
     'TableBuilder',
     'MediaBuilder',
+    'DiagramBuilder',
     'DrawingBuilder',
     
     # Page builders

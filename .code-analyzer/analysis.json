@@ -1,0 +1,3353 @@
+{
+  "project_path": "/Volumes/Projects/logseq-python",
+  "analysis_date": "2025-10-31T22:03:55.067523",
+  "metrics": {
+    "total_files": 72,
+    "total_lines": 30425,
+    "total_classes": 197,
+    "total_functions": 1368,
+    "total_issues": 126,
+    "issues_by_severity": {
+      "medium": 35,
+      "high": 14,
+      "low": 77
+    },
+    "issues_by_type": {
+      "complexity": 35,
+      "unused_code": 70,
+      "documentation": 7,
+      "code_smell": 6,
+      "security": 1,
+      "conceptual": 7
+    },
+    "average_complexity": 2.4173976608187133,
+    "max_complexity": 27
+  },
+  "issues": [
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in main",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "demo_save_operations.py:12-119 in main()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in main",
+      "description": "Function has cyclomatic complexity of 19",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 19
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in demo_real_pipeline",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "examples/complete_pipeline_demo.py:143-229 in demo_real_pipeline()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in main",
+      "description": "Function has cyclomatic complexity of 26",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 26
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in create_task_analysis",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "examples/process_logseq_content.py:409-492 in create_task_analysis()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in create_journal_insights",
+      "description": "Function has cyclomatic complexity of 24",
+      "location": "examples/process_logseq_content.py:569-693 in create_journal_insights()",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 24
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in graph",
+      "description": "Function has cyclomatic complexity of 14",
+      "location": "logseq_py/cli.py:119-182 in graph()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 14
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in run",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/cli.py:199-285 in run()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in info",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/cli.py:369-431 in info()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _display_analysis_text",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/cli.py:649-684 in _display_analysis_text()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in parse_blocks_from_content",
+      "description": "Function has cyclomatic complexity of 19",
+      "location": "logseq_py/utils.py:80-201 in parse_blocks_from_content() [LogseqUtils]",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 19
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in build",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/builders/advanced_builders.py:252-293 in build() [WorkflowBuilder]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in analyze",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/analyzers.py:73-131 in analyze() [SentimentAnalyzer]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _create_topic_index_page",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "logseq_py/pipeline/async_comprehensive_processor.py:373-471 in _create_topic_index_page() [AsyncComprehensiveContentProcessor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in execute",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/async_core.py:88-147 in execute() [AsyncPipeline]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _scan_for_content_blocks",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/comprehensive_processor.py:138-195 in _scan_for_content_blocks() [ComprehensiveContentProcessor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _process_content_block",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/comprehensive_processor.py:252-301 in _process_content_block() [ComprehensiveContentProcessor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in _enhance_content_block",
+      "description": "Function has cyclomatic complexity of 23",
+      "location": "logseq_py/pipeline/comprehensive_processor.py:421-536 in _enhance_content_block() [ComprehensiveContentProcessor]",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 23
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in execute",
+      "description": "Function has cyclomatic complexity of 14",
+      "location": "logseq_py/pipeline/core.py:201-278 in execute() [Pipeline]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 14
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _rank_topics_advanced",
+      "description": "Function has cyclomatic complexity of 13",
+      "location": "logseq_py/pipeline/enhanced_extractors.py:735-801 in _rank_topics_advanced() [ContentAnalyzer]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 13
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in _parse_html_content",
+      "description": "Function has cyclomatic complexity of 27",
+      "location": "logseq_py/pipeline/extractors.py:190-358 in _parse_html_content() [URLExtractor]",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 27
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _extract_from_html",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "logseq_py/pipeline/extractors.py:579-637 in _extract_from_html() [YouTubeExtractor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in extract",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "logseq_py/pipeline/extractors.py:901-948 in extract() [RSSFeedExtractor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _compare_values",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "logseq_py/pipeline/filters.py:75-102 in _compare_values() [PropertyFilter]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in matches",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/filters.py:136-175 in matches() [ContentFilter]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in matches",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/filters.py:193-221 in matches() [TypeFilter]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _generate_topic_insight",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/generators.py:310-368 in _generate_topic_insight() [InsightsBlockGenerator]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in execute",
+      "description": "Function has cyclomatic complexity of 14",
+      "location": "logseq_py/pipeline/steps.py:196-261 in execute() [AnalyzeContentStep]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 14
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in execute",
+      "description": "Function has cyclomatic complexity of 14",
+      "location": "logseq_py/pipeline/steps.py:323-374 in execute() [SaveResultsStep]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 14
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _extract_with_transcript_api",
+      "description": "Function has cyclomatic complexity of 12",
+      "location": "logseq_py/pipeline/subtitle_extractor.py:79-143 in _extract_with_transcript_api() [YouTubeSubtitleExtractor]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 12
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _scan_for_content_blocks",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/video_processor.py:129-186 in _scan_for_content_blocks() [VideoProcessingPipeline]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in _process_content_block",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "logseq_py/pipeline/video_processor.py:242-291 in _process_content_block() [VideoProcessingPipeline]",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in main",
+      "description": "Function has cyclomatic complexity of 15",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 15
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "high",
+      "title": "High complexity in weekly_report",
+      "description": "Function has cyclomatic complexity of 16",
+      "location": "scripts/etl_examples.py:114-245 in weekly_report()",
+      "recommendation": "Consider breaking this function into smaller, more focused functions",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 16
+      }
+    },
+    {
+      "type": "complexity",
+      "severity": "medium",
+      "title": "Moderate complexity in topic_report",
+      "description": "Function has cyclomatic complexity of 11",
+      "location": "scripts/etl_examples.py:367-441 in topic_report()",
+      "recommendation": "Consider simplifying this function",
+      "code_snippet": null,
+      "metadata": {
+        "complexity": 11
+      }
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_page",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/page_builders.py:357-359 in create_page()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: setup_logging",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/complete_pipeline_demo.py:43-52 in setup_logging()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_context_manager_examples",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:154-182 in show_context_manager_examples()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_code_filter",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/filters.py:459-461 in create_code_filter()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_generators",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:176-219 in test_generators()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_models",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:46-70 in test_models()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_extractors",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:111-139 in test_extractors()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_save_methods",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:125-152 in show_save_methods()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: process_and_enhance_content",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/process_and_update_content.py:24-71 in process_and_enhance_content()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: quick_context_demo",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:226-254 in quick_context_demo()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: run_async_batch",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/async_core.py:279-286 in run_async_batch()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: process_graph_async",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/async_comprehensive_processor.py:500-514 in process_graph_async()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: cached",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/cache.py:601-625 in cached()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: print_report",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "scripts/comprehensive_processor_cli.py:83-137 in print_report()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_optimized_pipeline",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/core.py:460-462 in create_optimized_pipeline()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_filters",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:76-108 in test_filters()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_models",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:12-39 in test_models()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: extract_tags",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/process_logseq_content.py:129-132 in extract_tags()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_imports",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:13-43 in test_imports()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_filters",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:105-136 in test_filters()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: setup_logging",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/pipeline_demo.py:29-38 in setup_logging()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_project_page",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/page_builders.py:387-412 in create_project_page()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_pipeline",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:142-173 in test_pipeline()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: run_async_analysis_pipeline",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/async_core.py:408-421 in run_async_analysis_pipeline()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demonstrate_individual_features",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/video_processing_pipeline_example.py:91-149 in demonstrate_individual_features()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_meeting_page",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/page_builders.py:362-384 in create_meeting_page()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_person_page",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/page_builders.py:415-436 in create_person_page()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: preview_markdown",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:215-224 in preview_markdown()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_or_filter",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/filters.py:490-492 in create_or_filter()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: get_all_analyzers",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/analyzers.py:576-578 in get_all_analyzers()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_tag_filter",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/filters.py:480-482 in create_tag_filter()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_system_capabilities",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/unified_builder_system_demo.py:331-365 in show_system_capabilities()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_architecture_overview",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/simple_unified_builder_demo.py:184-227 in show_architecture_overview()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: analyze_task_patterns",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/process_and_update_content.py:73-103 in analyze_task_patterns()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demo_exception_handling",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "demo_context_manager.py:133-166 in demo_exception_handling()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: analyze_logseq_content",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/process_logseq_content.py:18-70 in analyze_logseq_content()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: pytest_collection_modifyitems",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "tests/conftest.py:283-296 in pytest_collection_modifyitems()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: setup_logging",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "scripts/comprehensive_processor_cli.py:37-61 in setup_logging()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_code_examples",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/simple_unified_builder_demo.py:229-290 in show_code_examples()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_recent_filter",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/filters.py:464-467 in create_recent_filter()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_id",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/core.py:236-238 in create_id()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: get_generator",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/generators.py:566-568 in get_generator()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demonstrate_unified_system",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/unified_builder_system_demo.py:31-60 in demonstrate_unified_system()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: quick_add_task",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:198-213 in quick_add_task()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: pytest_configure",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "tests/conftest.py:274-279 in pytest_configure()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_examples",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:62-89 in show_examples()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: analyze_content",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/analyzers.py:581-583 in analyze_content()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_analysis_pipeline_steps",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/steps.py:471-478 in create_analysis_pipeline_steps()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: get_all_extractors",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/extractors.py:2244-2246 in get_all_extractors()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_analyzers",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:73-102 in test_analyzers()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_predicate_filter",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/filters.py:495-497 in create_predicate_filter()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: escape_content",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/builders/core.py:253-256 in escape_content()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_redis_cache",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/cache.py:594-597 in create_redis_cache()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: generate_content",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/generators.py:576-578 in generate_content()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_pipeline",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:169-199 in test_pipeline()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: save_graph",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:184-196 in save_graph()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: run_async_extraction_pipeline",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/async_core.py:424-437 in run_async_extraction_pipeline()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demo_basic_context_manager",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "demo_context_manager.py:12-50 in demo_basic_context_manager()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: analyze_block",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/analyzers.py:586-591 in analyze_block()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_basic_pipeline_steps",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/steps.py:455-468 in create_basic_pipeline_steps()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_analyzers",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "simple_test.py:42-73 in test_analyzers()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: test_extractors",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "test_runner.py:139-166 in test_extractors()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: get_all_generators",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/generators.py:571-573 in get_all_generators()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demo_manual_save_control",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "demo_context_manager.py:92-131 in demo_manual_save_control()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demo_sample_data",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:91-123 in demo_sample_data()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demonstrate_unified_concepts",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "examples/simple_unified_builder_demo.py:16-31 in demonstrate_unified_concepts()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: show_welcome",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "ipython_startup.py:24-60 in show_welcome()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: demo_context_manager_with_backup",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "demo_context_manager.py:52-90 in demo_context_manager_with_backup()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: get_analyzer",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "logseq_py/pipeline/analyzers.py:571-573 in get_analyzer()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "unused_code",
+      "severity": "low",
+      "title": "Potentially unused function: create_config",
+      "description": "This function is not called anywhere in the codebase",
+      "location": "scripts/comprehensive_processor_cli.py:64-80 in create_config()",
+      "recommendation": "Consider removing if truly unused, or document its external usage",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "examples/advanced_queries.py:24-198 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "examples/basic_usage.py:22-124 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "examples/video_processing_pipeline_example.py:25-88 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in graph",
+      "description": "Function has 6 parameters",
+      "location": "logseq_py/cli.py:119-182 in graph()",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in run",
+      "description": "Function has 7 parameters",
+      "location": "logseq_py/cli.py:199-285 in run()",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in __init__",
+      "description": "Function has 8 parameters",
+      "location": "logseq_py/pipeline/filters.py:108-134 in __init__() [ContentFilter]",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in __init__",
+      "description": "Function has 6 parameters",
+      "location": "logseq_py/pipeline/filters.py:397-417 in __init__() [PageFilter]",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in __init__",
+      "description": "Function has 6 parameters",
+      "location": "logseq_py/pipeline/steps.py:21-31 in __init__() [LoadContentStep]",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "documentation",
+      "severity": "low",
+      "title": "Missing docstring: main",
+      "description": "Public function lacks documentation",
+      "location": "scripts/video_processor_cli.py:106-248 in main()",
+      "recommendation": "Add a docstring describing purpose, parameters, and return value",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "code_smell",
+      "severity": "medium",
+      "title": "Long parameter list in add_response",
+      "description": "Function has 6 parameters",
+      "location": "tests/conftest.py:214-221 in add_response() [MockRequests]",
+      "recommendation": "Consider using a configuration object or builder pattern",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "security",
+      "severity": "medium",
+      "title": "Potentially dangerous import: pickle",
+      "description": "Module imports pickle which can be unsafe",
+      "location": "logseq_py/pipeline/cache.py:1",
+      "recommendation": "Ensure proper input validation when using this module",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: LogseqClient",
+      "description": "Class has 30 methods, indicating too many responsibilities",
+      "location": "logseq_py/logseq_client.py:19-723 [LogseqClient]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: Page",
+      "description": "Class has 23 methods, indicating too many responsibilities",
+      "location": "logseq_py/models.py:394-630 [Page]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: LogseqGraph",
+      "description": "Class has 26 methods, indicating too many responsibilities",
+      "location": "logseq_py/models.py:634-880 [LogseqGraph]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: QueryBuilder",
+      "description": "Class has 46 methods, indicating too many responsibilities",
+      "location": "logseq_py/query.py:14-612 [QueryBuilder]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: LogseqTUI",
+      "description": "Class has 24 methods, indicating too many responsibilities",
+      "location": "logseq_py/tui.py:120-627 [LogseqTUI]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: TaskBuilder",
+      "description": "Class has 23 methods, indicating too many responsibilities",
+      "location": "logseq_py/builders/content_types.py:111-261 [TaskBuilder]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    },
+    {
+      "type": "conceptual",
+      "severity": "high",
+      "title": "God class: PageBuilder",
+      "description": "Class has 32 methods, indicating too many responsibilities",
+      "location": "logseq_py/builders/page_builders.py:103-310 [PageBuilder]",
+      "recommendation": "Consider splitting into smaller, more focused classes following SRP",
+      "code_snippet": null,
+      "metadata": {}
+    }
+  ],
+  "critical_sections": [
+    {
+      "name": "demo_context_manager.main",
+      "location": "demo_context_manager.py:168-211 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "demo_save_operations.main",
+      "location": "demo_save_operations.py:12-119 in main()",
+      "reason": "High complexity (12)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "demo_save_operations.main",
+      "location": "demo_save_operations.py:12-119 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "demo_tui.main",
+      "location": "demo_tui.py:15-55 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "run_async_processor.main",
+      "location": "run_async_processor.py:196-228 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "simple_test.main",
+      "location": "simple_test.py:222-260 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "test_runner.main",
+      "location": "test_runner.py:202-233 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "test_tui.main",
+      "location": "test_tui.py:18-74 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.advanced_content_analysis.main",
+      "location": "examples/advanced_content_analysis.py:398-415 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.advanced_logseq_features.main",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "reason": "High complexity (19)",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.advanced_logseq_features.main",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.advanced_queries.main",
+      "location": "examples/advanced_queries.py:24-198 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.async_cached_pipeline.main",
+      "location": "examples/async_cached_pipeline.py:339-362 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.basic_usage.main",
+      "location": "examples/basic_usage.py:22-124 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.complete_pipeline_demo.demo_real_pipeline",
+      "location": "examples/complete_pipeline_demo.py:143-229 in demo_real_pipeline()",
+      "reason": "High complexity (12)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "examples.complete_pipeline_demo.main",
+      "location": "examples/complete_pipeline_demo.py:321-347 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.data_export_import.main",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "reason": "High complexity (26)",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.data_export_import.main",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.generate_logseq_demo.main",
+      "location": "examples/generate_logseq_demo.py:1014-1018 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.pipeline_demo.main",
+      "location": "examples/pipeline_demo.py:250-273 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.process_logseq_content.create_task_analysis",
+      "location": "examples/process_logseq_content.py:409-492 in create_task_analysis()",
+      "reason": "High complexity (12)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "examples.process_logseq_content.create_journal_insights",
+      "location": "examples/process_logseq_content.py:569-693 in create_journal_insights()",
+      "reason": "High complexity (24)",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.realistic_content_updates.main",
+      "location": "examples/realistic_content_updates.py:19-48 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.research_knowledge_manager.main",
+      "location": "examples/research_knowledge_manager.py:481-499 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.simple_dsl_example.main",
+      "location": "examples/simple_dsl_example.py:17-85 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "examples.video_processing_pipeline_example.main",
+      "location": "examples/video_processing_pipeline_example.py:25-88 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "logseq_py.cli.graph",
+      "location": "logseq_py/cli.py:119-182 in graph()",
+      "reason": "High complexity (14)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.cli.run",
+      "location": "logseq_py/cli.py:199-285 in run()",
+      "reason": "High complexity (11)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.cli.info",
+      "location": "logseq_py/cli.py:369-431 in info()",
+      "reason": "High complexity (11)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.cli._display_analysis_text",
+      "location": "logseq_py/cli.py:649-684 in _display_analysis_text()",
+      "reason": "High complexity (11)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.cli.main",
+      "location": "logseq_py/cli.py:854-856 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "logseq_py.logseq_client.LogseqClient",
+      "location": "logseq_py/logseq_client.py:19-723 [LogseqClient]",
+      "reason": "Large class (30 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.models.Block",
+      "location": "logseq_py/models.py:116-390 [Block]",
+      "reason": "Large class (20 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.models.Page",
+      "location": "logseq_py/models.py:394-630 [Page]",
+      "reason": "Large class (23 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.models.LogseqGraph",
+      "location": "logseq_py/models.py:634-880 [LogseqGraph]",
+      "reason": "Large class (26 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.query.QueryBuilder",
+      "location": "logseq_py/query.py:14-612 [QueryBuilder]",
+      "reason": "Large class (46 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.tui.LogseqTUI",
+      "location": "logseq_py/tui.py:120-627 [LogseqTUI]",
+      "reason": "Large class (24 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.utils.LogseqUtils",
+      "location": "logseq_py/utils.py:17-435 [LogseqUtils]",
+      "reason": "Large class (16 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.QueryBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:15-111 [QueryBuilder]",
+      "reason": "Large class (17 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TaskBuilder",
+      "location": "logseq_py/builders/content_types.py:111-261 [TaskBuilder]",
+      "reason": "Large class (23 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PropertyBuilder",
+      "location": "logseq_py/builders/page_builders.py:16-100 [PropertyBuilder]",
+      "reason": "Large class (18 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PageBuilder",
+      "location": "logseq_py/builders/page_builders.py:103-310 [PageBuilder]",
+      "reason": "Large class (32 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.builders.parser.BuilderParser",
+      "location": "logseq_py/builders/parser.py:24-352 [BuilderParser]",
+      "reason": "Large class (16 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "logseq_py.pipeline.comprehensive_processor.ComprehensiveContentProcessor",
+      "location": "logseq_py/pipeline/comprehensive_processor.py:23-674 [ComprehensiveContentProcessor]",
+      "reason": "Large class (16 methods)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.main",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "reason": "High complexity (15)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.main",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "scripts.etl_examples.weekly_report",
+      "location": "scripts/etl_examples.py:114-245 in weekly_report()",
+      "reason": "High complexity (16)",
+      "risk_level": "high"
+    },
+    {
+      "name": "scripts.etl_examples.topic_report",
+      "location": "scripts/etl_examples.py:367-441 in topic_report()",
+      "reason": "High complexity (11)",
+      "risk_level": "medium"
+    },
+    {
+      "name": "scripts.release.main",
+      "location": "scripts/release.py:25-65 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    },
+    {
+      "name": "scripts.video_processor_cli.main",
+      "location": "scripts/video_processor_cli.py:106-248 in main()",
+      "reason": "Application entry point",
+      "risk_level": "high"
+    }
+  ],
+  "entry_points": [
+    "demo_context_manager.main",
+    "demo_save_operations.main",
+    "demo_tui.main",
+    "run_async_processor.main",
+    "simple_test.main",
+    "test_runner.main",
+    "test_tui.main",
+    "examples.advanced_content_analysis.main",
+    "examples.advanced_logseq_features.main",
+    "examples.advanced_queries.main",
+    "examples.async_cached_pipeline.main",
+    "examples.basic_usage.main",
+    "examples.complete_pipeline_demo.main",
+    "examples.data_export_import.main",
+    "examples.generate_logseq_demo.main",
+    "examples.pipeline_demo.main",
+    "examples.realistic_content_updates.main",
+    "examples.research_knowledge_manager.main",
+    "examples.simple_dsl_example.main",
+    "examples.video_processing_pipeline_example.main",
+    "logseq_py.cli.main",
+    "logseq_py.cli",
+    "scripts.comprehensive_processor_cli.main",
+    "scripts.etl_examples",
+    "scripts.release.main",
+    "scripts.video_processor_cli.main"
+  ],
+  "dependency_graph": {
+    "demo_context_manager": [
+      "logseq_py"
+    ],
+    "demo_save_operations": [
+      "logseq_py"
+    ],
+    "demo_tui": [
+      "logseq_py.tui"
+    ],
+    "ipython_startup": [
+      "logseq_py"
+    ],
+    "run_async_processor": [
+      "logseq_py.pipeline.async_comprehensive_processor"
+    ],
+    "setup": [
+      "setuptools"
+    ],
+    "simple_test": [
+      "logseq_py.pipeline.analyzers",
+      "logseq_py.models",
+      "logseq_py.pipeline.filters",
+      "logseq_py.models",
+      "logseq_py.pipeline.extractors",
+      "logseq_py.pipeline.core",
+      "logseq_py.pipeline.steps",
+      "logseq_py.models",
+      "logseq_py.pipeline.core",
+      "logseq_py.pipeline.generators",
+      "logseq_py.models"
+    ],
+    "test_improvements": [
+      "logseq_py.pipeline.enhanced_extractors"
+    ],
+    "test_runner": [
+      "logseq_py.models",
+      "logseq_py.pipeline",
+      "logseq_py.pipeline.filters",
+      "logseq_py.pipeline.analyzers",
+      "logseq_py.pipeline.generators",
+      "logseq_py.models",
+      "logseq_py.pipeline.analyzers",
+      "logseq_py.models",
+      "logseq_py.pipeline.filters",
+      "logseq_py.models",
+      "logseq_py.pipeline.extractors",
+      "logseq_py.pipeline",
+      "logseq_py.pipeline.steps",
+      "logseq_py.models"
+    ],
+    "test_subtitle_extraction": [
+      "logseq_py.pipeline.subtitle_extractor"
+    ],
+    "test_tui": [
+      "logseq_py.tui"
+    ],
+    "test_twitter_extraction": [
+      "logseq_py.pipeline.enhanced_extractors"
+    ],
+    "examples.advanced_content_analysis": [
+      "logseq_py",
+      "logseq_py.builders"
+    ],
+    "examples.advanced_logseq_features": [
+      "logseq_py"
+    ],
+    "examples.advanced_queries": [
+      "logseq_py",
+      "logseq_py.query"
+    ],
+    "examples.async_cached_pipeline": [
+      "logseq_py.models",
+      "logseq_py.pipeline.cache",
+      "logseq_py.pipeline.async_pipeline"
+    ],
+    "examples.basic_usage": [
+      "logseq_py"
+    ],
+    "examples.complete_pipeline_demo": [
+      "logseq_py.pipeline",
+      "logseq_py.models"
+    ],
+    "examples.data_export_import": [
+      "logseq_py"
+    ],
+    "examples.generate_logseq_demo": [
+      "logseq_py",
+      "logseq_py.builders.content_types",
+      "logseq_py.builders.core",
+      "logseq_py.builders.content_types",
+      "logseq_py.builders.advanced_builders"
+    ],
+    "examples.pipeline_demo": [
+      "logseq_py.pipeline.core",
+      "logseq_py.pipeline.filters",
+      "logseq_py.pipeline.steps",
+      "logseq_py.pipeline.core"
+    ],
+    "examples.process_and_update_content": [
+      "logseq_py"
+    ],
+    "examples.process_logseq_content": [],
+    "examples.realistic_content_updates": [],
+    "examples.research_knowledge_manager": [
+      "logseq_py",
+      "logseq_py.builders"
+    ],
+    "examples.simple_dsl_example": [
+      "logseq_py.builders"
+    ],
+    "examples.simple_unified_builder_demo": [],
+    "examples.unified_builder_system_demo": [
+      "logseq_py.builders",
+      "logseq_py",
+      "logseq_py.utils"
+    ],
+    "examples.video_processing_pipeline_example": [
+      "logseq_py.pipeline.video_processor",
+      "logseq_py.pipeline.subtitle_extractor",
+      "logseq_py.utils"
+    ],
+    "logseq_py": [],
+    "logseq_py.cli": [],
+    "logseq_py.logseq_client": [],
+    "logseq_py.models": [],
+    "logseq_py.query": [],
+    "logseq_py.tui": [],
+    "logseq_py.utils": [],
+    "logseq_py.builders": [],
+    "logseq_py.builders.advanced_builders": [],
+    "logseq_py.builders.content_types": [],
+    "logseq_py.builders.core": [],
+    "logseq_py.builders.page_builders": [],
+    "logseq_py.builders.parser": [],
+    "logseq_py.pipeline": [],
+    "logseq_py.pipeline.analyzers": [],
+    "logseq_py.pipeline.async_comprehensive_processor": [],
+    "logseq_py.pipeline.async_core": [],
+    "logseq_py.pipeline.async_queue": [],
+    "logseq_py.pipeline.cache": [],
+    "logseq_py.pipeline.comprehensive_processor": [],
+    "logseq_py.pipeline.core": [],
+    "logseq_py.pipeline.enhanced_extractors": [],
+    "logseq_py.pipeline.extractors": [],
+    "logseq_py.pipeline.filters": [],
+    "logseq_py.pipeline.generators": [],
+    "logseq_py.pipeline.steps": [],
+    "logseq_py.pipeline.subtitle_extractor": [],
+    "logseq_py.pipeline.video_processor": [],
+    "scripts.comprehensive_processor_cli": [
+      "logseq_py.pipeline.comprehensive_processor"
+    ],
+    "scripts.etl_examples": [
+      "logseq_py.logseq_client",
+      "logseq_py.models"
+    ],
+    "scripts.release": [],
+    "scripts.video_processor_cli": [
+      "logseq_py.pipeline.video_processor"
+    ],
+    "tests.conftest": [
+      "logseq_py.models",
+      "logseq_py.pipeline.core"
+    ],
+    "tests.test_basic": [
+      "logseq_py",
+      "logseq_py.utils"
+    ],
+    "tests.test_etl": [
+      "logseq_py.logseq_client",
+      "logseq_py.models"
+    ],
+    "tests.test_integration": [
+      "logseq_py.pipeline.core",
+      "logseq_py.pipeline.steps",
+      "logseq_py.pipeline.filters",
+      "logseq_py.models"
+    ],
+    "tests.test_tui": [
+      "logseq_py.tui",
+      "logseq_py.models",
+      "logseq_py.logseq_client"
+    ],
+    "tests.unit.test_cache": [
+      "logseq_py.pipeline.cache"
+    ],
+    "tests.unit.test_extractors": [
+      "logseq_py.models",
+      "logseq_py.pipeline.extractors",
+      "logseq_py.pipeline.cache"
+    ],
+    "tests.unit.test_models": [
+      "logseq_py.models"
+    ],
+    "tests.unit.test_pipeline_analyzers": [
+      "logseq_py.models",
+      "logseq_py.pipeline.analyzers"
+    ],
+    "tests.unit.test_pipeline_filters": [
+      "logseq_py.models",
+      "logseq_py.pipeline.filters"
+    ],
+    "tests.unit.test_video_utils": [
+      "logseq_py.utils"
+    ]
+  },
+  "important_sections": [
+    {
+      "name": "demo_context_manager.main",
+      "location": "demo_context_manager.py:168-211 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.demo_basic_context_manager",
+      "location": "demo_context_manager.py:12-50 in demo_basic_context_manager()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_basic_context_manager",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.demo_context_manager_with_backup",
+      "location": "demo_context_manager.py:52-90 in demo_context_manager_with_backup()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_context_manager_with_backup",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.demo_manual_save_control",
+      "location": "demo_context_manager.py:92-131 in demo_manual_save_control()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_manual_save_control",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.demo_exception_handling",
+      "location": "demo_context_manager.py:133-166 in demo_exception_handling()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_exception_handling",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.main",
+      "location": "demo_context_manager.py:168-211 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_context_manager.demo_manual_save_control",
+      "location": "demo_context_manager.py:92-131 in demo_manual_save_control()",
+      "category": "database",
+      "importance": "high",
+      "description": "Database operation: demo_manual_save_control",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_save_operations.main",
+      "location": "demo_save_operations.py:12-119 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_save_operations.main",
+      "location": "demo_save_operations.py:12-119 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "demo_tui.main",
+      "location": "demo_tui.py:15-55 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "ipython_startup.quick_context_demo",
+      "location": "ipython_startup.py:226-254 in quick_context_demo()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: quick_context_demo",
+      "pattern_type": null
+    },
+    {
+      "name": "run_async_processor.main",
+      "location": "run_async_processor.py:196-228 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "run_async_processor.run_processor",
+      "location": "run_async_processor.py:68-193 in run_processor()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: run_processor",
+      "pattern_type": null
+    },
+    {
+      "name": "run_async_processor.run_processor",
+      "location": "run_async_processor.py:68-193 in run_processor()",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Core business logic: run_processor",
+      "pattern_type": null
+    },
+    {
+      "name": "simple_test.main",
+      "location": "simple_test.py:222-260 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "test_runner.main",
+      "location": "test_runner.py:202-233 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "test_tui.main",
+      "location": "test_tui.py:18-74 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "test_tui.main",
+      "location": "test_tui.py:18-74 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.advanced_content_analysis.main",
+      "location": "examples/advanced_content_analysis.py:398-415 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.advanced_logseq_features.main",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.advanced_logseq_features.main",
+      "location": "examples/advanced_logseq_features.py:27-294 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.advanced_queries.main",
+      "location": "examples/advanced_queries.py:24-198 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.advanced_queries.main",
+      "location": "examples/advanced_queries.py:24-198 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.async_cached_pipeline.main",
+      "location": "examples/async_cached_pipeline.py:339-362 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.async_cached_pipeline.demonstrate_caching_performance",
+      "location": "examples/async_cached_pipeline.py:83-150 in demonstrate_caching_performance()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_caching_performance",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.async_cached_pipeline.demonstrate_persistent_caching",
+      "location": "examples/async_cached_pipeline.py:153-212 in demonstrate_persistent_caching()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_persistent_caching",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.async_cached_pipeline.demonstrate_async_pipeline_with_caching",
+      "location": "examples/async_cached_pipeline.py:215-285 in demonstrate_async_pipeline_with_caching()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_async_pipeline_with_caching",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.async_cached_pipeline.demonstrate_cache_management",
+      "location": "examples/async_cached_pipeline.py:288-336 in demonstrate_cache_management()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_cache_management",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.basic_usage.main",
+      "location": "examples/basic_usage.py:22-124 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.basic_usage.main",
+      "location": "examples/basic_usage.py:22-124 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.complete_pipeline_demo.main",
+      "location": "examples/complete_pipeline_demo.py:321-347 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.complete_pipeline_demo.demo_individual_components",
+      "location": "examples/complete_pipeline_demo.py:87-140 in demo_individual_components()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_individual_components",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.complete_pipeline_demo.demo_real_pipeline",
+      "location": "examples/complete_pipeline_demo.py:143-229 in demo_real_pipeline()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_real_pipeline",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.complete_pipeline_demo.demo_error_handling",
+      "location": "examples/complete_pipeline_demo.py:279-318 in demo_error_handling()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_error_handling",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.data_export_import.main",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.data_export_import.main",
+      "location": "examples/data_export_import.py:24-307 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.generate_logseq_demo.main",
+      "location": "examples/generate_logseq_demo.py:1014-1018 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.pipeline_demo.main",
+      "location": "examples/pipeline_demo.py:250-273 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.pipeline_demo.CustomAnalysisStep",
+      "location": "examples/pipeline_demo.py:147-187 [CustomAnalysisStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "examples.pipeline_demo.demo_task_analysis_pipeline",
+      "location": "examples/pipeline_demo.py:75-107 in demo_task_analysis_pipeline()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_task_analysis_pipeline",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.pipeline_demo.demo_content_extraction_pipeline",
+      "location": "examples/pipeline_demo.py:110-138 in demo_content_extraction_pipeline()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_content_extraction_pipeline",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.pipeline_demo.demo_pipeline_resumption",
+      "location": "examples/pipeline_demo.py:214-247 in demo_pipeline_resumption()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demo_pipeline_resumption",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_and_update_content.analyze_task_patterns",
+      "location": "examples/process_and_update_content.py:73-103 in analyze_task_patterns()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: analyze_task_patterns",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_and_update_content.identify_knowledge_gaps",
+      "location": "examples/process_and_update_content.py:105-139 in identify_knowledge_gaps()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: identify_knowledge_gaps",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_and_update_content.create_enhancement_suggestions",
+      "location": "examples/process_and_update_content.py:156-170 in create_enhancement_suggestions()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: create_enhancement_suggestions",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_and_update_content.create_dynamic_dashboard",
+      "location": "examples/process_and_update_content.py:311-373 in create_dynamic_dashboard()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: create_dynamic_dashboard",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_logseq_content.create_task_analysis",
+      "location": "examples/process_logseq_content.py:409-492 in create_task_analysis()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: create_task_analysis",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.process_logseq_content.create_journal_insights",
+      "location": "examples/process_logseq_content.py:569-693 in create_journal_insights()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: create_journal_insights",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.realistic_content_updates.main",
+      "location": "examples/realistic_content_updates.py:19-48 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.realistic_content_updates.generate_productivity_guide",
+      "location": "examples/realistic_content_updates.py:439-497 in generate_productivity_guide()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: generate_productivity_guide",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.research_knowledge_manager.main",
+      "location": "examples/research_knowledge_manager.py:481-499 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.research_knowledge_manager.ResearchKnowledgeManager",
+      "location": "examples/research_knowledge_manager.py:29-479 [ResearchKnowledgeManager]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: ResearchKnowledgeManager",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.simple_dsl_example.main",
+      "location": "examples/simple_dsl_example.py:17-85 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.unified_builder_system_demo.demonstrate_loading_as_builders",
+      "location": "examples/unified_builder_system_demo.py:62-86 in demonstrate_loading_as_builders()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_loading_as_builders",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.unified_builder_system_demo.demonstrate_modification_with_builders",
+      "location": "examples/unified_builder_system_demo.py:88-153 in demonstrate_modification_with_builders()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_modification_with_builders",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.unified_builder_system_demo.demonstrate_round_trip_processing",
+      "location": "examples/unified_builder_system_demo.py:155-226 in demonstrate_round_trip_processing()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_round_trip_processing",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.unified_builder_system_demo.demonstrate_builder_reconstruction",
+      "location": "examples/unified_builder_system_demo.py:228-252 in demonstrate_builder_reconstruction()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_builder_reconstruction",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.unified_builder_system_demo.demonstrate_advanced_manipulation",
+      "location": "examples/unified_builder_system_demo.py:254-329 in demonstrate_advanced_manipulation()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_advanced_manipulation",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.video_processing_pipeline_example.main",
+      "location": "examples/video_processing_pipeline_example.py:25-88 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.video_processing_pipeline_example.main",
+      "location": "examples/video_processing_pipeline_example.py:25-88 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "examples.video_processing_pipeline_example.demonstrate_individual_features",
+      "location": "examples/video_processing_pipeline_example.py:91-149 in demonstrate_individual_features()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: demonstrate_individual_features",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.cli",
+      "location": "logseq_py/cli.py:42-65 in cli()",
+      "category": "entry_point",
+      "importance": "high",
+      "description": "CLI entry point: cli",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.run",
+      "location": "logseq_py/cli.py:199-285 in run()",
+      "category": "entry_point",
+      "importance": "high",
+      "description": "CLI entry point: run",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.main",
+      "location": "logseq_py/cli.py:854-856 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.graph",
+      "location": "logseq_py/cli.py:119-182 in graph()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: graph",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.run",
+      "location": "logseq_py/cli.py:199-285 in run()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: run",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.templates",
+      "location": "logseq_py/cli.py:294-363 in templates()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: templates",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli.info",
+      "location": "logseq_py/cli.py:369-431 in info()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: info",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli._display_analysis_table",
+      "location": "logseq_py/cli.py:622-646 in _display_analysis_table()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: _display_analysis_table",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli._display_analysis_text",
+      "location": "logseq_py/cli.py:649-684 in _display_analysis_text()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: _display_analysis_text",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli._display_pipeline_results",
+      "location": "logseq_py/cli.py:709-738 in _display_pipeline_results()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: _display_pipeline_results",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli._display_extraction_results",
+      "location": "logseq_py/cli.py:741-758 in _display_extraction_results()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: _display_extraction_results",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.cli._save_example_results",
+      "location": "logseq_py/cli.py:761-808 in _save_example_results()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: _save_example_results",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.logseq_client.LogseqClient",
+      "location": "logseq_py/logseq_client.py:19-723 [LogseqClient]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.query.QueryBuilder",
+      "location": "logseq_py/query.py:14-612 [QueryBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.query.QueryBuilder",
+      "location": "logseq_py/query.py:14-612 [QueryBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.tui.PageEditor",
+      "location": "logseq_py/tui.py:38-68 [PageEditor]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Observer pattern implementation",
+      "pattern_type": "Observer"
+    },
+    {
+      "name": "logseq_py.tui.SearchPane",
+      "location": "logseq_py/tui.py:108-117 [SearchPane]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Observer pattern implementation",
+      "pattern_type": "Observer"
+    },
+    {
+      "name": "logseq_py.tui.LogseqTUI",
+      "location": "logseq_py/tui.py:120-627 [LogseqTUI]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.tui.LogseqTUI",
+      "location": "logseq_py/tui.py:120-627 [LogseqTUI]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Observer pattern implementation",
+      "pattern_type": "Observer"
+    },
+    {
+      "name": "logseq_py.tui.TemplateManager",
+      "location": "logseq_py/tui.py:89-105 [TemplateManager]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: TemplateManager",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.utils.LogseqUtils",
+      "location": "logseq_py/utils.py:17-435 [LogseqUtils]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.QueryBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:15-111 [QueryBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.QueryBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:15-111 [QueryBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.JournalBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:114-213 [JournalBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.WorkflowBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:216-293 [WorkflowBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.WorkflowBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:216-293 [WorkflowBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.advanced_builders.DemoBuilder",
+      "location": "logseq_py/builders/advanced_builders.py:296-505 [DemoBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TextBuilder",
+      "location": "logseq_py/builders/content_types.py:13-59 [TextBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TextBuilder",
+      "location": "logseq_py/builders/content_types.py:13-59 [TextBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.HeadingBuilder",
+      "location": "logseq_py/builders/content_types.py:62-73 [HeadingBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.HeadingBuilder",
+      "location": "logseq_py/builders/content_types.py:62-73 [HeadingBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.ListBuilder",
+      "location": "logseq_py/builders/content_types.py:76-108 [ListBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.ListBuilder",
+      "location": "logseq_py/builders/content_types.py:76-108 [ListBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TaskBuilder",
+      "location": "logseq_py/builders/content_types.py:111-261 [TaskBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TaskBuilder",
+      "location": "logseq_py/builders/content_types.py:111-261 [TaskBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.CodeBlockBuilder",
+      "location": "logseq_py/builders/content_types.py:264-318 [CodeBlockBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.CodeBlockBuilder",
+      "location": "logseq_py/builders/content_types.py:264-318 [CodeBlockBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.MathBuilder",
+      "location": "logseq_py/builders/content_types.py:321-359 [MathBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.MathBuilder",
+      "location": "logseq_py/builders/content_types.py:321-359 [MathBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.QuoteBuilder",
+      "location": "logseq_py/builders/content_types.py:362-385 [QuoteBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.QuoteBuilder",
+      "location": "logseq_py/builders/content_types.py:362-385 [QuoteBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TableBuilder",
+      "location": "logseq_py/builders/content_types.py:388-443 [TableBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.TableBuilder",
+      "location": "logseq_py/builders/content_types.py:388-443 [TableBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.MediaBuilder",
+      "location": "logseq_py/builders/content_types.py:446-480 [MediaBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.MediaBuilder",
+      "location": "logseq_py/builders/content_types.py:446-480 [MediaBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.content_types.DrawingBuilder",
+      "location": "logseq_py/builders/content_types.py:483-501 [DrawingBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.content_types.DrawingBuilder",
+      "location": "logseq_py/builders/content_types.py:483-501 [DrawingBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.core.ContentBuilder",
+      "location": "logseq_py/builders/core.py:17-62 [ContentBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.core.ContentBuilder",
+      "location": "logseq_py/builders/core.py:17-62 [ContentBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.core.BlockBuilder",
+      "location": "logseq_py/builders/core.py:65-142 [BlockBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.core.BlockBuilder",
+      "location": "logseq_py/builders/core.py:65-142 [BlockBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.core.LogseqBuilder",
+      "location": "logseq_py/builders/core.py:145-233 [LogseqBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.core.LogseqBuilder",
+      "location": "logseq_py/builders/core.py:145-233 [LogseqBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PropertyBuilder",
+      "location": "logseq_py/builders/page_builders.py:16-100 [PropertyBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PropertyBuilder",
+      "location": "logseq_py/builders/page_builders.py:16-100 [PropertyBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PageBuilder",
+      "location": "logseq_py/builders/page_builders.py:103-310 [PageBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.PageBuilder",
+      "location": "logseq_py/builders/page_builders.py:103-310 [PageBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.TemplateBuilder",
+      "location": "logseq_py/builders/page_builders.py:313-353 [TemplateBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.builders.page_builders.TemplateBuilder",
+      "location": "logseq_py/builders/page_builders.py:313-353 [TemplateBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.parser.BuilderParser",
+      "location": "logseq_py/builders/parser.py:24-352 [BuilderParser]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.builders.parser.BuilderBasedLoader",
+      "location": "logseq_py/builders/parser.py:422-511 [BuilderBasedLoader]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.pipeline.analyzers.get_analyzer",
+      "location": "logseq_py/pipeline/analyzers.py:571-573 in get_analyzer()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_analyzer",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.analyzers.get_all_analyzers",
+      "location": "logseq_py/pipeline/analyzers.py:576-578 in get_all_analyzers()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_all_analyzers",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.async_comprehensive_processor.AsyncComprehensiveContentProcessor",
+      "location": "logseq_py/pipeline/async_comprehensive_processor.py:19-496 [AsyncComprehensiveContentProcessor]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: AsyncComprehensiveContentProcessor",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncPipelineStep",
+      "location": "logseq_py/pipeline/async_core.py:19-55 [AsyncPipelineStep]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Observer pattern implementation",
+      "pattern_type": "Observer"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncPipelineStep",
+      "location": "logseq_py/pipeline/async_core.py:19-55 [AsyncPipelineStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncPipeline",
+      "location": "logseq_py/pipeline/async_core.py:58-157 [AsyncPipeline]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncPipelineBuilder",
+      "location": "logseq_py/pipeline/async_core.py:252-270 [AsyncPipelineBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncPipelineBuilder",
+      "location": "logseq_py/pipeline/async_core.py:252-270 [AsyncPipelineBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncExtractContentStep",
+      "location": "logseq_py/pipeline/async_core.py:290-332 [AsyncExtractContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncAnalyzeContentStep",
+      "location": "logseq_py/pipeline/async_core.py:335-383 [AsyncAnalyzeContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncReportProgressStep",
+      "location": "logseq_py/pipeline/async_core.py:386-404 [AsyncReportProgressStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.async_core.AsyncBatchProcessor",
+      "location": "logseq_py/pipeline/async_core.py:160-211 [AsyncBatchProcessor]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: AsyncBatchProcessor",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.cache.cached",
+      "location": "logseq_py/pipeline/cache.py:601-625 in cached()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: cached",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.comprehensive_processor.ComprehensiveContentProcessor",
+      "location": "logseq_py/pipeline/comprehensive_processor.py:23-674 [ComprehensiveContentProcessor]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: ComprehensiveContentProcessor",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.core.PipelineStep",
+      "location": "logseq_py/pipeline/core.py:94-130 [PipelineStep]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Observer pattern implementation",
+      "pattern_type": "Observer"
+    },
+    {
+      "name": "logseq_py.pipeline.core.PipelineStep",
+      "location": "logseq_py/pipeline/core.py:94-130 [PipelineStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.core.Pipeline",
+      "location": "logseq_py/pipeline/core.py:133-312 [Pipeline]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.core.PipelineBuilder",
+      "location": "logseq_py/pipeline/core.py:315-356 [PipelineBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.pipeline.core.PipelineBuilder",
+      "location": "logseq_py/pipeline/core.py:315-356 [PipelineBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.pipeline.core.OptimizedPipeline",
+      "location": "logseq_py/pipeline/core.py:416-451 [OptimizedPipeline]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.core.OptimizedPipelineBuilder",
+      "location": "logseq_py/pipeline/core.py:465-478 [OptimizedPipelineBuilder]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "logseq_py.pipeline.core.OptimizedPipelineBuilder",
+      "location": "logseq_py/pipeline/core.py:465-478 [OptimizedPipelineBuilder]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Builder pattern implementation",
+      "pattern_type": "Builder"
+    },
+    {
+      "name": "logseq_py.pipeline.extractors.get_extractor",
+      "location": "logseq_py/pipeline/extractors.py:2239-2241 in get_extractor()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_extractor",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.extractors.get_all_extractors",
+      "location": "logseq_py/pipeline/extractors.py:2244-2246 in get_all_extractors()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_all_extractors",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.extractors.extract_from_block",
+      "location": "logseq_py/pipeline/extractors.py:2249-2268 in extract_from_block()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: extract_from_block",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.generators.get_generator",
+      "location": "logseq_py/pipeline/generators.py:566-568 in get_generator()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_generator",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.generators.get_all_generators",
+      "location": "logseq_py/pipeline/generators.py:571-573 in get_all_generators()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: get_all_generators",
+      "pattern_type": null
+    },
+    {
+      "name": "logseq_py.pipeline.steps.LoadContentStep",
+      "location": "logseq_py/pipeline/steps.py:18-73 [LoadContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.FilterBlocksStep",
+      "location": "logseq_py/pipeline/steps.py:76-109 [FilterBlocksStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.MarkProcessedStep",
+      "location": "logseq_py/pipeline/steps.py:112-140 [MarkProcessedStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.ExtractContentStep",
+      "location": "logseq_py/pipeline/steps.py:143-184 [ExtractContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.AnalyzeContentStep",
+      "location": "logseq_py/pipeline/steps.py:187-266 [AnalyzeContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.GenerateContentStep",
+      "location": "logseq_py/pipeline/steps.py:269-307 [GenerateContentStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.SaveResultsStep",
+      "location": "logseq_py/pipeline/steps.py:310-378 [SaveResultsStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.UpdateProcessingStatusStep",
+      "location": "logseq_py/pipeline/steps.py:381-411 [UpdateProcessingStatusStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "logseq_py.pipeline.steps.ReportProgressStep",
+      "location": "logseq_py/pipeline/steps.py:414-451 [ReportProgressStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.main",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.setup_logging",
+      "location": "scripts/comprehensive_processor_cli.py:37-61 in setup_logging()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: setup_logging",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.print_report",
+      "location": "scripts/comprehensive_processor_cli.py:83-137 in print_report()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: print_report",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.main",
+      "location": "scripts/comprehensive_processor_cli.py:140-323 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.comprehensive_processor_cli.create_config",
+      "location": "scripts/comprehensive_processor_cli.py:64-80 in create_config()",
+      "category": "config",
+      "importance": "medium",
+      "description": "Configuration function: create_config",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.cli",
+      "location": "scripts/etl_examples.py:43-45 in cli()",
+      "category": "entry_point",
+      "importance": "high",
+      "description": "CLI entry point: cli",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.tasks_csv",
+      "location": "scripts/etl_examples.py:70-105 in tasks_csv()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: tasks_csv",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.weekly_report",
+      "location": "scripts/etl_examples.py:114-245 in weekly_report()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: weekly_report",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.apply_template",
+      "location": "scripts/etl_examples.py:319-359 in apply_template()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: apply_template",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.topic_report",
+      "location": "scripts/etl_examples.py:367-441 in topic_report()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: topic_report",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.etl_examples.stats",
+      "location": "scripts/etl_examples.py:446-468 in stats()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: stats",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.release.main",
+      "location": "scripts/release.py:25-65 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.video_processor_cli.main",
+      "location": "scripts/video_processor_cli.py:106-248 in main()",
+      "category": "entry_point",
+      "importance": "critical",
+      "description": "Application main entry point",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.video_processor_cli.setup_logging",
+      "location": "scripts/video_processor_cli.py:35-59 in setup_logging()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: setup_logging",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.video_processor_cli.print_report",
+      "location": "scripts/video_processor_cli.py:77-103 in print_report()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: print_report",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.video_processor_cli.main",
+      "location": "scripts/video_processor_cli.py:106-248 in main()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: main",
+      "pattern_type": null
+    },
+    {
+      "name": "scripts.video_processor_cli.create_config",
+      "location": "scripts/video_processor_cli.py:62-74 in create_config()",
+      "category": "config",
+      "importance": "medium",
+      "description": "Configuration function: create_config",
+      "pattern_type": null
+    },
+    {
+      "name": "tests.conftest.pytest_configure",
+      "location": "tests/conftest.py:274-279 in pytest_configure()",
+      "category": "config",
+      "importance": "medium",
+      "description": "Configuration function: pytest_configure",
+      "pattern_type": null
+    },
+    {
+      "name": "tests.test_integration.FailingStep",
+      "location": "tests/test_integration.py:285-287 [FailingStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "tests.test_integration.FailingStep",
+      "location": "tests/test_integration.py:305-307 [FailingStep]",
+      "category": "pattern",
+      "importance": "medium",
+      "description": "Strategy pattern implementation",
+      "pattern_type": "Strategy"
+    },
+    {
+      "name": "tests.test_integration.mock_logseq_client",
+      "location": "tests/test_integration.py:56-62 in mock_logseq_client()",
+      "category": "api",
+      "importance": "high",
+      "description": "API endpoint handler: mock_logseq_client",
+      "pattern_type": null
+    },
+    {
+      "name": "tests.test_tui.TestTemplateManager",
+      "location": "tests/test_tui.py:70-76 [TestTemplateManager]",
+      "category": "business_logic",
+      "importance": "high",
+      "description": "Business logic class: TestTemplateManager",
+      "pattern_type": null
+    },
+    {
+      "name": "tests.unit.test_cache.TestFactoryFunctions",
+      "location": "tests/unit/test_cache.py:542-558 [TestFactoryFunctions]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    },
+    {
+      "name": "tests.unit.test_pipeline_filters.TestFilterFactoryFunctions",
+      "location": "tests/unit/test_pipeline_filters.py:333-383 [TestFilterFactoryFunctions]",
+      "category": "pattern",
+      "importance": "high",
+      "description": "Factory pattern implementation",
+      "pattern_type": "Factory"
+    }
+  ]
+}

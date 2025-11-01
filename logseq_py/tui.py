@@ -256,10 +256,10 @@ class LogseqTUI(App):
     async def on_mount(self) -> None:
         """Initialize the app on mount."""
         self.client = LogseqClient(self.graph_path)
-        await self.load_graph()
-        await self.populate_sidebar()
-        await self.populate_page_list()
-        await self.populate_templates()
+        self.load_graph()
+        self.populate_sidebar()
+        self.populate_page_list()
+        self.populate_templates()
         
         # Load today's journal
         await self.load_journal(date.today())

@@ -263,6 +263,24 @@ class PageBuilder(LogseqBuilder):
         self._content_blocks.append(drawing)
         return drawing
     
+    def diagram(self, diagram_type: str = 'mermaid') -> 'DiagramBuilder':
+        """Create and add a diagram code block, returning it for chaining.
+        
+        Args:
+            diagram_type: Type of diagram (mermaid, graphviz, plantuml, etc.)
+        
+        Examples:
+            # Mermaid flowchart
+            page.diagram('mermaid').mermaid_flowchart().line('A --> B')
+            
+            # Graphviz
+            page.diagram('graphviz').graphviz_digraph().line('  A -> B;').close_block()
+        """
+        from .content_types import DiagramBuilder
+        diagram = DiagramBuilder(diagram_type)
+        self._content_blocks.append(diagram)
+        return diagram
+    
     def add(self, builder: Union[ContentBuilder, str]) -> 'PageBuilder':
         """Add a content builder or raw string."""
         self._content_blocks.append(builder)

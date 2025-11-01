@@ -480,6 +480,156 @@ class MediaBuilder(ContentBuilder):
         return "\n\n".join(self._media_items)
 
 
+class DiagramBuilder(ContentBuilder):
+    """Builder for diagram code blocks (Mermaid, Graphviz, PlantUML, etc.).
+    
+    Logseq supports rendering diagrams directly from code blocks with specific
+    language identifiers like 'mermaid', 'graphviz', 'plantuml', etc.
+    
+    Examples:
+        # Mermaid flowchart
+        diagram = DiagramBuilder('mermaid')
+        diagram.line('graph TD')
+        diagram.line('  A[Start] --> B{Decision}')
+        diagram.line('  B -->|Yes| C[Do Something]')
+        diagram.line('  B -->|No| D[Do Nothing]')
+        
+        # Graphviz diagram
+        diagram = DiagramBuilder('graphviz')
+        diagram.line('digraph G {')
+        diagram.line('  A -> B;')
+        diagram.line('  B -> C;')
+        diagram.line('}')
+    """
+    
+    # Supported diagram types in Logseq
+    SUPPORTED_TYPES = {
+        'mermaid', 'graphviz', 'dot', 'plantuml', 'ditaa', 
+        'vega', 'vega-lite', 'excalidraw'
+    }
+    
+    def __init__(self, diagram_type: str = 'mermaid'):
+        super().__init__()
+        self._diagram_type = diagram_type.lower()
+        self._lines: List[str] = []
+    
+    def type(self, diagram_type: str) -> 'DiagramBuilder':
+        """Set the diagram type.
+        
+        Args:
+            diagram_type: Type of diagram (mermaid, graphviz, plantuml, etc.)
+        """
+        self._diagram_type = diagram_type.lower()
+        return self
+    
+    def line(self, content: str) -> 'DiagramBuilder':
+        """Add a line to the diagram."""
+        self._lines.append(content)
+        return self
+    
+    def lines(self, *contents: str) -> 'DiagramBuilder':
+        """Add multiple lines to the diagram."""
+        self._lines.extend(contents)
+        return self
+    
+    def blank_line(self) -> 'DiagramBuilder':
+        """Add a blank line."""
+        self._lines.append("")
+        return self
+    
+    # Mermaid-specific helpers
+    def mermaid_flowchart(self, direction: str = 'TD') -> 'DiagramBuilder':
+        """Start a Mermaid flowchart.
+        
+        Args:
+            direction: Flow direction - TD (top-down), LR (left-right), etc.
+        """
+        self._diagram_type = 'mermaid'
+        self._lines.append(f'graph {direction}')
+        return self
+    
+    def mermaid_sequence(self) -> 'DiagramBuilder':
+        """Start a Mermaid sequence diagram."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('sequenceDiagram')
+        return self
+    
+    def mermaid_gantt(self) -> 'DiagramBuilder':
+        """Start a Mermaid Gantt chart."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('gantt')
+        return self
+    
+    def mermaid_class_diagram(self) -> 'DiagramBuilder':
+        """Start a Mermaid class diagram."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('classDiagram')
+        return self
+    
+    def mermaid_state_diagram(self) -> 'DiagramBuilder':
+        """Start a Mermaid state diagram."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('stateDiagram-v2')
+        return self
+    
+    def mermaid_er_diagram(self) -> 'DiagramBuilder':
+        """Start a Mermaid entity-relationship diagram."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('erDiagram')
+        return self
+    
+    def mermaid_pie(self) -> 'DiagramBuilder':
+        """Start a Mermaid pie chart."""
+        self._diagram_type = 'mermaid'
+        self._lines.append('pie')
+        return self
+    
+    # Graphviz-specific helpers
+    def graphviz_digraph(self, name: str = 'G') -> 'DiagramBuilder':
+        """Start a Graphviz directed graph.
+        
+        Args:
+            name: Name of the graph
+        """
+        self._diagram_type = 'graphviz'
+        self._lines.append(f'digraph {name} {{')
+        return self
+    
+    def graphviz_graph(self, name: str = 'G') -> 'DiagramBuilder':
+        """Start a Graphviz undirected graph.
+        
+        Args:
+            name: Name of the graph
+        """
+        self._diagram_type = 'graphviz'
+        self._lines.append(f'graph {name} {{')
+        return self
+    
+    def close_block(self) -> 'DiagramBuilder':
+        """Close a block (useful for Graphviz, PlantUML)."""
+        self._lines.append('}')
+        return self
+    
+    # PlantUML-specific helpers
+    def plantuml_start(self) -> 'DiagramBuilder':
+        """Start a PlantUML diagram."""
+        self._diagram_type = 'plantuml'
+        self._lines.append('@startuml')
+        return self
+    
+    def plantuml_end(self) -> 'DiagramBuilder':
+        """End a PlantUML diagram."""
+        self._lines.append('@enduml')
+        return self
+    
+    def build(self) -> str:
+        """Build the diagram code block."""
+        lines = [f"```{self._diagram_type}"]
+        lines.extend(self._lines)
+        lines.append("```")
+        return "\n".join(lines)
+
+
 class DrawingBuilder(ContentBuilder):
     """Builder for drawing/whiteboard blocks."""
     

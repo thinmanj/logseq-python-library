@@ -15,7 +15,7 @@ from datetime import datetime, date
 from logseq_py.builders import BlockBuilder, LogseqBuilder, PageBuilder
 from logseq_py.builders.content_types import (
     CodeBlockBuilder, TaskBuilder, TableBuilder, QuoteBuilder,
-    ListBuilder, TextBuilder, MathBuilder, MediaBuilder
+    ListBuilder, TextBuilder, MathBuilder, MediaBuilder, DiagramBuilder
 )
 from logseq_py.builders.advanced_builders import QueryBuilder, JournalBuilder, WorkflowBuilder
 
@@ -642,6 +642,189 @@ class TestEdgeCases:
         # Should preserve as-is within code block
         assert "# This is not a [[link]]" in result
         assert "tag = '#not-a-tag'" in result
+
+
+class TestDiagramBuilder:
+    """Test DiagramBuilder for Mermaid, Graphviz, PlantUML diagrams."""
+    
+    def test_mermaid_flowchart(self):
+        """Mermaid flowchart diagram."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_flowchart('TD')
+        diagram.line('  A[Start] --> B[End]')
+        
+        result = diagram.build()
+        assert '```mermaid' in result
+        assert 'graph TD' in result
+        assert 'A[Start] --> B[End]' in result
+        assert result.endswith('```')
+    
+    def test_mermaid_sequence_diagram(self):
+        """Mermaid sequence diagram."""
+        diagram = DiagramBuilder()
+        diagram.mermaid_sequence()
+        diagram.line('  Alice->>Bob: Hello')
+        diagram.line('  Bob-->>Alice: Hi')
+        
+        result = diagram.build()
+        assert 'sequenceDiagram' in result
+        assert 'Alice->>Bob' in result
+    
+    def test_mermaid_gantt(self):
+        """Mermaid Gantt chart."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_gantt()
+        diagram.line('  title Project Schedule')
+        diagram.line('  section Phase 1')
+        diagram.line('  Task 1: 2025-01-01, 7d')
+        
+        result = diagram.build()
+        assert 'gantt' in result
+        assert 'Project Schedule' in result
+    
+    def test_mermaid_class_diagram(self):
+        """Mermaid class diagram."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_class_diagram()
+        diagram.line('  class Animal {')
+        diagram.line('    +name: string')
+        diagram.line('  }')
+        
+        result = diagram.build()
+        assert 'classDiagram' in result
+        assert 'class Animal' in result
+    
+    def test_mermaid_state_diagram(self):
+        """Mermaid state diagram."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_state_diagram()
+        diagram.line('  [*] --> Active')
+        diagram.line('  Active --> [*]')
+        
+        result = diagram.build()
+        assert 'stateDiagram-v2' in result
+    
+    def test_mermaid_er_diagram(self):
+        """Mermaid ER diagram."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_er_diagram()
+        diagram.line('  CUSTOMER ||--o{ ORDER : places')
+        
+        result = diagram.build()
+        assert 'erDiagram' in result
+        assert 'CUSTOMER' in result
+    
+    def test_mermaid_pie_chart(self):
+        """Mermaid pie chart."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_pie()
+        diagram.line('  "Apples" : 40')
+        diagram.line('  "Oranges" : 60')
+        
+        result = diagram.build()
+        assert 'pie' in result
+        assert 'Apples' in result
+    
+    def test_graphviz_digraph(self):
+        """Graphviz directed graph."""
+        diagram = DiagramBuilder('graphviz')
+        diagram.graphviz_digraph('MyGraph')
+        diagram.line('  A -> B;')
+        diagram.line('  B -> C;')
+        diagram.close_block()
+        
+        result = diagram.build()
+        assert '```graphviz' in result
+        assert 'digraph MyGraph {' in result
+        assert 'A -> B;' in result
+        assert result.count('}') >= 1
+    
+    def test_graphviz_graph(self):
+        """Graphviz undirected graph."""
+        diagram = DiagramBuilder('graphviz')
+        diagram.graphviz_graph('UndirectedGraph')
+        diagram.line('  A -- B;')
+        diagram.close_block()
+        
+        result = diagram.build()
+        assert 'graph UndirectedGraph {' in result
+        assert 'A -- B;' in result
+    
+    def test_plantuml(self):
+        """PlantUML diagram."""
+        diagram = DiagramBuilder('plantuml')
+        diagram.plantuml_start()
+        diagram.line('Alice -> Bob: Request')
+        diagram.line('Bob --> Alice: Response')
+        diagram.plantuml_end()
+        
+        result = diagram.build()
+        assert '```plantuml' in result
+        assert '@startuml' in result
+        assert '@enduml' in result
+        assert 'Alice -> Bob' in result
+    
+    def test_diagram_with_blank_lines(self):
+        """Diagram with blank lines for readability."""
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_flowchart()
+        diagram.line('  A --> B')
+        diagram.blank_line()
+        diagram.line('  C --> D')
+        
+        result = diagram.build()
+        lines = result.split('\n')
+        # Should have blank line between the two connections
+        assert '' in [line.strip() for line in lines[2:-1]]
+    
+    def test_diagram_in_block(self):
+        """Diagram as child block."""
+        parent = BlockBuilder('Architecture diagram:')
+        diagram = DiagramBuilder('mermaid')
+        diagram.mermaid_flowchart()
+        diagram.line('  Start --> End')
+        parent.child(BlockBuilder(diagram.build()))
+        
+        result = parent.build()
+        lines = result.split('\n')
+        
+        assert lines[0] == '- Architecture diagram:'
+        assert lines[1] == '  - ```mermaid'
+        assert 'graph TD' in lines[2]
+    
+    def test_page_with_diagram(self):
+        """Page with diagram using convenience method."""
+        page = PageBuilder('System Design')
+        page.heading(1, 'Architecture')
+        diagram = page.diagram('mermaid')
+        diagram.mermaid_flowchart('LR')
+        diagram.line('  Client --> Server')
+        
+        result = page.build()
+        assert '# Architecture' in result
+        assert '```mermaid' in result
+        assert 'graph LR' in result
+    
+    def test_multiple_diagrams_in_page(self):
+        """Page with multiple different diagram types."""
+        page = PageBuilder('Documentation')
+        
+        # Mermaid
+        page.heading(2, 'Flow')
+        flow = page.diagram('mermaid')
+        flow.mermaid_flowchart()
+        flow.line('  A --> B')
+        
+        # Graphviz
+        page.heading(2, 'Relationships')
+        graph = page.diagram('graphviz')
+        graph.graphviz_digraph()
+        graph.line('  X -> Y;')
+        graph.close_block()
+        
+        result = page.build()
+        assert '```mermaid' in result
+        assert '```graphviz' in result
 
 
 class TestIntegrationScenarios:

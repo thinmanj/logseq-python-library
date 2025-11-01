@@ -1,4 +1,4 @@
-# Logseq TUI Visual Demo
+    # Logseq TUI Visual Demo
 
 ## What You'll See When Running the TUI
 
