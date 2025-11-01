@@ -125,7 +125,14 @@ class BlockBuilder(ContentBuilder):
         
         # Add main block content
         if self._block_content:
-            lines.append("  " * self._indent_level + "- " + self._block_content)
+            # Handle multi-line content (e.g., code blocks)
+            content_lines = self._block_content.split("\n")
+            if content_lines:
+                # First line gets the bullet
+                lines.append("  " * self._indent_level + "- " + content_lines[0])
+                # Subsequent lines get proper indentation (2 spaces more than bullet)
+                for line in content_lines[1:]:
+                    lines.append("  " * self._indent_level + "  " + line)
         
         # Add block properties if any
         if self._block_properties:
