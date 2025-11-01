@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-11-01
+
+### ✨ Features
+- **DiagramBuilder for visual diagrams** - Full support for diagram code blocks in Logseq
+  - **Mermaid diagrams:** flowchart, sequence, gantt, class, state, ER, pie charts
+  - **Graphviz:** directed and undirected graphs with helper methods
+  - **PlantUML:** sequence diagrams, class diagrams, and more
+  - **Additional formats:** Ditaa, Vega, Vega-Lite, Excalidraw support
+  - Convenience method `page.diagram('mermaid')` for easy integration
+  - Diagrams work seamlessly in pages and as sub-blocks
+  - Helper methods for common diagram types (e.g., `mermaid_flowchart()`, `graphviz_digraph()`)
+
+### ✅ Testing
+- **14 new diagram tests** - Complete coverage of all diagram types
+  - Tests for all Mermaid diagram types (7 types)
+  - Graphviz directed and undirected graphs
+  - PlantUML start/end tags
+  - Diagrams in blocks and pages
+  - Multiple diagrams in single page
+  - **Total: 68 passing builder tests**
+
+### 📚 Examples
+```python
+# Mermaid flowchart
+page.diagram('mermaid').mermaid_flowchart('LR').line('A --> B')
+
+# Graphviz
+diagram = DiagramBuilder('graphviz')
+diagram.graphviz_digraph().line('  A -> B;').close_block()
+
+# PlantUML
+diagram = DiagramBuilder('plantuml')
+diagram.plantuml_start().line('Alice -> Bob').plantuml_end()
+```
+
 ## [0.3.3] - 2025-11-01
 
 ### ✅ Testing
