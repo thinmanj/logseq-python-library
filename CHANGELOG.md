@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2025-11-01
+
+### ✅ Testing
+- **Added comprehensive builder test suite** - 54 new tests preventing regressions
+  - Regression tests for v0.3.1 newline handling fix
+  - Regression tests for v0.3.2 multi-line content fix
+  - Complete coverage of BlockBuilder, CodeBlockBuilder, and all content type builders
+  - Tests for tasks, tables, quotes, media embeds, queries, and journal entries
+  - Edge case tests: unicode, special characters, deep nesting (10 levels)
+  - Integration scenarios: meeting notes, code documentation, project pages
+  - All 54 tests passing, preventing future bugs in builder functionality
+
 ## [0.3.2] - 2025-11-01
 
 ### 🐛 Bug Fixes
