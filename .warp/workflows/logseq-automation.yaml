@@ -1,0 +1,173 @@
+---
+# Logseq Python - Warp Workflows
+# Place this file in your Logseq graph directory under .warp/workflows/
+
+workflows:
+  # 1. Daily Task Summary
+  - name: "Logseq: Daily Task Summary"
+    description: "Get today's task overview"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient, TaskState
+      from datetime import date
+      
+      client = LogseqClient('.')
+      graph = client.load_graph()
+      
+      # Task breakdown
+      states = [TaskState.TODO, TaskState.DOING, TaskState.DONE]
+      print("📊 Today's Task Summary\n")
+      
+      for state in states:
+          tasks = client.query().blocks().has_task_state(state).execute()
+          print(f"{state.value}: {len(tasks)}")
+      
+      # Show workflow summary
+      workflow = graph.get_workflow_summary()
+      completion_rate = (workflow['completed_tasks'] / workflow['total_tasks'] * 100) if workflow['total_tasks'] > 0 else 0
+      print(f"\n✅ Completion Rate: {completion_rate:.1f}%")
+      EOF
+
+  # 2. Extract Content from URLs
+  - name: "Logseq: Extract Content"
+    description: "Run async content extraction on graph"
+    command: |
+      python3 << 'EOF'
+      import asyncio
+      from logseq_py.pipeline.async_comprehensive_processor import AsyncComprehensiveProcessor
+      
+      async def main():
+          processor = AsyncComprehensiveProcessor(
+              graph_dir='.',
+              dry_run=False,
+              max_blocks=100
+          )
+          await processor.process_graph()
+      
+      asyncio.run(main())
+      EOF
+
+  # 3. Graph Insights
+  - name: "Logseq: Graph Insights"
+    description: "Analyze graph structure and connections"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient
+      import json
+      
+      client = LogseqClient('.')
+      graph = client.load_graph()
+      insights = graph.get_graph_insights()
+      
+      print("🔍 Graph Insights\n")
+      print(f"📄 Total Pages: {insights['total_pages']}")
+      print(f"🔗 Total Blocks: {insights['total_blocks']}")
+      print(f"🏷️  Total Tags: {len(insights['tag_usage'])}")
+      
+      print("\n📊 Top Connected Pages:")
+      for page, count in insights['most_connected_pages'][:5]:
+          print(f"  {page}: {count} connections")
+      
+      print("\n🏷️  Top Tags:")
+      for tag, count in sorted(insights['tag_usage'].items(), key=lambda x: x[1], reverse=True)[:5]:
+          print(f"  #{tag}: {count} uses")
+      EOF
+
+  # 4. Code Statistics
+  - name: "Logseq: Code Statistics"
+    description: "Analyze code blocks in graph"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient
+      from collections import Counter
+      
+      client = LogseqClient('.')
+      graph = client.load_graph()
+      
+      code_blocks = client.query().blocks().is_code_block().execute()
+      languages = Counter(b.code_language or 'unknown' for b in code_blocks)
+      
+      print(f"💻 Code Statistics\n")
+      print(f"Total code blocks: {len(code_blocks)}\n")
+      
+      for lang, count in languages.most_common(10):
+          bar = '█' * (count // 2)
+          print(f"{lang:15} {bar} {count}")
+      EOF
+
+  # 5. Create Daily Note Template
+  - name: "Logseq: Create Daily Template"
+    description: "Generate today's journal entry with template"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient
+      from datetime import date
+      
+      client = LogseqClient('.')
+      
+      template = f"""## 📅 {date.today().strftime('%A, %B %d, %Y')}
+      
+      ### 🎯 Today's Goals
+      - TODO 
+      
+      ### 📝 Notes
+      - 
+      
+      ### ✅ Completed
+      - 
+      
+      ### 💡 Insights
+      - 
+      """
+      
+      client.add_journal_entry(template)
+      print("✅ Daily journal entry created!")
+      EOF
+
+  # 6. Search Tasks by Priority
+  - name: "Logseq: High Priority Tasks"
+    description: "List all high-priority tasks"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient, Priority
+      
+      client = LogseqClient('.')
+      graph = client.load_graph()
+      
+      high_priority = client.query().blocks().has_priority(Priority.A).execute()
+      
+      print("🚨 High Priority Tasks\n")
+      for i, task in enumerate(high_priority, 1):
+          state = task.task_state.value if task.task_state else "NOTE"
+          deadline = f" 📅 {task.deadline.date}" if task.deadline else ""
+          print(f"{i}. [{state}] {task.content.strip()}{deadline}")
+      
+      print(f"\nTotal: {len(high_priority)} tasks")
+      EOF
+
+  # 7. Backup Graph Metadata
+  - name: "Logseq: Backup Metadata"
+    description: "Export graph structure to JSON"
+    command: |
+      python3 << 'EOF'
+      from logseq_py import LogseqClient
+      import json
+      from datetime import datetime
+      
+      client = LogseqClient('.')
+      graph = client.load_graph()
+      insights = graph.get_graph_insights()
+      
+      backup = {
+          'timestamp': datetime.now().isoformat(),
+          'stats': insights,
+          'pages': [p.name for p in graph.pages],
+          'namespaces': list(graph.get_all_namespaces())
+      }
+      
+      filename = f"logseq_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+      with open(filename, 'w') as f:
+          json.dump(backup, f, indent=2)
+      
+      print(f"✅ Backup saved to {filename}")
+      EOF

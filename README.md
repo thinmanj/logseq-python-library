@@ -213,9 +213,33 @@ for ref, count in sorted(page_refs.items(), key=lambda x: x[1], reverse=True)[:1
     print(f"  {ref}: {count} references")
 ```
 
+## 🚀 **Warp Terminal Integration**
+
+**NEW!** Seamlessly integrate logseq-python into your Warp terminal workflows:
+
+- ✅ **7 Pre-built Workflows**: Task summaries, graph insights, content extraction, code stats
+- ✅ **One-Command Access**: `Cmd+P` → type "Logseq" to run any workflow
+- ✅ **Customizable**: Easy YAML configuration for your own workflows
+- ✅ **Powerful Automation**: Daily routines, batch processing, scheduled tasks
+
+### Quick Setup
+```bash
+# Copy workflow file to your Logseq graph
+cd /path/to/your/logseq/graph
+mkdir -p .warp/workflows
+cp /path/to/logseq-python/.warp/workflows/logseq-automation.yaml .warp/workflows/
+
+# Use in Warp: Cmd+P → "Logseq: Daily Task Summary"
+```
+
+📚 **[Full Warp Integration Guide](WARP_INTEGRATION.md)**
+
+---
+
 ## 📖 **Documentation**
 
 - 📘 [Complete API Reference](docs/api.md) - Comprehensive API documentation
+- 🚀 [Warp Integration Guide](WARP_INTEGRATION.md) - **NEW!** Terminal workflow automation
 - 🎯 [Basic Usage Examples](examples/basic_usage.py) - Get started quickly
 - 🔍 [Advanced Queries](examples/advanced_queries.py) - Complex search examples
 - 🎨 [Advanced Features](examples/advanced_logseq_features.py) - All new features showcase
